@@ -1,12 +1,14 @@
 ﻿<Properties StartupConfiguration="{EC04550F-BE7C-421D-89F2-4854A737BC26}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="ars-ictlab/Views/Analytics/Index.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ars-ictlab/Controllers/HomeController.cs">
     <Files>
-      <File FileName="ars-ictlab/Controllers/HomeController.cs" Line="18" Column="1" />
-      <File FileName="ars-ictlab/Controllers/UserController.cs" Line="16" Column="54" />
-      <File FileName="ars-ictlab/Controllers/ClassroomController.cs" Line="20" Column="1" />
+      <File FileName="ars-ictlab/Controllers/HomeController.cs" Line="16" Column="10" />
+      <File FileName="ars-ictlab/Controllers/UserController.cs" Line="16" Column="27" />
+      <File FileName="ars-ictlab/Controllers/ClassroomController.cs" Line="13" Column="30" />
       <File FileName="ars-ictlab/Controllers/AnalyticsController.cs" Line="18" Column="6" />
       <File FileName="ars-ictlab/Views/Classrooms/Index.cshtml" Line="25" Column="1" />
-      <File FileName="ars-ictlab/Views/Analytics/Index.cshtml" Line="7" Column="13" />
+      <File FileName="ars-ictlab/Views/Analytics/Index.cshtml" Line="8" Column="45" />
+      <File FileName="ars-ictlab/Views/Shared/_Layout.cshtml" Line="33" Column="57" />
+      <File FileName="ars-ictlab/Properties/launchSettings.json" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
