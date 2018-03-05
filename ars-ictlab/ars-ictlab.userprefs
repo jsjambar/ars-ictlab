@@ -1,9 +1,10 @@
 ﻿<Properties StartupConfiguration="{EC04550F-BE7C-421D-89F2-4854A737BC26}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="ars-ictlab/wwwroot/js/temperature.jsx">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ars-ictlab/Controllers/ClassroomController.cs">
     <Files>
-      <File FileName="ars-ictlab/wwwroot/js/temperature.jsx" Line="7" Column="7" />
+      <File FileName="ars-ictlab/wwwroot/js/temperature.jsx" Line="38" Column="6" />
       <File FileName="ars-ictlab/Views/Home/Index.cshtml" Line="7" Column="43" />
       <File FileName="ars-ictlab/Views/Shared/_Layout.cshtml" Line="52" Column="56" />
+      <File FileName="ars-ictlab/Controllers/ClassroomController.cs" Line="19" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
