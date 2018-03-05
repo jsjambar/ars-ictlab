@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "a7aa306d2e264d92ffef06296341a5e29b6e41eb"
+    "signature": "abdb7a74162c6c421f1a9e59630cbadeaef0b980"
   },
   "compilationOptions": {
     "defines": [
@@ -23,14 +23,115 @@
     ".NETCoreApp,Version=v2.0": {
       "ars-ictlab/1.0.0": {
         "dependencies": {
+          "JavaScriptEngineSwitcher.ChakraCore": "2.4.12",
+          "JavaScriptEngineSwitcher.ChakraCore.Native.osx-x64": "2.4.12",
+          "JavaScriptEngineSwitcher.Jint": "2.4.13",
           "Microsoft.AspNetCore.All": "2.0.0",
-          "Microsoft.NETCore.App": "2.0.0"
+          "Microsoft.NETCore.App": "2.0.0",
+          "React.AspNet": "3.3.0"
         },
         "runtime": {
           "ars-ictlab.dll": {}
         },
         "compile": {
           "ars-ictlab.dll": {}
+        }
+      },
+      "JavaScriptEngineSwitcher.ChakraCore/2.4.12": {
+        "dependencies": {
+          "JavaScriptEngineSwitcher.Core": "2.4.10",
+          "NETStandard.Library": "2.0.0",
+          "System.Reflection.TypeExtensions": "4.3.0",
+          "System.Threading.Thread": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.ChakraCore.dll": {}
+        },
+        "resources": {
+          "lib/netstandard1.3/ru-ru/JavaScriptEngineSwitcher.ChakraCore.resources.dll": {
+            "locale": "ru-ru"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.ChakraCore.dll": {}
+        }
+      },
+      "JavaScriptEngineSwitcher.ChakraCore.Native.osx-x64/2.4.12": {
+        "runtimeTargets": {
+          "runtimes/osx-x64/native/libChakraCore.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native"
+          }
+        }
+      },
+      "JavaScriptEngineSwitcher.Core/2.4.10": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.0",
+          "System.ComponentModel.TypeConverter": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.Core.dll": {}
+        },
+        "resources": {
+          "lib/netstandard1.3/ru-ru/JavaScriptEngineSwitcher.Core.resources.dll": {
+            "locale": "ru-ru"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.Core.dll": {}
+        }
+      },
+      "JavaScriptEngineSwitcher.Jint/2.4.13": {
+        "dependencies": {
+          "JavaScriptEngineSwitcher.Core": "2.4.10",
+          "Jint": "2.11.58",
+          "NETStandard.Library": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.Jint.dll": {}
+        },
+        "resources": {
+          "lib/netstandard1.3/ru-ru/JavaScriptEngineSwitcher.Jint.resources.dll": {
+            "locale": "ru-ru"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.Jint.dll": {}
+        }
+      },
+      "JavaScriptEngineSwitcher.Msie/2.4.9": {
+        "dependencies": {
+          "JavaScriptEngineSwitcher.Core": "2.4.10",
+          "MsieJavaScriptEngine": "2.2.2",
+          "NETStandard.Library": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.Msie.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/JavaScriptEngineSwitcher.Msie.dll": {}
+        }
+      },
+      "Jint/2.11.58": {
+        "runtime": {
+          "lib/netstandard2.0/Jint.dll": {}
+        },
+        "compile": {
+          "lib/netstandard2.0/Jint.dll": {}
+        }
+      },
+      "JSPool/3.0.1": {
+        "dependencies": {
+          "JavaScriptEngineSwitcher.Core": "2.4.10",
+          "NETStandard.Library": "2.0.0",
+          "System.Diagnostics.TraceSource": "4.0.0",
+          "System.IO.FileSystem.Watcher": "4.0.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JSPool.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/JSPool.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -2317,6 +2418,25 @@
           "ref/netstandard2.0/Microsoft.Win32.Registry.dll": {}
         }
       },
+      "MsieJavaScriptEngine/2.2.2": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.0",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.3.0",
+          "System.Threading.Thread": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/MsieJavaScriptEngine.dll": {}
+        },
+        "resources": {
+          "lib/netstandard1.3/ru-ru/MsieJavaScriptEngine.resources.dll": {
+            "locale": "ru-ru"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/MsieJavaScriptEngine.dll": {}
+        }
+      },
       "Newtonsoft.Json/10.0.1": {
         "dependencies": {
           "Microsoft.CSharp": "4.4.0",
@@ -2363,6 +2483,54 @@
         },
         "compile": {
           "lib/netstandard1.3/Newtonsoft.Json.Bson.dll": {}
+        }
+      },
+      "React.AspNet/3.3.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.0.0",
+          "React.AspNet.Middleware": "3.3.0",
+          "React.Core": "3.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/React.AspNet.dll": {}
+        },
+        "compile": {
+          "lib/netstandard2.0/React.AspNet.dll": {}
+        }
+      },
+      "React.AspNet.Middleware/3.3.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Hosting.Abstractions": "2.0.0",
+          "Microsoft.AspNetCore.StaticFiles": "2.0.0",
+          "Microsoft.Extensions.Caching.Abstractions": "2.0.0",
+          "Microsoft.Extensions.DependencyInjection": "2.0.0",
+          "Microsoft.Extensions.FileProviders.Physical": "2.0.0",
+          "React.Core": "3.3.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/React.AspNet.Middleware.dll": {}
+        },
+        "compile": {
+          "lib/netstandard2.0/React.AspNet.Middleware.dll": {}
+        }
+      },
+      "React.Core/3.3.0": {
+        "dependencies": {
+          "JSPool": "3.0.1",
+          "JavaScriptEngineSwitcher.ChakraCore": "2.4.12",
+          "JavaScriptEngineSwitcher.Core": "2.4.10",
+          "JavaScriptEngineSwitcher.Msie": "2.4.9",
+          "Microsoft.Extensions.DependencyModel": "2.0.0",
+          "MsieJavaScriptEngine": "2.2.2",
+          "NETStandard.Library": "2.0.0",
+          "Newtonsoft.Json": "10.0.1",
+          "VroomJs": "1.2.3"
+        },
+        "runtime": {
+          "lib/netstandard1.6/React.Core.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.6/React.Core.dll": {}
         }
       },
       "Remotion.Linq/2.1.1": {
@@ -2818,6 +2986,29 @@
           "System.Runtime": "4.3.0"
         }
       },
+      "System.Diagnostics.TraceSource/4.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0",
+          "System.Collections": "4.3.0",
+          "System.Diagnostics.Debug": "4.3.0",
+          "System.Globalization": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Threading": "4.3.0",
+          "runtime.native.System": "4.3.0"
+        },
+        "runtimeTargets": {
+          "runtime/unix/lib/_._": {
+            "rid": "unix",
+            "assetType": "runtime"
+          },
+          "runtime/win/lib/_._": {
+            "rid": "win",
+            "assetType": "runtime"
+          }
+        }
+      },
       "System.Diagnostics.Tracing/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -2953,6 +3144,40 @@
       "System.IO.FileSystem.Primitives/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
+        }
+      },
+      "System.IO.FileSystem.Watcher/4.0.0": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0",
+          "Microsoft.Win32.Primitives": "4.3.0",
+          "System.Collections": "4.3.0",
+          "System.IO.FileSystem": "4.3.0",
+          "System.IO.FileSystem.Primitives": "4.3.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Extensions": "4.3.0",
+          "System.Runtime.Handles": "4.3.0",
+          "System.Runtime.InteropServices": "4.3.0",
+          "System.Text.Encoding": "4.3.0",
+          "System.Threading": "4.3.0",
+          "System.Threading.Overlapped": "4.0.1",
+          "System.Threading.Tasks": "4.3.0",
+          "System.Threading.Thread": "4.3.0",
+          "runtime.native.System": "4.3.0"
+        },
+        "runtimeTargets": {
+          "runtime/linux/lib/_._": {
+            "rid": "linux",
+            "assetType": "runtime"
+          },
+          "runtime/osx/lib/_._": {
+            "rid": "osx",
+            "assetType": "runtime"
+          },
+          "runtime/win/lib/_._": {
+            "rid": "win",
+            "assetType": "runtime"
+          }
         }
       },
       "System.Linq/4.3.0": {
@@ -3645,6 +3870,24 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
+      "System.Threading.Overlapped/4.0.1": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "2.0.0",
+          "System.Resources.ResourceManager": "4.3.0",
+          "System.Runtime": "4.3.0",
+          "System.Runtime.Handles": "4.3.0"
+        },
+        "runtimeTargets": {
+          "runtime/unix/lib/_._": {
+            "rid": "unix",
+            "assetType": "runtime"
+          },
+          "runtime/win/lib/_._": {
+            "rid": "win",
+            "assetType": "runtime"
+          }
+        }
+      },
       "System.Threading.Tasks/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -3778,6 +4021,19 @@
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0",
           "System.Xml.XPath": "4.3.0"
+        }
+      },
+      "VroomJs/1.2.3": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.0",
+          "System.Dynamic.Runtime": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.6/VroomJs.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.6/VroomJs.dll": {}
         }
       },
       "WindowsAzure.Storage/8.1.4": {
@@ -3977,6 +4233,55 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "JavaScriptEngineSwitcher.ChakraCore/2.4.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tNUDe50DX1OVqjYWcFtHfsnCnSG8HlAFajNgZUEGJVTh8uetObhPDsf2Vcg0331rvpdzSiMu4rVfw9hhmkya9A==",
+      "path": "javascriptengineswitcher.chakracore/2.4.12",
+      "hashPath": "javascriptengineswitcher.chakracore.2.4.12.nupkg.sha512"
+    },
+    "JavaScriptEngineSwitcher.ChakraCore.Native.osx-x64/2.4.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Z8vKCy4TJs6k4SBvHaYDnCRs0xLc+8qexw3xLZx18YZywC9NAglsFJI6soWu+1uSd3iUHBzcW+jdREALmiIu0w==",
+      "path": "javascriptengineswitcher.chakracore.native.osx-x64/2.4.12",
+      "hashPath": "javascriptengineswitcher.chakracore.native.osx-x64.2.4.12.nupkg.sha512"
+    },
+    "JavaScriptEngineSwitcher.Core/2.4.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jKoQhZvUMRmIGTL+ZRCQn0fS1W+8MPrkngU1ii7tYbhGlCZRGRw5gLvoPDAfE0+nS2AjQjCQA2XHjhkJo51KcQ==",
+      "path": "javascriptengineswitcher.core/2.4.10",
+      "hashPath": "javascriptengineswitcher.core.2.4.10.nupkg.sha512"
+    },
+    "JavaScriptEngineSwitcher.Jint/2.4.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-EoScYB92GK59rc0RVaDLl97qzMRYyAvl7ESzxap3paPDeH81T1vCr95xJ0mlsCdJTIS8614lDzA1nBKtUy9GVw==",
+      "path": "javascriptengineswitcher.jint/2.4.13",
+      "hashPath": "javascriptengineswitcher.jint.2.4.13.nupkg.sha512"
+    },
+    "JavaScriptEngineSwitcher.Msie/2.4.9": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t0rQk2gUGaJFrszYkbga8hNO631yFDTui7mp3mmt4K8qn3Y+1eA0H44Yi5vj/11DOJq7KfwoeQxl7JbME9Sqmw==",
+      "path": "javascriptengineswitcher.msie/2.4.9",
+      "hashPath": "javascriptengineswitcher.msie.2.4.9.nupkg.sha512"
+    },
+    "Jint/2.11.58": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-obRlPnuSmbjO7I2bfuKc1d+K1LB3xyg1Cnm2MT7PGUOHOntcdR96pDhsQnWBI5Dhxqr1Bj5/odpNi/B+AwVlPA==",
+      "path": "jint/2.11.58",
+      "hashPath": "jint.2.11.58.nupkg.sha512"
+    },
+    "JSPool/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5OUD5j6v4fj+NO4HhXEzAD4b/Ey3q7nNu0Q5r7N0wOEZxbtVzgA0NNX6MzDvoDMwBwVB8r5DZx95exWXOO0ZfA==",
+      "path": "jspool/3.0.1",
+      "hashPath": "jspool.3.0.1.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",
@@ -5112,6 +5417,13 @@
       "path": "microsoft.win32.registry/4.4.0",
       "hashPath": "microsoft.win32.registry.4.4.0.nupkg.sha512"
     },
+    "MsieJavaScriptEngine/2.2.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Z7cmiIASyxlBGFg4CEkUhPzsUOvnGKiHK1OzfWkUKlefafgwQLP1O5YbfWh/w1rV0T1pj1HdOZz2pGRaEpMd2Q==",
+      "path": "msiejavascriptengine/2.2.2",
+      "hashPath": "msiejavascriptengine.2.2.2.nupkg.sha512"
+    },
     "Newtonsoft.Json/10.0.1": {
       "type": "package",
       "serviceable": true,
@@ -5125,6 +5437,27 @@
       "sha512": "sha512-5PYT/IqQ+UK31AmZiSS102R6EsTo+LGTSI8bp7WAUqDKaF4wHXD8U9u4WxTI1vc64tYi++8p3dk3WWNqPFgldw==",
       "path": "newtonsoft.json.bson/1.0.1",
       "hashPath": "newtonsoft.json.bson.1.0.1.nupkg.sha512"
+    },
+    "React.AspNet/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iKxGrTcYi+ho+/cShb5xu0PXqsb0WC8DTkclaNS5xHp7o1UzfBn2vd7wY8YiWnLcH2C7gtBVx18mctFgS6Wd1A==",
+      "path": "react.aspnet/3.3.0",
+      "hashPath": "react.aspnet.3.3.0.nupkg.sha512"
+    },
+    "React.AspNet.Middleware/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7aA4eU/K9oKcxMytA/OT4/pkei83yjNnyYb4djjFly0sqrRG2/pCHWjkHMkCJH+a75q6MYYaXYkYV8OaFpeg2Q==",
+      "path": "react.aspnet.middleware/3.3.0",
+      "hashPath": "react.aspnet.middleware.3.3.0.nupkg.sha512"
+    },
+    "React.Core/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-30kUMVRUtHjQIrlGPNN15hVpifZd0mdxnfv7yXWvKeQS3ENlDHlgpthyaUIMvKWSLe9PhwG9ftBNHE+yPag1iQ==",
+      "path": "react.core/3.3.0",
+      "hashPath": "react.core.3.3.0.nupkg.sha512"
     },
     "Remotion.Linq/2.1.1": {
       "type": "package",
@@ -5462,6 +5795,13 @@
       "path": "system.diagnostics.tools/4.3.0",
       "hashPath": "system.diagnostics.tools.4.3.0.nupkg.sha512"
     },
+    "System.Diagnostics.TraceSource/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6WVCczFZKXwpWpzd/iJkYnsmWTSFFiU24Xx/YdHXBcu+nFI/ehTgeqdJQFbtRPzbrO3KtRNjvkhtj4t5/WwWsA==",
+      "path": "system.diagnostics.tracesource/4.0.0",
+      "hashPath": "system.diagnostics.tracesource.4.0.0.nupkg.sha512"
+    },
     "System.Diagnostics.Tracing/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -5538,6 +5878,13 @@
       "sha512": "sha512-6QOb2XFLch7bEc4lIcJH49nJN2HV+OC3fHDgsLVsBVBk3Y4hFAnOBGzJ2lUu7CyDDFo9IBWkSsnbkT6IBwwiMw==",
       "path": "system.io.filesystem.primitives/4.3.0",
       "hashPath": "system.io.filesystem.primitives.4.3.0.nupkg.sha512"
+    },
+    "System.IO.FileSystem.Watcher/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qM4Wr3La+RYb/03B0mZZjbA7tHsGzDffnuXP8Sl48HW2JwCjn3kfD5qdw0sqyNNowUipcJMi9/q6sMUrOIJ6UQ==",
+      "path": "system.io.filesystem.watcher/4.0.0",
+      "hashPath": "system.io.filesystem.watcher.4.0.0.nupkg.sha512"
     },
     "System.Linq/4.3.0": {
       "type": "package",
@@ -5882,6 +6229,13 @@
       "path": "system.threading/4.3.0",
       "hashPath": "system.threading.4.3.0.nupkg.sha512"
     },
+    "System.Threading.Overlapped/4.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-f7aLuLkBoCQM2kng7zqLFBXz9Gk48gDK8lk1ih9rH/1arJJzZK9gJwNvPDhL6Ps/l6rwOr8jw+4FCHL0KKWiEg==",
+      "path": "system.threading.overlapped/4.0.1",
+      "hashPath": "system.threading.overlapped.4.0.1.nupkg.sha512"
+    },
     "System.Threading.Tasks/4.3.0": {
       "type": "package",
       "serviceable": true,
@@ -5972,6 +6326,13 @@
       "sha512": "sha512-jw9oHHEIVW53mHY9PgrQa98Xo2IZ0ZjrpdOTmtvk+Rvg4tq7dydmxdNqUvJ5YwjDqhn75mBXWttWjiKhWP53LQ==",
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
+    },
+    "VroomJs/1.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UeothAnvWK9f2LqPO1Nj5YRkuoOHBqjUnBtLm6yogiE9DNhDMqO/ipsI3qGe7dbeORAcbbCxRrnaqdlTZaT59A==",
+      "path": "vroomjs/1.2.3",
+      "hashPath": "vroomjs.1.2.3.nupkg.sha512"
     },
     "WindowsAzure.Storage/8.1.4": {
       "type": "package",
