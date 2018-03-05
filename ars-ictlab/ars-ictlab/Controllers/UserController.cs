@@ -13,7 +13,7 @@ namespace arsictlab.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return View("~Views/Users/Index.cshtml");
         }
     }
 }
