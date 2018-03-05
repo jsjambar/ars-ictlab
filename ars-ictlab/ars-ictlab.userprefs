@@ -1,3 +1,23 @@
 ﻿<Properties StartupConfiguration="{EC04550F-BE7C-421D-89F2-4854A737BC26}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ars-ictlab/Models/Analytics.cs">
+    <Files>
+      <File FileName="ars-ictlab/Controllers/HomeController.cs" Line="24" Column="9" />
+      <File FileName="ars-ictlab/Views/Shared/_Layout.cshtml" Line="28" Column="26" />
+      <File FileName="ars-ictlab/Views/Home/Index.cshtml" Line="7" Column="33" />
+      <File FileName="ars-ictlab/Controllers/UserController.cs" Line="14" Column="37" />
+      <File FileName="ars-ictlab/Controllers/ClassroomController.cs" Line="1" Column="1" />
+      <File FileName="ars-ictlab/Controllers/AnalyticsController.cs" Line="13" Column="31" />
+      <File FileName="ars-ictlab/Models/ErrorViewModel.cs" Line="1" Column="1" />
+      <File FileName="ars-ictlab/Models/Classroom.cs" Line="1" Column="1" />
+      <File FileName="ars-ictlab/Models/User.cs" Line="1" Column="1" />
+      <File FileName="ars-ictlab/Models/Analytics.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.ars-ictlab PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>

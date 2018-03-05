@@ -1,0 +1,11 @@
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/bin/Debug/netcoreapp2.0/ars-ictlab.deps.json
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/bin/Debug/netcoreapp2.0/ars-ictlab.runtimeconfig.json
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/bin/Debug/netcoreapp2.0/ars-ictlab.runtimeconfig.dev.json
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/bin/Debug/netcoreapp2.0/ars-ictlab.dll
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/bin/Debug/netcoreapp2.0/ars-ictlab.pdb
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/obj/Debug/netcoreapp2.0/ars-ictlab.csprojResolveAssemblyReference.cache
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/obj/Debug/netcoreapp2.0/ars-ictlab.csproj.CoreCompileInputs.cache
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/obj/Debug/netcoreapp2.0/ars-ictlab.AssemblyInfoInputs.cache
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/obj/Debug/netcoreapp2.0/ars-ictlab.AssemblyInfo.cs
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/obj/Debug/netcoreapp2.0/ars-ictlab.dll
+/Users/jase/Github/ars-ictlab/ars-ictlab/ars-ictlab/obj/Debug/netcoreapp2.0/ars-ictlab.pdb
