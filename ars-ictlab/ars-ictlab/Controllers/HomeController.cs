@@ -13,7 +13,7 @@ namespace arsictlab.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            ViewData["email"] = "azn.jase@gmail.com";
+            ViewData["email"] = "0907663@hr.nl";
             return View();
         }
     }

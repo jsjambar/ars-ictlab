@@ -31,7 +31,6 @@
 
   render() {
     if(this.state.isLoaded){
-        console.log(this.state.temperature.C);
         if (this.state.error == 0) {
           return <div>Classroom H4312 is: {this.state.temperature.C} celcius / {this.state.temperature.F} fahrenheit</div>;
         } else {

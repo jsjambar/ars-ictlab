@@ -7,8 +7,8 @@
         <h1>The current temperature is: </h1>
         <div id="react-temperature"></div>
         <h2>Your schedule</h2>
-        <iframe data-mail="ViewData['username']" src="https://calendar.google.com/calendar/embed?src=azn.jase%40gmail.com&ctz=Europe%2FAmsterdam" style="border: 0" width="1200px" height="800" frameborder="0" scrolling="no"></iframe>
-    </div>
-</div> 
+        <iframe src='https://calendar.google.com/calendar/embed?src=@(ViewData["email"])&ctz=Europe%2FAmsterdam' style="border: 0" width="1200px" height="800" frameborder="0" scrolling="no"></iframe>
+    </div> 
+</div>
 
 <script src="@Url.Content("~/js/temperature.jsx")"></script>
