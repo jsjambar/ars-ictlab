@@ -31,10 +31,11 @@
 
   render() {
     if(this.state.isLoaded){
+        console.log(this.state.temperature.C);
         if (this.state.error == 0) {
-          return <div>Temperatuur in lokaal H4312 is: {this.state.temperature.C} celcius / {this.state.temperature.F} fahrenheit</div>;
+          return <div>Classroom H4312 is: {this.state.temperature.C} celcius / {this.state.temperature.F} fahrenheit</div>;
         } else {
-          return <div>this.state.error</div>;
+          return <div>The temperature for this room cannot be loaded.</div>;
         }
     }
 
