@@ -32,18 +32,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
             <h1>User page.</h1>
             <br />
             <p><button onClick={() => this.getUsers()}>Load users</button></p>
-            {
-                JSON.stringify(this.state)
-                // this.state.users.count() != 0 && this.state.users != undefined
-                // ? this.state.users.map(user => {
-                //     {
-                //         user != undefined
-                //         ? <p>user: {user.Id}</p>
-                //         : <p>user is undefined</p>
-                //     }
-                // })
-                // : "Loading..."
-            }
+            {JSON.stringify(this.state.users)}
         </div>
     }
 

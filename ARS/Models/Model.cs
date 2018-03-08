@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace ARS
+namespace ARS.Models
 {
-    public class databaseContext : DbContext
+    public class DatabaseContext : DbContext
     {
-        public databaseContext(DbContextOptions<databaseContext> options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         { }
 
@@ -14,7 +14,7 @@ namespace ARS
 
     public class User
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
     }

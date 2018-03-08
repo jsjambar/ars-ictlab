@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ARS.Models;
 
 namespace ARS.Controllers
 {
@@ -10,9 +11,9 @@ namespace ARS.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly databaseContext context;
+        private readonly DatabaseContext context;
 
-        public UserController(databaseContext context){
+        public UserController(DatabaseContext context){
             this.context = context;
         }
 
@@ -25,14 +26,6 @@ namespace ARS.Controllers
         [HttpGet("all")]
         public IEnumerable<User> Get_users()
         {
-            // User user1 = new User();
-            // user1.Id = 1;
-            // user1.Username = "Jef";
-            // user1.Password = "Supersecret";
-
-            // User[] users = new User[] { user1 };
-            // // User[] users = new User[] { };
-
             return context.Users; 
         }
 

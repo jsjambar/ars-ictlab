@@ -2,22 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-// using New_Reservation_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data;
+using ARS.Models;
 
 namespace ARS
 {
     public class Startup
     {
-        public void AddDbContext(){
-
-        }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,8 +27,14 @@ namespace ARS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=EFGetStarted.AspNetCore.NewDb;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<databaseContext>(options => options.UseSqlServer(connection));
+            // var connection = configuration.GetConnectionString("RConnection");
+            var connection = @"User ID=postgres;Password=geheim;Host=localhost;Port=5432;Database=Reservation_System;Pooling=true;";
+            // services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
+
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseNpgsql(connection);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
