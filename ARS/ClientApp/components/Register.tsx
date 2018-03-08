@@ -17,7 +17,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
 
     setUser(){
         const user:User = {
-            Id:2,
+            Id:null,
             Username:this.state.username,
             Password:this.state.password
         }

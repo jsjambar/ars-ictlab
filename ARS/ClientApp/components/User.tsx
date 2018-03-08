@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import * as api from './Api'
 
 export type User = {
-    Id:number,
+    Id:number|null,
     Username:string,
     Password:string
 }
