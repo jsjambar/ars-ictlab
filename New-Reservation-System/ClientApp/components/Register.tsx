@@ -17,14 +17,14 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
 
     setUser(){
         const user:User = {
-            Id:1,
+            UserId:1,
             Username:this.state.username,
             Password:this.state.password
         }
 
         api.set_user(user)
-        .then(r => console.log(r))
-        .catch(e => console.log(e))
+        .then(r => console.log("success, " + r))    
+        .catch(e => console.log("failed, " + e))
     }
 
     public render() {
@@ -41,6 +41,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             />
             <br /><br />
             <button className="btn btn-primary" disabled={this.state.username == "" || this.state.password == ""} onClick={() => this.setUser()}>Register</button>
+            <br />
             <p>{JSON.stringify(this.state)}</p>
         </div>
     }

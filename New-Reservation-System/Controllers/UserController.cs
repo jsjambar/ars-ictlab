@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using New_Reservation_System.Models;
 
 namespace New_Reservation_System.Controllers
 {
@@ -10,14 +13,14 @@ namespace New_Reservation_System.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly databaseContext context;
+        private readonly DatabaseContext context;
 
-        public UserController(databaseContext context){
+        public UserController(DatabaseContext context){
             this.context = context;
         }
 
-        [HttpGet("[action]")]
-        public string get_test()
+        [HttpGet("test")]
+        public string Api_test()
         {
             return "test success";
         }
@@ -26,21 +29,20 @@ namespace New_Reservation_System.Controllers
         public IEnumerable<User> Get_users()
         {
             // User user1 = new User();
-            // user1.Id = 1;
+            // user1.UserId = 1;
             // user1.Username = "Jef";
             // user1.Password = "Supersecret";
 
-            // User[] users = new User[] { user1 };
-            // // User[] users = new User[] { };
+            // return new User[] { user1 };
 
             return context.Users; 
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         public string Set_user([FromBody] User user){
             context.Users.Add(user);
             context.SaveChanges();
-            return "User: " + user.Username + "registered";
+            return "User registered";
         }
     }
 }
