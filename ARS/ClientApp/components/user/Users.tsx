@@ -32,7 +32,6 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
             {
                 this.state.users != "Loading..." ?
                 <div>
-                    {JSON.stringify(this.state.users)}
                     <table className="table">
                         <thead>
                             <tr>

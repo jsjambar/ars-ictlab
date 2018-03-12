@@ -27,14 +27,14 @@ namespace ARS.Controllers
         [HttpGet("fill")]
         public JsonResponse Fill_user(){
             User u1 = new User();
-            u1.Username = "0908937";
-            u1.FirstName = "Franklin";
+            u1.Username = "0908936";
+            u1.FirstName = "Jefaro";
             u1.LastName = "Constancia";
             u1.Password = "Geheim";
             u1.RoleId = 1;
             context.Users.Add(u1);
             context.SaveChanges();
-            return new JsonSuccess("Successfully added user");  
+            return new JsonSuccess("Successfully added user: " + u1.FirstName + " " + u1.LastName);  
         }
 
         [HttpPost("register")]

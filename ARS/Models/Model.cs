@@ -40,6 +40,7 @@ namespace ARS.Models
         public DateTime EndTime { get; set; }
         public bool IsDisabled { get; set; } 
         public int LocationId { get; set; }
+
     }
 
     public class Location

@@ -1,10 +1,10 @@
 export type User = {
-    UserId:number|null,
-    Username:string,
-    Firstname:string,
-    Lastname:string,
-    Password:string,
-    RoleId:number,
+    userId:number|null,
+    username:string,
+    firstName:string,
+    lastName:string,
+    password:string,
+    roleId:number,
 }
 
 export type Role = {
