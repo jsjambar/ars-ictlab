@@ -11,7 +11,7 @@ using System;
 namespace ARS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180312085825_Database")]
+    [Migration("20180312105619_Database")]
     partial class Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,129 +23,129 @@ namespace ARS.Migrations
 
             modelBuilder.Entity("ARS.Models.Classroom", b =>
                 {
-                    b.Property<long>("ClassroomId")
+                    b.Property<long>("classroomid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("description");
 
-                    b.Property<DateTime>("EndTime");
+                    b.Property<DateTime>("endtime");
 
-                    b.Property<bool>("IsDisabled");
+                    b.Property<bool>("isdisabled");
 
-                    b.Property<int>("LocationId");
+                    b.Property<int>("locationid");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("name");
 
-                    b.Property<DateTime>("StartTime");
+                    b.Property<DateTime>("starttime");
 
-                    b.HasKey("ClassroomId");
+                    b.HasKey("classroomid");
 
                     b.ToTable("Classrooms");
                 });
 
             modelBuilder.Entity("ARS.Models.Location", b =>
                 {
-                    b.Property<long>("LocationId")
+                    b.Property<long>("locationid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("description");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("name");
 
-                    b.HasKey("LocationId");
+                    b.HasKey("locationid");
 
                     b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("ARS.Models.Problem", b =>
                 {
-                    b.Property<long>("ProblemId")
+                    b.Property<long>("problemid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("name");
 
-                    b.HasKey("ProblemId");
+                    b.HasKey("problemid");
 
                     b.ToTable("Problems");
                 });
 
             modelBuilder.Entity("ARS.Models.Reservation", b =>
                 {
-                    b.Property<long>("ReservationId")
+                    b.Property<long>("reservationid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ClassroomId");
+                    b.Property<int>("classroomid");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("date");
 
-                    b.Property<DateTime>("EndTime");
+                    b.Property<DateTime>("endtime");
 
-                    b.Property<DateTime>("StartTime");
+                    b.Property<DateTime>("starttime");
 
-                    b.Property<int>("UserId");
+                    b.Property<int>("userid");
 
-                    b.Property<long?>("UserId1");
+                    b.Property<long?>("userid1");
 
-                    b.HasKey("ReservationId");
+                    b.HasKey("reservationid");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("userid1");
 
                     b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("ARS.Models.Role", b =>
                 {
-                    b.Property<long>("RoleId")
+                    b.Property<long>("roleid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("name");
 
-                    b.HasKey("RoleId");
+                    b.HasKey("roleid");
 
                     b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("ARS.Models.Ticket", b =>
                 {
-                    b.Property<long>("TicketId")
+                    b.Property<long>("ticketid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("date");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("description");
 
-                    b.Property<string>("Image");
+                    b.Property<string>("image");
 
-                    b.HasKey("TicketId");
+                    b.HasKey("ticketid");
 
                     b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("ARS.Models.User", b =>
                 {
-                    b.Property<long>("UserId")
+                    b.Property<long>("userid")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("firstname");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("lastname");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("password");
 
-                    b.Property<int>("RoleId");
+                    b.Property<int>("roleid");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("username");
 
-                    b.HasKey("UserId");
+                    b.HasKey("userid");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ARS.Models.Reservation", b =>
                 {
-                    b.HasOne("ARS.Models.User", "User")
+                    b.HasOne("ARS.Models.User", "user")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("userid1");
                 });
 #pragma warning restore 612, 618
         }

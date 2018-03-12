@@ -13,120 +13,120 @@ namespace ARS.Migrations
                 name: "Classrooms",
                 columns: table => new
                 {
-                    ClassroomId = table.Column<long>(nullable: false)
+                    classroomid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Description = table.Column<string>(nullable: true),
-                    EndTime = table.Column<DateTime>(nullable: false),
-                    IsDisabled = table.Column<bool>(nullable: false),
-                    LocationId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    StartTime = table.Column<DateTime>(nullable: false)
+                    description = table.Column<string>(nullable: true),
+                    endtime = table.Column<DateTime>(nullable: false),
+                    isdisabled = table.Column<bool>(nullable: false),
+                    locationid = table.Column<int>(nullable: false),
+                    name = table.Column<string>(nullable: true),
+                    starttime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classrooms", x => x.ClassroomId);
+                    table.PrimaryKey("PK_Classrooms", x => x.classroomid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
-                    LocationId = table.Column<long>(nullable: false)
+                    locationid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    description = table.Column<string>(nullable: true),
+                    name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.LocationId);
+                    table.PrimaryKey("PK_Locations", x => x.locationid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Problems",
                 columns: table => new
                 {
-                    ProblemId = table.Column<long>(nullable: false)
+                    problemid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true)
+                    name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Problems", x => x.ProblemId);
+                    table.PrimaryKey("PK_Problems", x => x.problemid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
-                    RoleId = table.Column<long>(nullable: false)
+                    roleid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true)
+                    name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                    table.PrimaryKey("PK_Roles", x => x.roleid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
-                    TicketId = table.Column<long>(nullable: false)
+                    ticketid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true)
+                    date = table.Column<DateTime>(nullable: false),
+                    description = table.Column<string>(nullable: true),
+                    image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.TicketId);
+                    table.PrimaryKey("PK_Tickets", x => x.ticketid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<long>(nullable: false)
+                    userid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: false),
-                    Username = table.Column<string>(nullable: true)
+                    firstname = table.Column<string>(nullable: true),
+                    lastname = table.Column<string>(nullable: true),
+                    password = table.Column<string>(nullable: true),
+                    roleid = table.Column<int>(nullable: false),
+                    username = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.userid);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
-                    ReservationId = table.Column<long>(nullable: false)
+                    reservationid = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    ClassroomId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    EndTime = table.Column<DateTime>(nullable: false),
-                    StartTime = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<long>(nullable: true)
+                    classroomid = table.Column<int>(nullable: false),
+                    date = table.Column<DateTime>(nullable: false),
+                    endtime = table.Column<DateTime>(nullable: false),
+                    starttime = table.Column<DateTime>(nullable: false),
+                    userid = table.Column<int>(nullable: false),
+                    userid1 = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.ReservationId);
+                    table.PrimaryKey("PK_Reservations", x => x.reservationid);
                     table.ForeignKey(
-                        name: "FK_Reservations_Users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Reservations_Users_userid1",
+                        column: x => x.userid1,
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "userid",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_UserId1",
+                name: "IX_Reservations_userid1",
                 table: "Reservations",
-                column: "UserId1");
+                column: "userid1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

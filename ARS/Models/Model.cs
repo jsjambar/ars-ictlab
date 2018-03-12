@@ -23,63 +23,63 @@ namespace ARS.Models
 
     public class User
     {
-        public long UserId { get; set; }
-        public string Username { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Password { get; set; }
-        public int RoleId { get; set; }
+        public long userid { get; set; }
+        public string username { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string password { get; set; }
+        public int roleid { get; set; }
     }
 
     public class Classroom
     {
-        public long ClassroomId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public bool IsDisabled { get; set; } 
-        public int LocationId { get; set; }
+        public long classroomid { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public DateTime starttime { get; set; }
+        public DateTime endtime { get; set; }
+        public bool isdisabled { get; set; } 
+        public int locationid { get; set; }
 
     }
 
     public class Location
     {
-        public long LocationId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public long locationid { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
     }
 
     public class Role
     {
-        public long RoleId { get; set; }
-        public string Name { get; set; }
+        public long roleid { get; set; }
+        public string name { get; set; }
     }
 
     public class Reservation
     {
-        public long ReservationId { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }  
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public int ClassroomId { get; set; }
+        public long reservationid { get; set; }
+        public DateTime date { get; set; }
+        public DateTime starttime { get; set; }
+        public DateTime endtime { get; set; }  
+        public int userid { get; set; }
+        public User user { get; set; }
+        public int classroomid { get; set; }
 
     }
 
     public class Problem
     {
-        public long ProblemId { get; set; }
-        public string Name { get; set; }
+        public long problemid { get; set; }
+        public string name { get; set; }
     }
 
     public class Ticket
     {
-        public long TicketId { get; set; }
-        public DateTime Date { get; set; }
-        public string Description { get; set; }
-        public string Image { get; set;}
+        public long ticketid { get; set; }
+        public DateTime date { get; set; }
+        public string description { get; set; }
+        public string image { get; set;}
     }
 
 }

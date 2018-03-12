@@ -27,21 +27,21 @@ namespace ARS.Controllers
         [HttpGet("fill")]
         public JsonResponse Fill_user(){
             User u1 = new User();
-            u1.Username = "0908936";
-            u1.FirstName = "Jefaro";
-            u1.LastName = "Constancia";
-            u1.Password = "Geheim";
-            u1.RoleId = 1;
+            u1.username = "0908936";
+            u1.firstname = "Jefaro";
+            u1.lastname = "Constancia";
+            u1.password = "Geheim";
+            u1.roleid = 1;
             context.Users.Add(u1);
             context.SaveChanges();
-            return new JsonSuccess("Successfully added user: " + u1.FirstName + " " + u1.LastName);  
+            return new JsonSuccess("Successfully added user: " + u1.firstname + " " + u1.lastname);  
         }
 
-        [HttpPost("register")]
+        [HttpPost("add")]
         public string Set_user([FromBody] User user){
-            context.Users.Add(user);
+            context.Users.Add(user);    
             context.SaveChanges();
-            return "User: " + user.FirstName + "registered";
+            return "User: " + user.firstname + "registered";
         }
     }
 }
