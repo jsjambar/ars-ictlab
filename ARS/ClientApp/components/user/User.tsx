@@ -13,10 +13,10 @@ export class UserComponent extends React.Component<UserComponentProps, {}> {
 
     public render() {
         return <tr>
-                <th scope="row">{this.props.user.UserId}</th>
-                <td>{this.props.user.Firstname}</td>
+                <th scope="row">{this.props.user.userId}</th>
+                {/* <td>{this.props.user.Firstname}</td>
                 <td>{this.props.user.Lastname}</td>
-                <td>{this.props.user.Username}</td>
+                <td>{this.props.user.Username}</td> */}
             </tr>
     }
 

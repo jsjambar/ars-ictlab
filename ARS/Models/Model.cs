@@ -29,7 +29,6 @@ namespace ARS.Models
         public string LastName { get; set; }
         public string Password { get; set; }
         public int RoleId { get; set; }
-        public Role Role { get; set; }
     }
 
     public class Classroom
@@ -41,7 +40,6 @@ namespace ARS.Models
         public DateTime EndTime { get; set; }
         public bool IsDisabled { get; set; } 
         public int LocationId { get; set; }
-        public Location Location { get; set; }
     }
 
     public class Location
@@ -66,7 +64,6 @@ namespace ARS.Models
         public int UserId { get; set; }
         public User User { get; set; }
         public int ClassroomId { get; set; }
-        public Classroom Classroom { get; set; }
 
     }
 

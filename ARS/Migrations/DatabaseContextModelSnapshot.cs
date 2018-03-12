@@ -33,15 +33,11 @@ namespace ARS.Migrations
 
                     b.Property<int>("LocationId");
 
-                    b.Property<long?>("LocationId1");
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("StartTime");
 
                     b.HasKey("ClassroomId");
-
-                    b.HasIndex("LocationId1");
 
                     b.ToTable("Classrooms");
                 });
@@ -79,8 +75,6 @@ namespace ARS.Migrations
 
                     b.Property<int>("ClassroomId");
 
-                    b.Property<long?>("ClassroomId1");
-
                     b.Property<DateTime>("Date");
 
                     b.Property<DateTime>("EndTime");
@@ -92,8 +86,6 @@ namespace ARS.Migrations
                     b.Property<long?>("UserId1");
 
                     b.HasKey("ReservationId");
-
-                    b.HasIndex("ClassroomId1");
 
                     b.HasIndex("UserId1");
 
@@ -141,40 +133,18 @@ namespace ARS.Migrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<long?>("RoleId1");
-
                     b.Property<string>("Username");
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("RoleId1");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ARS.Models.Classroom", b =>
-                {
-                    b.HasOne("ARS.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId1");
                 });
 
             modelBuilder.Entity("ARS.Models.Reservation", b =>
                 {
-                    b.HasOne("ARS.Models.Classroom", "Classroom")
-                        .WithMany()
-                        .HasForeignKey("ClassroomId1");
-
                     b.HasOne("ARS.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
-                });
-
-            modelBuilder.Entity("ARS.Models.User", b =>
-                {
-                    b.HasOne("ARS.Models.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId1");
                 });
 #pragma warning restore 612, 618
         }

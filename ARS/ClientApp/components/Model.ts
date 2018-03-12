@@ -5,7 +5,6 @@ export type User = {
     Lastname:string,
     Password:string,
     RoleId:number,
-    Role:Role
 }
 
 export type Role = {
@@ -21,7 +20,6 @@ export type Classroom = {
     EndTime:Date,
     IsDisabled:boolean,
     LocationId:number,
-    Location:Location
 }
 
 export type Location = {
@@ -38,7 +36,6 @@ export type Reservation = {
     UserId:number,
     User:User,
     ClassroomID:number,
-    Classroom:Classroom
 }
 
 export type Problem = {

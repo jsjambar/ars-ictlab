@@ -41,7 +41,7 @@ namespace ARS.Controllers
         public string Set_user([FromBody] User user){
             context.Users.Add(user);
             context.SaveChanges();
-            return "User: " + user. + "registered";
+            return "User: " + user.FirstName + "registered";
         }
     }
 }

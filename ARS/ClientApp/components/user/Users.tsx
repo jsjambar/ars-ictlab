@@ -33,7 +33,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                 this.state.users != "Loading..." ?
                 <div>
                     {JSON.stringify(this.state.users)}
-                    {/* <table className="table">
+                    <table className="table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -45,7 +45,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                         <tbody>
                             {this.state.users.map((u,k) => <UserComponent key={k} user={u} />)}
                         </tbody>
-                    </table> */}
+                    </table>
                 </div>
                 :"Loading..."
             }
