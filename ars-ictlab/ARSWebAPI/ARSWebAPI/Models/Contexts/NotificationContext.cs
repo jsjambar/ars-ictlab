@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ARSWebAPI.Models.Contexts
 {
-    public class RoleContext: DbContext
+    public class NotificationContext: DbContext
     {
-        public RoleContext(DbContextOptions<RoleContext> options) : base(options)
+        public NotificationContext(DbContextOptions<NotificationContext> options) : base(options)
         {
         }
 
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

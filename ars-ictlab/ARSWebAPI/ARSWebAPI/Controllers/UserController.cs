@@ -42,7 +42,7 @@ namespace ARSWebAPI.Controllers
             this.Context.Users.Add(user);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetUser", new { id = user.Id }, user);
+            return CreatedAtRoute("GetUser", new { id = user.UserId }, user);
         }
 
         [HttpGet]
@@ -54,7 +54,7 @@ namespace ARSWebAPI.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult GetById(long id)
         {
-            User item = this.Context.Users.FirstOrDefault(c => c.Id == id);
+            User item = this.Context.Users.FirstOrDefault(c => c.UserId == id);
 
             if (item == null)
             {
@@ -67,12 +67,12 @@ namespace ARSWebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] User user)
         {
-            if (user == null || user.Id != id)
+            if (user == null || user.UserId != id)
             {
                 return BadRequest();
             }
 
-            User updatedUser = this.Context.Users.FirstOrDefault(t => t.Id == id);
+            User updatedUser = this.Context.Users.FirstOrDefault(t => t.UserId == id);
 
             if (updatedUser == null)
             {
@@ -91,7 +91,7 @@ namespace ARSWebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            User user = this.Context.Users.FirstOrDefault(c => c.Id == id);
+            User user = this.Context.Users.FirstOrDefault(c => c.UserId == id);
 
             if (user == null)
             {

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ARSWebAPI.Models.Contexts
 {
-    public class RoleContext: DbContext
+    public class ReservationContext: DbContext
     {
-        public RoleContext(DbContextOptions<RoleContext> options) : base(options)
+        public ReservationContext(DbContextOptions<ReservationContext> options) : base(options)
         {
         }
 
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Reservation> Reservations{ get; set; }
     }
 }

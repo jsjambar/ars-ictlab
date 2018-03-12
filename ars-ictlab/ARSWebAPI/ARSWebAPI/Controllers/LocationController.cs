@@ -42,7 +42,7 @@ namespace ARSWebAPI.Controllers
             this.Context.Locations.Add(location);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetLocation", new { id = location.Id }, location);
+            return CreatedAtRoute("GetLocation", new { id = location.LocationId }, location);
         }
 
         [HttpGet]
@@ -54,7 +54,7 @@ namespace ARSWebAPI.Controllers
         [HttpGet("{id}", Name = "GetLocation")]
         public IActionResult GetById(long id)
         {
-            Location item = this.Context.Locations.FirstOrDefault(c => c.Id == id);
+            Location item = this.Context.Locations.FirstOrDefault(c => c.LocationId == id);
 
             if (item == null)
             {
@@ -67,12 +67,12 @@ namespace ARSWebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] Location location)
         {
-            if (location == null || location.Id != id)
+            if (location == null || location.LocationId != id)
             {
                 return BadRequest();
             }
 
-            Location updatedLocation = this.Context.Locations.FirstOrDefault(t => t.Id == id);
+            Location updatedLocation = this.Context.Locations.FirstOrDefault(t => t.LocationId == id);
 
             if (updatedLocation == null)
             {
@@ -91,7 +91,7 @@ namespace ARSWebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            Location location = this.Context.Locations.FirstOrDefault(c => c.Id == id);
+            Location location = this.Context.Locations.FirstOrDefault(c => c.LocationId  == id);
 
             if (location == null)
             {

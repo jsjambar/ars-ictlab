@@ -7,7 +7,7 @@ namespace ARSWebAPI.Models
 {
     public class Location
     {
-        public long Id { get; set; }
+        public long LocationId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }

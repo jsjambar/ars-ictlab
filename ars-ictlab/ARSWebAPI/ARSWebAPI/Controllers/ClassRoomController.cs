@@ -22,7 +22,7 @@ namespace ARSWebAPI.Controllers
             if(this.Context.ClassRooms.Count() == 0)
             {
                 this.Context.ClassRooms.Add(new ClassRoom {
-                    Code = "WD1016"
+                    Name = "WD1016"
                 });
 
                 this.Context.SaveChanges();
@@ -40,7 +40,7 @@ namespace ARSWebAPI.Controllers
             this.Context.ClassRooms.Add(classRoom);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetClassroom", new { id = classRoom.Id }, classRoom);
+            return CreatedAtRoute("GetClassroom", new { id = classRoom.ClassroomId}, classRoom);
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace ARSWebAPI.Controllers
         [HttpGet("{id}", Name = "GetClassroom")]
         public IActionResult GetById(long id)
         {
-            ClassRoom item = this.Context.ClassRooms.FirstOrDefault(c => c.Id == id);
+            ClassRoom item = this.Context.ClassRooms.FirstOrDefault(c => c.ClassroomId == id);
 
             if(item == null)
             {
@@ -65,19 +65,19 @@ namespace ARSWebAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] ClassRoom classRoom)
         {
-            if (classRoom == null || classRoom.Id != id)
+            if (classRoom == null || classRoom.ClassroomId != id)
             {
             return BadRequest();
             }
 
-            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(t => t.Id == id);
+            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(t => t.ClassroomId == id);
 
             if (classroom == null)
             {
                 return NotFound();
             }
 
-            classroom.Code = classRoom.Code;
+            classroom.Name = classRoom.Name;
             classroom.Description = classRoom.Description;
 
             this.Context.ClassRooms.Update(classroom);
@@ -89,7 +89,7 @@ namespace ARSWebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(c => c.Id == id);
+            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(c => c.ClassroomId == id);
 
             if(classroom == null)
             {

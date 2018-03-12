@@ -8,7 +8,7 @@ namespace ARSWebAPI.Models.Contexts
 {
     public class LocationContext : DbContext
     {
-        public LocationContext(DbContextOptions<UserContext> options) : base(options)
+        public LocationContext(DbContextOptions<ReservationContext> options) : base(options)
         {
         }
 
