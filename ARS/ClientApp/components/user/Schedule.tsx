@@ -22,8 +22,8 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
         api.getUser(1)
         .then(user => this.setState({
             user: user, 
-            iframe:  "https://calendar.google.com/calendar/embed?src=" + user.username + "&ctz=Europe%2FAmsterdam"
-        }))
+            iframe:  "https://calendar.google.com/calendar/embed?src=" + user.Username + "&ctz=Europe%2FAmsterdam"
+        }, () => console.log("user: " + JSON.stringify(user))))
         .catch(e => console.log("getUser, " + e))
     }
 
@@ -34,7 +34,7 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
                 {
                     this.state.user != 0 && this.state.iframe != "" ?
                     <div>
-                        {console.log(this.state.user.username)}
+                        {console.log(this.state.user.Username)}
                         <iframe src={`${this.state.iframe}`} width='1200px' height='800' scrolling='no'></iframe>
                     </div>
                     :

@@ -16,7 +16,7 @@ export class UserComponent extends React.Component<UserComponentProps, {}> {
                 <th scope="row">{this.props.user.userId}    </th>
                 <td>{this.props.user.firstName}</td>
                 <td>{this.props.user.lastName}</td>
-                <td>{this.props.user.username}</td>
+                <td>{this.props.user.Username}</td>
             </tr>
     }
 
