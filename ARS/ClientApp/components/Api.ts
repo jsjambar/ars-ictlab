@@ -23,7 +23,7 @@ export async function set_users(user:User) {
   return "Registered"
 }
 
-export async function set_reservation(reservation: Reservation) {
+export async function set_reservation(reservation: Object) {
     let res = await fetch(`/api/Reservation/add`,
     {
         method: 'post',
