@@ -5,10 +5,12 @@ import { Home } from './components/Home';
 import { Classrooms } from './components//classroom/Classrooms';
 import { Users } from './components/user/Users';
 import { Schedule } from './components/user/Schedule';
-import { Reservations } from './components/Reservation/Reservations'
+import { Reservations } from './components/Reservation/Reservations';
+import { Login } from './components/user/Login';
 
 export const routes = <Layout>
-    <Route exact path='/' component={ Schedule } />
+    <Route exact path='/' component={ Login } />
+    <Route path='/home' component={ Schedule } />
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
     <Route path='/reservation' component={ Reservations } />
