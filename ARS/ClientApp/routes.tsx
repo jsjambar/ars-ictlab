@@ -5,12 +5,12 @@ import { Home } from './components/Home';
 import { Classrooms } from './components//classroom/Classrooms';
 import { Users } from './components/user/Users';
 import { Schedule } from './components/user/Schedule';
-// import { Reservation } from './components/Reservation'
+import { Reservations } from './components/Reservation/Reservations'
 
 export const routes = <Layout>
     <Route exact path='/' component={ Schedule } />
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
-    {/* <Route path='/reservation' component={ Reservation } /> */}
+    <Route path='/reservation' component={ Reservations } />
 </Layout>;
 

@@ -35,6 +35,19 @@ export async function set_reservation(reservation: Object) {
     return "Reservation made"
 }
 
+export async function get_reservations(): Promise<Immutable.List<Reservation>>  {
+    let res = await fetch(`/api/Reservations`,
+        {
+            method: 'get',
+            credentials: 'include',
+            headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Immutable.List<Reservation>
+}
+
+
 export async function getUser(userId:Number) : Promise<User> {
   let res = await fetch(`/api/User/getUser`, 
       { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
