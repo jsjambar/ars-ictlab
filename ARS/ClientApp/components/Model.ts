@@ -42,3 +42,15 @@ export type Problem = {
     ProblemId:number|null,
     Name:string
 }
+
+export type Ticket = {
+    TicketId: number|null,
+    Student: User,
+    StudentNumber: number,
+    Location: string,
+    Room: string,
+    Date: Date,
+    Time: Date,
+    TypeProblem: Problem
+
+}

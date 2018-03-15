@@ -1,6 +1,6 @@
 import * as Immutable from "immutable"
 
-import { User, Role, Classroom, Location, Reservation,Problem } from './Model'
+import { User, Role, Classroom, Location, Reservation,Problem, Ticket } from './Model'
 import { UserComponent } from "./user/User";
 
 export async function get_users() : Promise<Immutable.List<User>> {
@@ -29,4 +29,13 @@ export async function getUser(userId:Number) : Promise<User> {
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
     return json as User;
+}
+
+
+export async function getTickets() : Promise<Immutable.List<Ticket>>{
+  let res = await fetch(`/api/Ticket/all`, 
+    { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+  if (!res.ok) throw Error(res.statusText)
+  let json = await res.json()
+  return json as Immutable.List<Ticket>
 }
