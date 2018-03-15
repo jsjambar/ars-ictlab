@@ -1,6 +1,6 @@
 export type User = {
     userId:number|null,
-    username:string,
+    Username:string,
     firstName:string,
     lastName:string,
     password:string,

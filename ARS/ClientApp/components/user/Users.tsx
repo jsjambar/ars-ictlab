@@ -26,7 +26,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
     public render() {
         return <div>
             <div className="page-header">
-                <h1 >Users</h1>
+                <h1>Users</h1>
             </div>
             {console.log(this.state.users)}
             {

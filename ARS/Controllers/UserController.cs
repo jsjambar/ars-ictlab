@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ARS.Models;
 using ARS.Json;
+using Newtonsoft.Json;
 
 namespace ARS.Controllers
 {
@@ -22,6 +23,18 @@ namespace ARS.Controllers
         public IEnumerable<User> Get_users()
         {
             return context.Users; 
+        }
+
+        [HttpGet("getUser")]
+        public String GetUser(int id){
+            User user = new User();
+            user.Username = "0907663";
+            user.FirstName = "Jason";
+            user.LastName = "Sjambar";
+            user.Password = "fakehash";
+            user.RoleId = 2;
+            
+            return JsonConvert.SerializeObject(user);
         }
 
         [HttpGet("fill")]
