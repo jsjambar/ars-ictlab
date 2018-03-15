@@ -20,3 +20,15 @@ export async function set_users(user:User) {
   if (!res.ok) throw Error(res.statusText)
   return "Registered"
 }
+
+export async function set_reservation(reservation: Reservation) {
+    let res = await fetch(`/api/Reservation/add`,
+    {
+        method: 'post',
+        body: JSON.stringify(reservation),
+        credentials: 'include',
+        headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) throw Error(res.statusText)
+    return "Reservation made"
+}

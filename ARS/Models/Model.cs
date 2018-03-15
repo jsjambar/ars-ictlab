@@ -65,7 +65,7 @@ namespace ARS.Models
         public int UserId { get; set; }
         public User User { get; set; }
         public int ClassroomId { get; set; }
-
+        public int LocationId { get; set; }
     }
 
     public class Problem
