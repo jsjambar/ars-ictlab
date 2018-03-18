@@ -1,60 +1,121 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ARS.Models.Contexts;
 using ARS.Models;
-using ARS.Json;
-using Newtonsoft.Json;
+using ARS.Helpers;
 
 namespace ARS.Controllers
 {
-
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/User")]
     public class UserController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly UserContext Context;
 
-        public UserController(DatabaseContext context){
-            this.context = context;
+        public UserController(UserContext context)
+        {
+            this.Context = context;
+
+            if (this.Context.Users.Count() == 0)
+            {
+                this.Context.Users.Add(new User
+                {
+                    FirstName = "Mark",
+                    LastName = "Thal"
+                });
+
+                this.Context.SaveChanges();
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] User user)
+        {
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            user.Password = Helper.HashPassword(user.Password);
+
+            this.Context.Users.Add(user);
+            this.Context.SaveChanges();
+
+            return CreatedAtRoute("GetUser", new { id = user.UserId }, user);
+        }
+
+        [HttpPost("login")]
+        public JsonResult Login([FromBody] string content)
+        {
+            string username = HttpContext.Request.Query["Username"];
+            string password = HttpContext.Request.Query["Password"];
+            return Json(this.Context.Users.Where(u => u.Username == username && u.Password == Helper.HashPassword(password)));
         }
 
         [HttpGet("all")]
-        public IEnumerable<User> Get_users()
+        public IEnumerable<User> GetAll()
         {
-            return context.Users; 
+            return this.Context.Users.ToList();
         }
 
-        [HttpGet("getUser")]
-        public String GetUser(int id){
-            User user = new User();
-            user.Username = "0907663";
-            user.FirstName = "Jason";
-            user.LastName = "Sjambar";
-            user.Password = "fakehash";
-            user.RoleId = 2;
-            
-            return JsonConvert.SerializeObject(user);
+        [HttpGet("{id}", Name = "GetUser")]
+        public IActionResult GetById(long id)
+        {
+            User item = this.Context.Users.FirstOrDefault(c => c.UserId == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return new ObjectResult(item);
         }
 
-        [HttpGet("fill")]
-        public JsonResponse Fill_user(){
-            User u1 = new User();
-            u1.Username = "0908936";
-            u1.FirstName = "Jefaro";
-            u1.LastName = "Constancia";
-            u1.Password = "Geheim";
-            u1.RoleId = 1;
-            context.Users.Add(u1);
-            context.SaveChanges();
-            return new JsonSuccess("Successfully added user: " + u1.FirstName + " " + u1.LastName);  
+        [HttpPut("{id}")]
+        public IActionResult Update(long id, [FromBody] User user)
+        {
+            if (user == null || user.UserId != id)
+            {
+                return BadRequest();
+            }
+
+            User updatedUser = this.Context.Users.FirstOrDefault(t => t.UserId == id);
+
+            if (updatedUser == null)
+            {
+                return NotFound();
+            }
+
+            updatedUser.FirstName = user.FirstName;
+            updatedUser.LastName = user.LastName;
+            updatedUser.BirthDate = user.BirthDate;
+            updatedUser.Street = user.Street;
+            updatedUser.City = user.City;
+
+            this.Context.Users.Update(updatedUser);
+            this.Context.SaveChanges();
+
+            return new NoContentResult();
         }
 
-        [HttpPost("register")]
-        public string Set_user([FromBody] User user){
-            context.Users.Add(user);
-            context.SaveChanges();
-            return "User: " + user.FirstName + "registered";
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            User user = this.Context.Users.FirstOrDefault(c => c.UserId == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            this.Context.Users.Remove(user);
+            this.Context.SaveChanges();
+
+            return new NoContentResult();
         }
     }
 }

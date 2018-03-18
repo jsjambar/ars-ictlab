@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ARS.wwwroot
+namespace ARS.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Reservation")]
-    public class ReservationController : Controller
+    [Route("api/Ticket")]
+    public class TicketController : Controller
     {
     }
 }
