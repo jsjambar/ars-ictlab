@@ -8,11 +8,17 @@ import { Schedule } from './components/user/Schedule';
 import  { Helpdesk } from './components/helpdesk/Helpdesk';
 // import { Reservation } from './components/Reservation'
 
+import { Reservations } from './components/Reservation/Reservations';
+import { Login } from './components/user/Login';
+
+
 export const routes = <Layout>
-    <Route exact path='/' component={ Schedule } />
+    <Route exact path='/' component={ Login } />
+    <Route path='/home' component={ Schedule } />
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
     <Route path='/Helpdesk' component={ Helpdesk } />
     {/* <Route path='/reservation' component={ Reservation } /> */}
+    <Route path='/reservation' component={ Reservations } />
 </Layout>;
 
