@@ -15,17 +15,16 @@ export type Role = {
 export type Classroom = {
     classroomid:number|null,
     name:string,
-    description:string,
     starttime:Date,
     endtime:Date,
-    isdisabled:boolean,
+    ispublic:boolean,
+    available:boolean
     locationid:number,
 }
 
 export type Location = {
     locationid:number|null,
-    name:string,
-    description:string
+    name:string
 }
 
 export type Reservation = {

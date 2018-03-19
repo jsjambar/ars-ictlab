@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ARS.Models
 {
     public class ClassRoom
     {
-        public long classroom_id { get; set; }
+        public long ClassRoomId { get; set; }
         public string name { get; set; }
         public DateTime start_time { get; set; }
         public DateTime end_time { get; set; }

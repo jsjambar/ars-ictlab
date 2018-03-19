@@ -11,7 +11,7 @@ interface ClassroomCreationState {
     end: 0 | String,
     public: false | Boolean,
     available: false | Boolean,
-    locations: "" | immutable.List<Location>
+    locations: immutable.List<Location> | immutable.List<Location>
 }
 
 export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, ClassroomCreationState> {
@@ -24,7 +24,7 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
             end: 0,
             public: false,
             available: false,
-            locations: ""
+            locations: immutable.List<Location>()
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyClassroom = this.verifyClassroom.bind(this);
@@ -77,6 +77,20 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
         .catch(e => console.log("getUsers, " + e))
     }
 
+    locationList() {
+        const listItems = this.state.locations.map((location) =>
+          <option value={location.locationid}>
+            {location.name}
+          </option>
+        );
+        return (
+         <select name='location' value={`${this.state.location}`} onChange={this.handleChange}>
+         <option value="0">Select a location</option>
+          {listItems}
+          </select>
+        );
+      }
+
     public render() {
         return <div>
 
@@ -85,13 +99,12 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
                 <p>Please enter the data to create a classroom.</p>
                 <form>
                     <label>Location</label>
-                    <select name='location' value={`${this.state.location}`} onChange={this.handleChange}>
-                        <option value="0">Select a location</option>
-                        <option value="1">Kralingse Zoom</option>
-                        <option value="2">Kralingse Zoom</option>
-                        <option value="3">Kralingse Zoom</option>
-                        <option value="4">Kralingse Zoom</option>
-                    </select>
+                    { 
+                        this.state.locations ?
+                            this.locationList()
+                        :
+                        null
+                    }
                     <br/>
 
                     <label>Room</label>

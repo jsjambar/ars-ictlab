@@ -11,9 +11,10 @@ using System;
 namespace ARS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180319115352_SomeIdUpdates")]
+    partial class SomeIdUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,10 +23,8 @@ namespace ARS.Migrations
 
             modelBuilder.Entity("ARS.Models.ClassRoom", b =>
                 {
-                    b.Property<long>("ClassRoomId")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<long?>("TemperatureId");
 
                     b.Property<bool>("available");
 
@@ -41,22 +40,19 @@ namespace ARS.Migrations
 
                     b.Property<int>("temperature_id");
 
-                    b.HasKey("ClassRoomId");
-
-                    b.HasIndex("TemperatureId")
-                        .IsUnique();
+                    b.HasKey("id");
 
                     b.ToTable("Classrooms");
                 });
 
             modelBuilder.Entity("ARS.Models.Location", b =>
                 {
-                    b.Property<long>("LocationId")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("name");
 
-                    b.HasKey("LocationId");
+                    b.HasKey("id");
 
                     b.ToTable("Locations");
                 });
@@ -98,13 +94,11 @@ namespace ARS.Migrations
 
                     b.Property<int>("ClassRoomId");
 
-                    b.Property<long?>("ClassRoomId1");
-
                     b.Property<string>("Name");
 
                     b.HasKey("ProblemId");
 
-                    b.HasIndex("ClassRoomId1");
+                    b.HasIndex("ClassRoomId");
 
                     b.ToTable("Problems");
                 });
@@ -113,8 +107,6 @@ namespace ARS.Migrations
                 {
                     b.Property<long>("ReservationId")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<long?>("ClassRoomId");
 
                     b.Property<int>("ClassroomId");
 
@@ -132,7 +124,7 @@ namespace ARS.Migrations
 
                     b.HasKey("ReservationId");
 
-                    b.HasIndex("ClassRoomId");
+                    b.HasIndex("ClassroomId");
 
                     b.HasIndex("UserId1");
 
@@ -161,6 +153,9 @@ namespace ARS.Migrations
                     b.Property<int>("ClassroomId");
 
                     b.HasKey("TemperatureId");
+
+                    b.HasIndex("ClassroomId")
+                        .IsUnique();
 
                     b.ToTable("Temperature");
                 });
@@ -213,13 +208,6 @@ namespace ARS.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ARS.Models.ClassRoom", b =>
-                {
-                    b.HasOne("ARS.Models.Temperature", "Temperature")
-                        .WithOne("ClassRoom")
-                        .HasForeignKey("ARS.Models.ClassRoom", "TemperatureId");
-                });
-
             modelBuilder.Entity("ARS.Models.Notification", b =>
                 {
                     b.HasOne("ARS.Models.Role", "Role")
@@ -235,18 +223,28 @@ namespace ARS.Migrations
                 {
                     b.HasOne("ARS.Models.ClassRoom", "ClassRoom")
                         .WithMany()
-                        .HasForeignKey("ClassRoomId1");
+                        .HasForeignKey("ClassRoomId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ARS.Models.Reservation", b =>
                 {
                     b.HasOne("ARS.Models.ClassRoom", "ClassRoom")
                         .WithMany("Reservations")
-                        .HasForeignKey("ClassRoomId");
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ARS.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
+                });
+
+            modelBuilder.Entity("ARS.Models.Temperature", b =>
+                {
+                    b.HasOne("ARS.Models.ClassRoom", "ClassRoom")
+                        .WithOne("Temperature")
+                        .HasForeignKey("ARS.Models.Temperature", "ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ARS.Models.Ticket", b =>
