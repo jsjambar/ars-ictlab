@@ -22,7 +22,7 @@ namespace ARS.Controllers
             if(this.Context.ClassRooms.Count() == 0)
             {
                 this.Context.ClassRooms.Add(new ClassRoom {
-                    Name = "WD1016"
+                    name = "WD1016"
                 });
 
                 this.Context.SaveChanges();
@@ -40,7 +40,7 @@ namespace ARS.Controllers
             this.Context.ClassRooms.Add(classRoom);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetClassroom", new { id = classRoom.ClassroomId}, classRoom);
+            return CreatedAtRoute("GetClassroom", new { id = classRoom.classroom_id}, classRoom);
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace ARS.Controllers
         [HttpGet("{id}", Name = "GetClassroom")]
         public IActionResult GetById(long id)
         {
-            ClassRoom item = this.Context.ClassRooms.FirstOrDefault(c => c.ClassroomId == id);
+            ClassRoom item = this.Context.ClassRooms.FirstOrDefault(c => c.classroom_id == id);
 
             if(item == null)
             {
@@ -65,20 +65,19 @@ namespace ARS.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] ClassRoom classRoom)
         {
-            if (classRoom == null || classRoom.ClassroomId != id)
+            if (classRoom == null || classRoom.classroom_id != id)
             {
             return BadRequest();
             }
 
-            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(t => t.ClassroomId == id);
+            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(t => t.classroom_id == id);
 
             if (classroom == null)
             {
                 return NotFound();
             }
 
-            classroom.Name = classRoom.Name;
-            classroom.Description = classRoom.Description;
+            classroom.name = classRoom.name;
 
             this.Context.ClassRooms.Update(classroom);
             this.Context.SaveChanges();
@@ -89,7 +88,7 @@ namespace ARS.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(c => c.ClassroomId == id);
+            ClassRoom classroom = this.Context.ClassRooms.FirstOrDefault(c => c.classroom_id == id);
 
             if(classroom == null)
             {

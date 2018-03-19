@@ -55,3 +55,23 @@ export async function getUser(userId:Number) : Promise<User> {
     let json = await res.json()
     return json as User;
 }
+
+export async function createClassroom(classroom){
+    let res = await fetch(`api/Classroom`, {
+        method: 'post',
+        body: JSON.stringify(classroom), 
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) throw Error(res.statusText)
+    return "Created classroom";
+}
+
+export async function getLocations() : Promise<Immutable.List<Location>> {
+    let res = await fetch(`/api/Location/all`, 
+    { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+  if (!res.ok) throw Error(res.statusText)
+  let json = await res.json()
+  return json as Immutable.List<Location>
+}

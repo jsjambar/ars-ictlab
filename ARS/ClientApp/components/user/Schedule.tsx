@@ -30,7 +30,7 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
     public render() {
         return <div>
             <div className="page-header">
-                <h1>?????</h1>
+                <h1>Schedule of Andy the black</h1>
             </div>
             <div>
                 {
