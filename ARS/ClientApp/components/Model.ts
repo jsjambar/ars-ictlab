@@ -29,13 +29,13 @@ export type Location = {
 }
 
 export type Reservation = {
-    ReservationId:number|null,
-    Date:Date,
-    Starttime:Date,
-    Endtime:Date,
-    UserId:number,
-    User:User,
-    ClassroomID:number,
+    reservationId:number|null,
+    date:Date,
+    startTime:Date,
+    endTime:Date,
+    userId:number,
+    user:User,
+    classroomId:number,
 }
 
 export type Problem = {
