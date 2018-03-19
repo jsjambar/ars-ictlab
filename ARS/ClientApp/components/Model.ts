@@ -1,15 +1,8 @@
 export type User = {
-<<<<<<< HEAD
-    userId:number|null,
-    Username:string,
-    firstName:string,
-    lastName:string,
-=======
     userid:number|0,
     username:string,
     firstname:string,
     lastname:string,
->>>>>>> origin/New_Reservation_System
     password:string,
     roleId:number,
 }
