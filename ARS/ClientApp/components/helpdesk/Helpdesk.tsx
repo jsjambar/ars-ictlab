@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as immutable from 'immutable';
 import { RouteComponentProps } from 'react-router';
-import { Ticket } from '../Model';
+import { Ticket } from '../Model'
 import * as api from '../Api';
 import { TicketComponent } from './Ticket';
 

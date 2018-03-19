@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ARS.Models.Contexts;
 using ARS.Models;
 using ARS.Json;
 using Newtonsoft.Json;
@@ -13,9 +14,9 @@ namespace ARS.Controllers
     [Route("api/[controller]")]
     public class TicketController : Controller
     {
-        private readonly DatabaseContext context;
+        private readonly TicketContext context;
 
-        public TicketController(DatabaseContext context){
+        public TicketController(TicketContext context){
             this.context = context;
         }
 
