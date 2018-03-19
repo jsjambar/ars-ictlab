@@ -14,9 +14,9 @@ namespace ARS.Controllers
     [Route("api/User")]
     public class UserController : Controller
     {
-        private readonly UserContext Context;
+        private readonly DatabaseContext Context;
 
-        public UserController(UserContext context)
+        public UserController(DatabaseContext context)
         {
             this.Context = context;
 
@@ -32,7 +32,7 @@ namespace ARS.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public IActionResult Create([FromBody] User user)
         {
             if (user == null)
