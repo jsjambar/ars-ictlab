@@ -13,6 +13,6 @@ export const routes = <Layout>
     <Route path='/home' component={ Schedule } />
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
-    <Route path='/reservation' component={ Reservations } />
+    <Route path='/reservations' component={ Reservations } />
 </Layout>;
 

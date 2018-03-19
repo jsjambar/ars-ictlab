@@ -1,6 +1,6 @@
 import * as Immutable from "immutable"
 
-import { User, Role, Classroom, Location, Reservation,Problem } from './Model'
+import { User, Role, Classroom, Location, Reservation, Problem } from './Model'
 import { UserComponent } from "./user/User";
 
 export async function get_users() : Promise<Immutable.List<User>> {
@@ -36,7 +36,7 @@ export async function set_reservation(reservation: Object) {
 }
 
 export async function get_reservations(): Promise<Immutable.List<Reservation>>  {
-    let res = await fetch(`/api/Reservations`,
+    let res = await fetch(`/api/Reservation/all`,
         {
             method: 'get',
             credentials: 'include',
