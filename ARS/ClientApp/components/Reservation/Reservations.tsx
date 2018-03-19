@@ -13,15 +13,15 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         this.state = { reservations: "Loading..." };
     }
 
-    componentWillMount() {
-        this.getReservations()
-    }
+    //componentWillMount() {
+    //    this.getReservations()
+    //}
 
-    getReservations() {
-        api.get_reservations()
-        .then(reservations => this.setState({ reservations: reservations }))
-        .catch(e => console.log("getReservations, " + e))
-    }
+    //getReservations() {
+    //    api.get_reservations()
+    //    .then(reservations => this.setState({ reservations: reservations }))
+    //    .catch(e => console.log("getReservations, " + e))
+    //}
 
     public render() {
         return <div>

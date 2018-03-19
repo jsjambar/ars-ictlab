@@ -10,11 +10,17 @@ import { Login } from './components/user/Login';
 import { ClassroomCreation } from './components/classroom/ClassroomCreation';
 
 export const routes = <Layout>
+<<<<<<< HEAD
     <Route exact path='/' component={ Login } />
     <Route path='/home' component={ Schedule } />
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
     <Route path='/reservation' component={ Reservations } />
     <Route path='/admin/classrooms/create' component={ ClassroomCreation }/>
+=======
+    <Route exact path='/' component={Home} />
+    <Route path='/classroom' component={Classrooms} />
+    <Route path='/user' component={Users} />
+>>>>>>> origin/APINewVersion
 </Layout>;
 

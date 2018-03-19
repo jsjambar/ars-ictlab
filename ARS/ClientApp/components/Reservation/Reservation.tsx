@@ -13,12 +13,9 @@ export class ReservationComponent extends React.Component<reservationComponentPr
 
     public render() {
         return <tr>
-            <th scope="row">{this.props.reservation.reservationId}    </th>
-            <td>{this.props.reservation.classroomId}</td>
-            <td>{this.props.reservation.date}</td>
-            <td>{this.props.reservation.startTime}</td>
-            <td>{this.props.reservation.endTime}</td>
-            </tr>
+            <th scope="row">{this.props.reservation.reservationid}    </th>
+            <td>{this.props.reservation.classroomid}</td>
+        </tr>
     }
 
 }

@@ -15,17 +15,17 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
     }
 
     componentWillMount(){
-        this.getUser()
+        //this.getUser()
     }
 
-    getUser(){
-        api.getUser(1)
-        .then(user => this.setState({
-            user: user, 
-            iframe:  "https://calendar.google.com/calendar/embed?src=" + user.Username + "@hr.nl&ctz=Europe%2FAmsterdam"
-        }))
-        .catch(e => console.log("getUser, " + e))
-    }
+    //getUser(){
+    //    api.getUser(1)
+    //    .then(user => this.setState({
+    //        user: user,
+    //        iframe: "https://calendar.google.com/calendar/embed?src=" + user.username + "@hr.nl&ctz=Europe%2FAmsterdam"
+    //    }))
+    //    .catch(e => console.log("getUser, " + e))
+    //}
 
     public render() {
         return <div>
