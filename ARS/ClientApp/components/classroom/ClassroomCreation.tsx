@@ -5,12 +5,12 @@ import * as immutable from 'immutable'
 import { Location } from '../Model' 
 
 interface ClassroomCreationState { 
-    location: 0 | String,
-    room: "" | String,
-    start: 0 | String,
-    end: 0 | String,
-    public: false | Boolean,
-    available: false | Boolean,
+    location: 0 | string,
+    room: "" | string,
+    start: 0 | number,
+    end: 0 | number,
+    public: false | boolean,
+    available: false | boolean,
     locations: immutable.List<Location> | immutable.List<Location>
 }
 
@@ -28,6 +28,11 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyClassroom = this.verifyClassroom.bind(this);
+    }
+
+    getDate(hour){
+        const date = new Date();
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour);
     }
 
     handleChange(event){
@@ -56,12 +61,13 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
         const values = this.state;
         api.createClassroom(
             new Object({
-                location_id: values.location,
-                name: values.room,
-                start: new Date(), 
-                end: new Date(),
-                is_public: values.public,
-                available: values.available
+                ClassroomId: 0,
+                LocationId: values.location,
+                Name: values.room,
+                StartTime: this.getDate(values.start), 
+                EndTime: this.getDate(values.end),
+                IsPublic: values.public,
+                IsDisabled: values.available
             })
         );
         //redirect or something id undno
@@ -115,18 +121,21 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
                     <label>Reservation time start:</label>
                     <select name="start" value={`${this.state.start}`} onChange={this.handleChange}>
                         <option value="0">Select a start time</option>
-                        <option value="1">9:00</option>
-                        <option value="2">10:00</option>
-                        <option value="3">11:00</option>
+                        <option value="9">9:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="12">12:00</option>
                     </select>
                     <br/>
 
                     <label>Reservation time end:</label>
                     <select name="end" value={`${this.state.end}`} onChange={this.handleChange}>
                         <option value="0">Select an end time</option>
-                        <option value="1">9:00</option>
-                        <option value="2">10:00</option>
-                        <option value="3">11:00</option>
+                        <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                        <option value="17">17:00</option>
                     </select>
                     <br/>
 

@@ -18,7 +18,7 @@ export type Classroom = {
     starttime:Date,
     endtime:Date,
     ispublic:boolean,
-    available:boolean
+    is_disabled:boolean
     locationid:number,
 }
 

@@ -22,7 +22,7 @@ namespace ARS.Controllers
             if(this.Context.Classrooms.Count() == 0)
             {
                 this.Context.Classrooms.Add(new ClassRoom {
-                    name = "WD1016"
+                    Name = "WD1016"
                 });
 
                 this.Context.SaveChanges();
@@ -40,7 +40,7 @@ namespace ARS.Controllers
             this.Context.Classrooms.Add(classRoom);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetClassroom", new { id = classRoom.ClassRoomId}, classRoom);
+            return CreatedAtRoute("GetClassroom", new { id = classRoom.ClassroomId}, classRoom);
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace ARS.Controllers
         [HttpGet("{id}", Name = "GetClassroom")]
         public IActionResult GetById(long id)
         {
-            ClassRoom item = this.Context.Classrooms.FirstOrDefault(c => c.ClassRoomId == id);
+            ClassRoom item = this.Context.Classrooms.FirstOrDefault(c => c.ClassroomId == id);
 
             if(item == null)
             {
@@ -65,19 +65,19 @@ namespace ARS.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] ClassRoom classRoom)
         {
-            if (classRoom == null || classRoom.ClassRoomId != id)
+            if (classRoom == null || classRoom.ClassroomId != id)
             {
             return BadRequest();
             }
 
-            ClassRoom classroom = this.Context.Classrooms.FirstOrDefault(t => t.ClassRoomId == id);
+            ClassRoom classroom = this.Context.Classrooms.FirstOrDefault(t => t.ClassroomId == id);
 
             if (classroom == null)
             {
                 return NotFound();
             }
 
-            classroom.name = classRoom.name;
+            classroom.Name = classRoom.Name;
 
             this.Context.Classrooms.Update(classroom);
             this.Context.SaveChanges();
@@ -88,7 +88,7 @@ namespace ARS.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            ClassRoom classroom = this.Context.Classrooms.FirstOrDefault(c => c.ClassRoomId == id);
+            ClassRoom classroom = this.Context.Classrooms.FirstOrDefault(c => c.ClassroomId == id);
 
             if(classroom == null)
             {
