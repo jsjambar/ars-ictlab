@@ -51,7 +51,7 @@ export async function get_reservations(): Promise<Immutable.List<Reservation>>  
 
 
 export async function getUser(userId:Number) : Promise<User> {
-  let res = await fetch(`/api/user/1`, 
+  let res = await fetch(`/api/user/` + userId, 
       { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
@@ -76,4 +76,24 @@ export async function getLocations() : Promise<Immutable.List<Location>> {
   if (!res.ok) throw Error(res.statusText)
   let json = await res.json()
   return json as Immutable.List<Location>
+}
+
+export async function getClassroom(classroomId:Number) : Promise<Classroom> {
+    let res = await fetch(`/api/classroom/` + classroomId, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+      if (!res.ok) throw Error(res.statusText)
+      let json = await res.json()
+      return json as Classroom;
+}
+
+export async function updateClassroom(classroom, classroomId){
+    let res = await fetch(`api/classroom/` + classroomId, {
+        method: 'post',
+        body: JSON.stringify(classroom), 
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) throw Error(res.statusText)
+    return "Updated classroom";
 }
