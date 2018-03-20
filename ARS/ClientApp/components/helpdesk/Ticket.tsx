@@ -13,14 +13,14 @@ export class TicketComponent extends React.Component<TicketComponentProps, {}> {
 
     public render() {
         return <tr>
-                <th scope="row">{this.props.ticket.TicketId}    </th>
-                <td>{this.props.ticket.Student.firstName +" "+ this.props.ticket.Student.firstName}</td>
-                <td>{this.props.ticket.StudentNumber}</td>
-                <td>{this.props.ticket.Location}</td>
-                <td>{this.props.ticket.Room}</td>
-                <td>{this.props.ticket.Date}</td>
-                <td>{this.props.ticket.Time}</td>
-                <td>{this.props.ticket.TypeProblem.Name}</td>
+                <th scope="row">{this.props.ticket.ticketId}    </th>
+                <td>{this.props.ticket.user.firstName +" "+ this.props.ticket.user.lastName}</td>
+                <td>{this.props.ticket.user.username}</td>
+                <td>{this.props.ticket.problem.classroom.locationId}</td>
+                <td>{this.props.ticket.problem.classroom.name}</td>
+                <td>{this.props.ticket.date}</td>
+                <td>{this.props.ticket.time}</td>
+                <td>{this.props.ticket.problem.name}</td>
             </tr>
     }
 

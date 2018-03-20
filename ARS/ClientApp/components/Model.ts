@@ -1,6 +1,8 @@
+import { Classrooms } from "./classroom/Classrooms";
+
 export type User = {
     userId:number|null,
-    Username:string,
+    username:string,
     firstName:string,
     lastName:string,
     password:string,
@@ -14,12 +16,12 @@ export type Role = {
 
 export type Classroom = {
     ClassroomId:number|null,
-    Name:string,
+    name:string,
     Description:string,
     StartTime:Date,
     EndTime:Date,
     IsDisabled:boolean,
-    LocationId:number,
+    locationId:number,
 }
 
 export type Location = {
@@ -40,17 +42,16 @@ export type Reservation = {
 
 export type Problem = {
     ProblemId:number|null,
-    Name:string
+    name:string,
+    classroom: Classroom
 }
 
 export type Ticket = {
-    TicketId: number|null,
-    Student: User,
-    StudentNumber: number,
-    Location: string,
-    Room: string,
-    Date: Date,
-    Time: Date,
-    TypeProblem: Problem
-
+    ticketId: number|null,
+    user: User,
+    image: string,
+    date: Date,
+    time: Date,
+    problem: Problem
+    description: string
 }

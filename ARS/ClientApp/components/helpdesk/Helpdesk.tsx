@@ -5,22 +5,132 @@ import { Ticket } from '../Model'
 import * as api from '../Api';
 import { TicketComponent } from './Ticket';
 
-export type TicketState = {tickets:immutable.List<Ticket>|"Loading..."}
+export type TicketState = {tickets:immutable.List<Ticket>}
 
 export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor(){
         super();
-        this.state= { tickets:"Loading..." };
+        let sampleTickets = [
+            {
+                "ticketId": 1,
+                "date": "2018-03-19T12:37:03.7368648+01:00",
+                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
+                "image": null,
+                "problemId": 1,
+                "problem": {
+                    "name": "Kan geen reservering plaatsen",
+                    "classroom": {
+                        "name": "H.3.312",
+                        "locationId": 1
+                    }
+                },
+                "userId": 1,
+                "user": {
+                    "username": "0910212",
+                    "firstName": "Mark",
+                    "lastName": "Thal",
+                    "birthDate": "0001-01-01T00:00:00",
+                }
+            },
+            {
+                "ticketId": 2,
+                "date": "2018-03-19T11:49:38.8496539+01:00",
+                "description": "Kan geen reservering plaatsen 1",
+                "image": null,
+                "problemId": 1,
+                "problem": {
+                    "name": "Kan geen reservering plaatsen",
+                    "classroom": {
+                        "name": "H.3.312",
+                        "locationId": 1
+                    }
+                },
+                "userId": 1,
+                "user": {
+                    "username": "0910212",
+                    "firstName": "Mark",
+                    "lastName": "Thal",
+                    "birthDate": "0001-01-01T00:00:00",
+                }
+            },
+            {
+                "ticketId": 3,
+                "date": "2018-03-19T11:49:38.8496539+01:00",
+                "description": "Kan geen reservering plaatsen 2",
+                "image": null,
+                "problemId": 1,
+                "problem": {
+                    "name": "Kan geen reservering plaatsen",
+                    "classroom": {
+                        "name": "H.3.312",
+                        "locationId": 1
+                    }
+                },
+                "userId": 1,
+                "user": {
+                    "username": "0910212",
+                    "firstName": "Mark",
+                    "lastName": "Thal",
+                    "birthDate": "0001-01-01T00:00:00",
+                }
+            },
+            {
+                "ticketId": 4,
+                "date": "2018-03-19T11:49:38.8496539+01:00",
+                "description": "Kan geen reservering plaatsen 3",
+                "image": null,
+                "problemId": 1,
+                "problem": {
+                    "name": "Kan geen reservering plaatsen",
+                    "classroom": {
+                        "name": "H.3.312",
+                        "locationId": 1
+                    }
+                },
+                "userId": 1,
+                "user": {
+                    "username": "0910212",
+                    "firstName": "Mark",
+                    "lastName": "Thal",
+                    "birthDate": "0001-01-01T00:00:00",
+                }
+            },
+            {
+                "ticketId": 5,
+                "date": "2018-03-19T11:49:38.8496539+01:00",
+                "description": "Kan geen reservering plaatsen 4",
+                "image": null,
+                "problemId": 1,
+                "problem": {
+                    "name": "Kan geen reservering plaatsen",
+                    "classroom": {
+                        "name": "H.3.312",
+                        "locationId": 1
+                    }
+                },
+                "userId": 1,
+                "user": {
+                    "username": "0910212",
+                    "firstName": "Mark",
+                    "lastName": "Thal",
+                    "birthDate": "0001-01-01T00:00:00",
+                }
+            }
+        ];
+        
+        this.state= { tickets: immutable.List<Ticket>(sampleTickets) };
     }
     
-
     componentWillMount(){
         this.getTickets()
     }
 
     getTickets(){
         api.getTickets()
-        .then(tickets => this.setState({tickets:tickets}))
+        .then(tickets => {
+              
+            //this.setState({tickets:tickets})
+        })
         .catch(e => console.log("getTickets, " + e))
     }
 
@@ -29,12 +139,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             <div className="page-header">
                 <h4>Helpdesk overview : Student tickets</h4>
                 <div className="ticketsBtn">
-                    <button>Add</button>
+                    <button href="/classroom">Add</button>
                     <button>Edit</button>
                 </div>
             </div>
             {
-                this.state.tickets != "Loading..." ?
+                //this.state.tickets != "Loading..." ? 
                 <div>
                     <div>
                         <table className="table">
@@ -56,7 +166,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                         </table>
                     </div>
                     
-                    <div className="systemTicketDiv">
+                    {/* <div className="systemTicketDiv">
                         <div className="page-header">
                             <h4>Helpdesk overview : System tickets</h4>
                         </div>
@@ -75,9 +185,9 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
 
                             </tbody>
                         </table>
-                    </div>
+                    </div> */}
                 </div>
-                :"loading..."
+                //:"loading..."
             }
         </div>
     }

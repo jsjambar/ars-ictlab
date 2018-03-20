@@ -2,50 +2,62 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ARS.Models.Contexts;
 using ARS.Models;
-using ARS.Json;
-using Newtonsoft.Json;
 
 namespace ARS.Controllers
 {
-
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/Ticket")]
     public class TicketController : Controller
     {
-        private readonly TicketContext context;
+        private readonly TicketContext Context;
+        public TicketController (TicketContext context){
+            this.Context = context;
 
-        public TicketController(TicketContext context){
-            this.context = context;
+            if(this.Context.Tickets.Count() == 0){
+                this.Context.Tickets.Add(new Ticket
+                {
+                    Date = DateTime.Now,
+                    UserId =1,
+                    Problem = new Problem{
+                        Name = "Kan geen reserveringen plaatsen.",
+                        ClassRoom = new ClassRoom{
+                            Name = "H.3.312"
+                        }
+                    },
+                    Description = "Dashboard laat geen beeld zien, kan geen reservering plaatsen."
+                });
+
+                this.Context.SaveChanges();
+            }
         }
 
         [HttpGet("all")]
-        public IEnumerable<Ticket> Get_tickets()
+        public IEnumerable<Ticket> GetAll(){
+            return this.Context.Tickets.ToList();
+        }
+
+        [HttpPost("create")]
+        public JsonResult Create([FromBody] Ticket ticket)
         {
-            return context.Tickets; 
-        }
+            if (ticket == null)
+            {
+                return Json(new { Message = "Ticket is empty"});
+            }
 
-        [HttpGet("getTicket")]
-        public String GetTicket(int id){
-            Ticket ticket = new Ticket();
-            ticket.Date = new DateTime();
-            ticket.Description = "Kan geen reservering plaatsen.";
-            ticket.Image = "problem.png";
-            
-            return JsonConvert.SerializeObject(ticket);
-        }
+            // ticket.Date = DateTime.Now;
+            // ticket.UserId = 1;
+            // ticket.Description = "Dashboard laat geen beeld zien, kan geen reservering plaatsen.";
 
-        [HttpGet("fill")]
-        public JsonResponse Fill_ticket(){
-            Ticket t1 = new Ticket();
-            t1.Date = new DateTime();
-            t1.Description = "Kan geen reservering plaatsen.";
-            t1.Image = "problem.png";
-            context.Tickets.Add(t1);
-            context.SaveChanges();
-            return new JsonSuccess("Successfully added Ticket.");  
+            this.Context.Tickets.Add(ticket);
+            this.Context.SaveChanges();
+
+            return Json(ticket);
+
+            //return CreatedAtRoute("GetTicket", new { id = ticket.TicketId }, ticket);
         }
     }
 }
-

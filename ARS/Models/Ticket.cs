@@ -13,5 +13,8 @@ namespace ARS.Models
         public string Image { get; set; }
         public int ProblemId { get; set; }
         public Problem Problem { get; set; }
+        public int UserId {get; set;}
+        public User user { get; set; }
+
     }
 }
