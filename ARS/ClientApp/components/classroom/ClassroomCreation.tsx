@@ -78,8 +78,9 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     }
 
     locationList() {
+        console.log(this.state.locations);
         const listItems = this.state.locations.map((location) =>
-          <option value={location.locationid}>
+          <option value={location.locationId}>
             {location.name}
           </option>
         );

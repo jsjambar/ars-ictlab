@@ -23,7 +23,7 @@ export type Classroom = {
 }
 
 export type Location = {
-    locationid:number|null,
+    locationId:number|null,
     name:string
 }
 
