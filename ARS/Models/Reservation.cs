@@ -7,14 +7,13 @@ namespace ARS.Models
 {
     public class Reservation
     {
-        public long ReservationId { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public int ProblemId { get; set; }
-        public int ClassroomId { get; set; }
-        public ClassRoom ClassRoom { get; set; }
+        public long id { get; set; }
+        public DateTime created_at { get; set; }
+        public DateTime start_time { get; set; }
+        public DateTime end_time { get; set; }
+        public int user_id { get; set; }
+        public User user { get; set; }
+        public int classroom_id { get; set; }
+        public Classroom Classroom { get; set; }
     }
 }

@@ -7,11 +7,11 @@ namespace ARS.Models
 {
     public class Ticket
     {
-        public long TicketId { get; set; }
-        public DateTime Date { get; set; }
-        public string Description { get; set; }
-        public string Image { get; set; }
-        public int ProblemId { get; set; }
-        public Problem Problem { get; set; }
+        public long id { get; set; }
+        public DateTime created_at { get; set; }
+        public string description { get; set; }
+        public string image { get; set; }
+        public int problem_id { get; set; }
+        public Problem problem { get; set; }
     }
 }

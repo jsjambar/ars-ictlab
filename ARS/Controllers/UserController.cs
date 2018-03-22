@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ARS.Models.Contexts;
 using ARS.Models;
 using ARS.Helpers;
 
@@ -24,8 +23,8 @@ namespace ARS.Controllers
             {
                 this.Context.Users.Add(new User
                 {
-                    FirstName = "Mark",
-                    LastName = "Thal"
+                    first_name = "Mark",
+                    last_name = "Thal"
                 });
 
                 this.Context.SaveChanges();
@@ -40,12 +39,12 @@ namespace ARS.Controllers
                 return BadRequest();
             }
 
-            user.Password = Helper.HashPassword(user.Password);
+            user.password = Helper.HashPassword(user.password);
 
             this.Context.Users.Add(user);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetUser", new { id = user.UserId }, user);
+            return CreatedAtRoute("GetUser", new { id = user.id }, user);
         }
 
         [HttpPost("login")]
@@ -53,7 +52,7 @@ namespace ARS.Controllers
         {
             string username = HttpContext.Request.Query["Username"];
             string password = HttpContext.Request.Query["Password"];
-            return Json(this.Context.Users.Where(u => u.Username == username && u.Password == Helper.HashPassword(password)));
+            return Json(this.Context.Users.Where(u => u.username == username && u.password == Helper.HashPassword(password)));
         }
 
         [HttpGet("all")]
@@ -65,7 +64,7 @@ namespace ARS.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult GetById(long id)
         {
-            User item = this.Context.Users.FirstOrDefault(c => c.UserId == id);
+            User item = this.Context.Users.FirstOrDefault(c => c.id == id);
 
             if (item == null)
             {
@@ -78,23 +77,20 @@ namespace ARS.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] User user)
         {
-            if (user == null || user.UserId != id)
+            if (user == null || user.id != id)
             {
                 return BadRequest();
             }
 
-            User updatedUser = this.Context.Users.FirstOrDefault(t => t.UserId == id);
+            User updatedUser = this.Context.Users.FirstOrDefault(t => t.id == id);
 
             if (updatedUser == null)
             {
                 return NotFound();
             }
 
-            updatedUser.FirstName = user.FirstName;
-            updatedUser.LastName = user.LastName;
-            updatedUser.BirthDate = user.BirthDate;
-            updatedUser.Street = user.Street;
-            updatedUser.City = user.City;
+            updatedUser.first_name = user.first_name;
+            updatedUser.last_name = user.last_name;
 
             this.Context.Users.Update(updatedUser);
             this.Context.SaveChanges();
@@ -105,7 +101,7 @@ namespace ARS.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            User user = this.Context.Users.FirstOrDefault(c => c.UserId == id);
+            User user = this.Context.Users.FirstOrDefault(c => c.id == id);
 
             if (user == null)
             {

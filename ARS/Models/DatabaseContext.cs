@@ -13,7 +13,7 @@ namespace ARS.Models
         { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<ClassRoom> Classrooms { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Reservation> Reservations { get; set; }

@@ -1,43 +1,43 @@
 export type User = {
-    userid:number|0,
+    id:number|0,
     username:string,
-    firstname:string,
-    lastname:string,
+    first_name:string,
+    last_name:string,
     password:string,
-    roleId:number,
+    role_id:number,
 }
 
 export type Role = {
-    roleid:number|null,
+    id:number|null,
     name:string
 }
 
 export type Classroom = {
-    classroomId:number|null,
+    id:number|null,
     name:string,
-    startTime:Date,
-    endTime:Date,
-    isPublic:boolean,
-    isDisabled:boolean
-    locationId:number,
+    start_time:Date,
+    end_time:Date,
+    is_public:boolean,
+    is_disabled:boolean
+    location_id:number,
 }
 
 export type Location = {
-    locationId:number|null,
+    id:number|null,
     name:string
 }
 
 export type Reservation = {
-    reservationid:number|null,
-    date:Date,
-    starttime:Date,
-    endtime:Date,
-    userid:number,
+    id:number|null,
+    created_at:Date,
+    start_time:Date,
+    end_time:Date,
+    user_id:number,
     user:User,
-    classroomid:number
+    classroom_id:number
 }
 
 export type Problem = {
-    problemid:number|null,
+    id:number|null,
     name:string
 }

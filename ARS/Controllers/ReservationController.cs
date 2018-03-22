@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ARS.Models.Contexts;
 using ARS.Models;
 using ARS.Helpers;
 
@@ -14,9 +13,9 @@ namespace ARS.Controllers
     [Route("api/Reservation")]
     public class ReservationController : Controller
     {
-        private readonly ReservationContext Context;
+        private readonly DatabaseContext Context;
         
-        public ReservationController(ReservationContext context)
+        public ReservationController(DatabaseContext context)
         {
             this.Context = context;
 
@@ -24,11 +23,11 @@ namespace ARS.Controllers
             {
                 this.Context.Reservations.Add(new Reservation
                 {
-                    ClassroomId = 1,
-                    UserId = 1,
-                    Date = new DateTime(2018, 03, 18),
-                    StartTime = new DateTime(2018, 03, 19, 9, 0, 0),
-                    EndTime = new DateTime(2018, 03, 19, 11, 0, 0),
+                    id = 1,
+                    user_id = 1,
+                    created_at = new DateTime(2018, 03, 18),
+                    start_time = new DateTime(2018, 03, 19, 9, 0, 0),
+                    end_time = new DateTime(2018, 03, 19, 11, 0, 0),
                 });
 
                 this.Context.SaveChanges();
@@ -46,7 +45,7 @@ namespace ARS.Controllers
             this.Context.Reservations.Add(reservation);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetReservation", new { id = reservation.ReservationId }, reservation);
+            return CreatedAtRoute("GetReservation", new { id = reservation.id }, reservation);
         }
 
         [HttpGet("all")]

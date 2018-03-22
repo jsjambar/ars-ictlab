@@ -7,7 +7,7 @@ namespace ARS.Models
 {
     public class Role
     {
-        public long RoleId { get; set; }
-        public string Name { get; set; }
+        public long id { get; set; }
+        public string name { get; set; }
     }
 }

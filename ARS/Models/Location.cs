@@ -8,8 +8,8 @@ namespace ARS.Models
 {
     public class Location
     {
-        public long LocationId { get; set; }
-        public string Name { get; set; }
+        public long id { get; set; }
+        public string name { get; set; }
 
     }
 }
