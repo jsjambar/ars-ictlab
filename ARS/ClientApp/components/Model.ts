@@ -13,13 +13,13 @@ export type Role = {
 }
 
 export type Classroom = {
-    classroomid:number|null,
+    classroomId:number|null,
     name:string,
-    starttime:Date,
-    endtime:Date,
-    ispublic:boolean,
-    is_disabled:boolean
-    locationid:number,
+    startTime:Date,
+    endTime:Date,
+    isPublic:boolean,
+    isDisabled:boolean
+    locationId:number,
 }
 
 export type Location = {

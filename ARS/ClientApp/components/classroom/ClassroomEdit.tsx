@@ -6,7 +6,7 @@ import { Location } from '../Model'
 
 interface ClassroomEditState {
     id: 0 | number, 
-    location: 0 | string,
+    location: number | string,
     room: "" | string,
     start: 0 | number,
     end: 0 | number,
@@ -14,10 +14,6 @@ interface ClassroomEditState {
     available: false | boolean,
     locations: immutable.List<Location> | immutable.List<Location>
 }
-
-const ClassroomId = ({ match }) => (
-    console.log(match.params.id)
-)
 
 export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, ClassroomEditState> {
     constructor(props) {
@@ -82,20 +78,30 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
     }
 
     componentWillMount(){
+        const { match: { params } } = this.props;
+        var classroomId = Object.keys(params).map(function(key){return params[key]})[0];
         this.getLocations();
-        this.getClassroom();
+        this.getClassroom(classroomId);
     }
-
+    
     getLocations(){
         api.getLocations()
         .then(locations => this.setState({locations:locations}))
-        .catch(e => console.log("getUsers, " + e))
+        .catch(e => console.log("getLocations, " + e))
     }
 
-    getClassroom(){
-        api.getClassroom(4)
-        .then(classroom => console.log(classroom))
-        .catch(e => console.log("getUsers, " + e))
+    getClassroom(classroomId){
+        api.getClassroom(classroomId)
+        .then(classroom => this.setState({
+            id: classroom.classroomId,
+            end: classroom.endTime.getHours(),
+            available: classroom.isDisabled,
+            public: classroom.isPublic,
+            location: classroom.locationId,
+            room: classroom.name,
+            start: classroom.startTime.getHours()
+        }))
+        .catch(e => console.log("getClassroom, " + e))
     }
 
     locationList() {
