@@ -11,29 +11,30 @@ export class UserForm extends React.Component<UserFormProps, UserFormState> {
         super();
         this.state = {
              user:{
-                 userid:0,
+                 id:0,
                  username:"",
-                 firstname:"",
-                 lastname:"",
+                 first_name:"",
+                 last_name:"",
                  password:"",
-                 roleId:0
+                 role_id:0
              } 
         }
     }
 
     verifyForm():boolean{
-        const u = this.state.user
-        return u.username == "" ||
-        u.firstname == "" ||
-        u.lastname == "" ||
-        u.password == "" || 
-        u.roleId == 0
+        // const u = this.state.user
+        // return u.username == "" ||
+        // u.first_name == "" ||
+        // u.last_name == "" ||
+        // u.password == "" || 
+        // u.role_id == 0
+        return true
     }
 
     public render() {
         return <div className="row">
             {JSON.stringify(this.state.user)}
-            <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, user:{...this.state.user, username:e.currentTarget.value}})} /><br />
+            {/* <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, user:{...this.state.user, username:e.currentTarget.value}})} /><br />
             <input className="form-control" type="text" placeholder="Firstname" onChange={e => this.setState({...this.state, user:{...this.state.user, firstname:e.currentTarget.value}})} /><br />
             <input className="form-control" type="text" placeholder="Lastname" onChange={e => this.setState({...this.state, user:{...this.state.user, lastname:e.currentTarget.value}})} /><br />
             <input className="form-control"type="password" placeholder="Password" onChange={e => this.setState({...this.state, user:{...this.state.user, password:e.currentTarget.value}})} /><br />
@@ -42,7 +43,7 @@ export class UserForm extends React.Component<UserFormProps, UserFormState> {
                 <option value="2">Administrator</option>
             </select>
             <br />
-            <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.props.setUser(this.state.user)}>Add User</button>
+            <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.props.setUser(this.state.user)}>Add User</button> */}
         </div>
     }
 
