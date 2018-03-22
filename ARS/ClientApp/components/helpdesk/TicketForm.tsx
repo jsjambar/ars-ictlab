@@ -5,15 +5,15 @@ import { Ticket, Problem, User } from '../Model';
 import * as immutable from 'immutable';
 
 interface TicketState { 
-    location: String|0, 
-    classroom: String|0,
-    problem: Problem|0,
+    locationId: Number|0,
+    classroomId: Number|0,
+    problemId: Number|0,
     description: String|"",
     date: Date|0,
     receiveCopy:Boolean|false,
     userId: Number|0,
-    user: immutable.List<User>|0
-    problemOptions: string[]|0
+    problemOptions: string[][]|0,
+    solved: Boolean|false
 }
 
 export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketState> {
@@ -30,17 +30,17 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 }
             }
         ];
-        let problems = ["Hardware problem","Software problem","Internet problem","Your problem"]
+        let problems = [["1","Hardware problem"],["2", "Software problem"],["3","Internet problem"],["4","Your problem"]]
         this.state = { 
-            location: 0,
-            classroom: 0,
-            problem: 0,
+            locationId: 0,
+            classroomId: 0,
+            problemId: 0,
             description: "",
             date: new Date(),
             receiveCopy: false,
-            userId: sampleUser["userId"],
-            user: immutable.List<User>(sampleUser),
-            problemOptions: problems
+            userId: sampleUser[0]["userId"],
+            problemOptions: problems,
+            solved: false
             
         };
         this.handleChange = this.handleChange.bind(this);
@@ -49,7 +49,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
 
     populateOptions(arrayProblems) {
         return arrayProblems.map((arrayProblems, index) => (
-          <option key={index} value={arrayProblems}>{arrayProblems}</option>
+          <option key={index} value={arrayProblems[0]}>{arrayProblems[1]}</option>
         ));
       }
 
@@ -65,18 +65,22 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     verifyTicket(){
         const values = this.state;
         // refactor this to a re-usable function
-        if(values.location != 0 && values.classroom != 0 && values.problem != 0 &&
+        if(values.locationId != 0 && values.classroomId != 0 && values.problemId != 0 &&
             values.description != ""){
             this.submitTicket();
         } else {
             // show errors for the missing values
+            const a = new Object({ userId: values.userId, description: values.description, locationId: values.locationId, classroomId: values.classroomId, date: values.date, problemId: values.problemId, solved: values.solved });
+            console.log(a);
         }
     }
 
     submitTicket() {
         const values = this.state;
-        // api.set_ticket(new Object({ problem: values.problemId, location: values.location, room: values.classroom, description: values.description, date: values.date, time: values.time }));
-        const a = new Object({ problem: values.problem, location: values.location, room: values.classroom, description: values.description, date: values.date, userId: values.userId, user: values.user});
+        // api.set_ticket(new Object({ userId: values.userId, description: values.description, locationId: values.locationId, classroomId: values.classroomId, date: values.date, problemId: values.problemId, solved:values.solved }));
+        // const a = new Object({ date: values.date, description: values.description, problemId: values.problemId, problem: values.problem, classroomId: values.classroomId, classroom: values.classroom, userId: values.userId, user: values.user});
+        // console.log(a);
+        const a = new Object({ userId: values.userId, description: values.description, locationId: values.locationId, classroomId: values.classroomId, date: values.date, problemId: values.problemId, solved:values.solved });
         console.log(a);
     }
 
@@ -89,7 +93,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             <form>
                 <div className="problem"> 
                     <label>Problem type:</label>
-                    <select name='problem' value={`${this.state.problemOptions}`} onChange={this.handleChange}>
+                    <select name='problemId' value={`${this.state.problemId}`} onChange={this.handleChange}>
                         <option value="0">Select a problem</option>
                         {this.populateOptions(this.state.problemOptions)}
                     </select>
@@ -97,7 +101,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 <br/>
                 <div className="location"> 
                     <label>Location:</label>
-                    <select name='location' value={`${this.state.location}`} onChange={this.handleChange}>
+                    <select name='locationId' value={`${this.state.locationId}`} onChange={this.handleChange}>
                         <option value="0">Select a location</option>
                         <option value="1">Kralingse Zoom</option>
                         <option value="2">Kralingse Zoom</option>
@@ -108,7 +112,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 <br/>
                 <div className="classroom"> 
                     <label>Classroom:</label>
-                    <select name="classroom" value={`${this.state.classroom}`} onChange={this.handleChange}>
+                    <select name="classroomId" value={`${this.state.classroomId}`} onChange={this.handleChange}>
                         <option value="0">Select a classroom</option>
                         <option value="0907662">H.4.312</option>
                         <option value="0907662">H.4.312</option>
