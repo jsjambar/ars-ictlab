@@ -65,13 +65,13 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
         const values = this.state;
         api.updateClassroom(
             new Object({
-                ClassroomId: values.id,
-                LocationId: values.location,
-                Name: values.room,
-                StartTime: this.getDate(values.start), 
-                EndTime: this.getDate(values.end),
-                IsPublic: values.public,
-                IsDisabled: values.available
+                id: values.id,
+                location_id: values.location,
+                name: values.room,
+                start_time: this.getDate(values.start), 
+                end_time: this.getDate(values.end),
+                is_public: values.public,
+                is_disabled: values.available
             }), values.id
         );
         //redirect or something id undno
@@ -93,20 +93,20 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
     getClassroom(classroomId){
         api.getClassroom(classroomId)
         .then(classroom => this.setState({
-            id: classroom.classroomId,
-            end: classroom.endTime.getHours(),
-            available: classroom.isDisabled,
-            public: classroom.isPublic,
-            location: classroom.locationId,
+            id: classroom.id,
+            end: classroom.end_time.getHours(),
+            available: classroom.is_disabled,
+            public: classroom.is_public,
+            location: classroom.location_id,
             room: classroom.name,
-            start: classroom.startTime.getHours()
+            start: classroom.start_time.getHours()
         }))
         .catch(e => console.log("getClassroom, " + e))
     }
 
     locationList() {
         const listItems = this.state.locations.map((location) =>
-          <option value={location.locationId}>
+          <option value={location.id}>
             {location.name}
           </option>
         );

@@ -13,8 +13,8 @@ export class ReservationComponent extends React.Component<reservationComponentPr
 
     public render() {
         return <tr>
-            <th scope="row">{this.props.reservation.reservationid}    </th>
-            <td>{this.props.reservation.classroomid}</td>
+            <th scope="row">{this.props.reservation.id}    </th>
+            <td>{this.props.reservation.classroom_id}</td>
         </tr>
     }
 

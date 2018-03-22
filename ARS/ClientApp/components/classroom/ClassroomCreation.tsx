@@ -61,13 +61,13 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
         const values = this.state;
         api.createClassroom(
             new Object({
-                ClassroomId: 0,
-                LocationId: values.location,
-                Name: values.room,
-                StartTime: this.getDate(values.start), 
-                EndTime: this.getDate(values.end),
-                IsPublic: values.public,
-                IsDisabled: values.available
+                id: 0,
+                location_id: values.location,
+                name: values.room,
+                start_time: this.getDate(values.start), 
+                end_time: this.getDate(values.end),
+                is_public: values.public,
+                is_disabled: values.available
             })
         );
         //redirect or something id undno
@@ -86,7 +86,7 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     locationList() {
         console.log(this.state.locations);
         const listItems = this.state.locations.map((location) =>
-          <option value={location.locationId}>
+          <option value={location.id}>
             {location.name}
           </option>
         );
