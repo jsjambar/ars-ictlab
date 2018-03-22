@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ARS.Models.Contexts;
 using ARS.Models;
 
 namespace ARS.Controllers
@@ -13,9 +12,9 @@ namespace ARS.Controllers
     [Route("api/Role")]
     public class RoleController : Controller
     {
-        private readonly RoleContext Context;
+        private readonly DatabaseContext Context;
 
-        public RoleController(RoleContext context)
+        public RoleController(DatabaseContext context)
         {
             this.Context = context;
 

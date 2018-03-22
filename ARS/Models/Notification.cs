@@ -7,14 +7,14 @@ namespace ARS.Models
 {
     public class Notification
     {
-        public int NotificationId { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public int RoleId { get; set; }
-        public Role Role { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime Date { get; set; }
-        public bool Read { get; set; }
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public User user { get; set; }
+        public int role_id { get; set; }
+        public Role role { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public DateTime created_at { get; set; }
+        public bool read { get; set; }
     }
 }

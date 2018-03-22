@@ -7,15 +7,12 @@ namespace ARS.Models
 {
     public class User
     {
-        public long UserId { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public int RoleId { get; set; }
-        public List<Notification> Notifications { get; set; }
+        public long id { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public int role_id { get; set; }
+        public List<Notification> notifications { get; set; }
     }
 }

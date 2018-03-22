@@ -8,11 +8,13 @@ export async function get_users() : Promise<Immutable.List<User>> {
       { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
+    console.log(json)
     return json as Immutable.List<User>
 }
  
-export async function set_users(user:User) {
-  let res = await fetch(`/api/User/register`, 
+export async function set_user(user) {
+  console.log("user to add: " + JSON.stringify(user))
+  let res = await fetch(`/api/User/add`, 
       { method: 'post',
         body: JSON.stringify(user), 
         credentials: 'include', 
@@ -36,7 +38,7 @@ export async function set_reservation(reservation: Object) {
 }
 
 export async function get_reservations(): Promise<Immutable.List<Reservation>>  {
-    let res = await fetch(`/api/Reservations`,
+    let res = await fetch(`/api/Reservation/all`,
         {
             method: 'get',
             credentials: 'include',
@@ -49,13 +51,12 @@ export async function get_reservations(): Promise<Immutable.List<Reservation>>  
 
 
 export async function getUser(userId:Number) : Promise<User> {
-  let res = await fetch(`/api/user/1`, 
+  let res = await fetch(`/api/user/` + userId, 
       { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
     return json as User;
 }
-
 
 export async function getTickets() : Promise<Immutable.List<Ticket>>{
   let res = await fetch(`/api/Ticket/all`, 
@@ -76,4 +77,44 @@ export async function set_ticket(ticket: Object) {
         })
     if (!res.ok) throw Error(res.statusText)
     return "Ticket submitted"
+}
+
+export async function createClassroom(classroom){
+    let res = await fetch(`api/Classroom`, {
+        method: 'post',
+        body: JSON.stringify(classroom), 
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) throw Error(res.statusText)
+    return "Created classroom";
+}
+
+export async function getLocations() : Promise<Immutable.List<Location>> {
+    let res = await fetch(`/api/Location/all`, 
+    { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+  if (!res.ok) throw Error(res.statusText)
+  let json = await res.json()
+  return json as Immutable.List<Location>
+}
+
+export async function getClassroom(classroomId:Number) : Promise<Classroom> {
+    let res = await fetch(`/api/classroom/` + classroomId, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+      if (!res.ok) throw Error(res.statusText)
+      let json = await res.json()
+      return json as Classroom;
+}
+
+export async function updateClassroom(classroom, classroomId){
+    let res = await fetch(`api/classroom/` + classroomId, {
+        method: 'post',
+        body: JSON.stringify(classroom), 
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) throw Error(res.statusText)
+    return "Updated classroom";
 }

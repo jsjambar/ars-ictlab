@@ -2,6 +2,9 @@
   "name": "ARS",
   "private": true,
   "version": "0.0.0",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
   "devDependencies": {
     "@types/history": "4.6.0",
     "@types/react": "15.0.35",
@@ -32,6 +35,6 @@
     "webpack-hot-middleware": "2.18.2"
   },
   "dependencies": {
-    "immutable": "^3.8.2"
+    "immutable": "https://registry.npmjs.org/immutable/-/immutable-3.8.2.tgz"
   }
 }

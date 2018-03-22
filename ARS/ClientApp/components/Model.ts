@@ -1,56 +1,58 @@
 import { Classrooms } from "./classroom/Classrooms";
 
 export type User = {
-    userId:number|null,
+    id:number|0,
     username:string,
-    firstName:string,
-    lastName:string,
+    first_name:string,
+    last_name:string,
     password:string,
-    roleId:number,
+    role_id:number,
 }
 
 export type Role = {
-    RoleId:number|null,
-    Name:string
+    id:number|null,
+    name:string
 }
 
 export type Classroom = {
-    ClassroomId:number|null,
+    id:number|null,
     name:string,
-    Description:string,
-    StartTime:Date,
-    EndTime:Date,
-    IsDisabled:boolean,
-    locationId:number,
+    start_time:Date,
+    end_time:Date,
+    is_public:boolean,
+    is_disabled:boolean
+    location_id:number
 }
 
 export type Location = {
-    LocationId:number|null,
-    Name:string,
-    Description:string
+    id:number|null,
+    name:string
 }
 
 export type Reservation = {
-    ReservationId:number|null,
-    Date:Date,
-    Starttime:Date,
-    Endtime:Date,
-    UserId:number,
-    User:User,
-    ClassroomID:number,
+    id:number|null,
+    created_at:Date,
+    start_time:Date,
+    end_time:Date,
+    user_id:number,
+    user:User,
+    classroom_id:number
 }
 
 export type Problem = {
-    ProblemId:number|null,
+    id:number|null,
     name:string
 }
 
 export type Ticket = {
-    ticketId: number|null,
+    id: number|null,
+    user_id: number,
     user: User,
     image: string,
     date: Date,
+    problem_id: number,
     problem: Problem,
+    classroom_id: number,
     classroom: Classroom,
     description: string
 }

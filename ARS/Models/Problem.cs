@@ -7,7 +7,7 @@ namespace ARS.Models
 {
     public class Problem
     {
-        public long ProblemId { get; set; }
-        public string Name { get; set; }
+        public long id { get; set; }
+        public string name { get; set; }
     }
 }

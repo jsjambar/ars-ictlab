@@ -70,7 +70,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     setReservation() {
         const values = this.state;
-        api.set_reservation(new Object({ date: "0000-00-00", start: values.start, end: values.end, classroom: values.classroom }));
+        //api.set_reservation(new Object({ date: "0000-00-00", start: values.start, end: values.end, classroom: values.classroom }));
     }
 
     public render() {

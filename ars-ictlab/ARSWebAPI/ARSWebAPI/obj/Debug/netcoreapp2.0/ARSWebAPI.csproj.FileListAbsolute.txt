@@ -1,0 +1,11 @@
+D:\ARSWebAPI\ARSWebAPI\bin\Debug\netcoreapp2.0\ARSWebAPI.deps.json
+D:\ARSWebAPI\ARSWebAPI\bin\Debug\netcoreapp2.0\ARSWebAPI.runtimeconfig.json
+D:\ARSWebAPI\ARSWebAPI\bin\Debug\netcoreapp2.0\ARSWebAPI.runtimeconfig.dev.json
+D:\ARSWebAPI\ARSWebAPI\bin\Debug\netcoreapp2.0\ARSWebAPI.dll
+D:\ARSWebAPI\ARSWebAPI\obj\Debug\netcoreapp2.0\ARSWebAPI.csprojResolveAssemblyReference.cache
+D:\ARSWebAPI\ARSWebAPI\obj\Debug\netcoreapp2.0\ARSWebAPI.csproj.CoreCompileInputs.cache
+D:\ARSWebAPI\ARSWebAPI\obj\Debug\netcoreapp2.0\ARSWebAPI.AssemblyInfoInputs.cache
+D:\ARSWebAPI\ARSWebAPI\obj\Debug\netcoreapp2.0\ARSWebAPI.AssemblyInfo.cs
+D:\ARSWebAPI\ARSWebAPI\bin\Debug\netcoreapp2.0\ARSWebAPI.pdb
+D:\ARSWebAPI\ARSWebAPI\obj\Debug\netcoreapp2.0\ARSWebAPI.dll
+D:\ARSWebAPI\ARSWebAPI\obj\Debug\netcoreapp2.0\ARSWebAPI.pdb

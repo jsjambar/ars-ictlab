@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ARS.Models.Contexts;
 using ARS.Models;
 
 namespace ARS.Controllers
@@ -13,9 +12,9 @@ namespace ARS.Controllers
     [Route("api/location")]
     public class LocationController : Controller
     {
-        private readonly LocationContext Context;
+        private readonly DatabaseContext Context;
 
-        public LocationController(LocationContext context)
+        public LocationController(DatabaseContext context)
         {
             this.Context = context;
 
@@ -23,8 +22,22 @@ namespace ARS.Controllers
             {
                 this.Context.Locations.Add(new Location
                 {
-                    Name = "Wijnhaven",
-                    Description = "Best Hogeschool Rotterdam Location"
+                    name = "Wijnhaven 61"
+                });
+
+                this.Context.Locations.Add(new Location
+                {
+                    name = "Wijnhaven 99"
+                });
+
+                this.Context.Locations.Add(new Location
+                {
+                    name = "Wijnhaven 122"
+                });
+
+                this.Context.Locations.Add(new Location
+                {
+                    name = "Wijnhaven 163"
                 });
 
                 this.Context.SaveChanges();
@@ -42,10 +55,10 @@ namespace ARS.Controllers
             this.Context.Locations.Add(location);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetLocation", new { id = location.LocationId }, location);
+            return CreatedAtRoute("GetLocation", new { id = location.id }, location);
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public IEnumerable<Location> GetAll()
         {
             return this.Context.Locations.ToList();
@@ -54,7 +67,7 @@ namespace ARS.Controllers
         [HttpGet("{id}", Name = "GetLocation")]
         public IActionResult GetById(long id)
         {
-            Location item = this.Context.Locations.FirstOrDefault(c => c.LocationId == id);
+            Location item = this.Context.Locations.FirstOrDefault(c => c.id == id);
 
             if (item == null)
             {
@@ -67,20 +80,19 @@ namespace ARS.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] Location location)
         {
-            if (location == null || location.LocationId != id)
+            if (location == null || location.id != id)
             {
                 return BadRequest();
             }
 
-            Location updatedLocation = this.Context.Locations.FirstOrDefault(t => t.LocationId == id);
+            Location updatedLocation = this.Context.Locations.FirstOrDefault(t => t.id == id);
 
             if (updatedLocation == null)
             {
                 return NotFound();
             }
 
-            updatedLocation.Name = location.Name;
-            updatedLocation.Description = location.Description;
+            updatedLocation.name = location.name;
 
             this.Context.Locations.Update(updatedLocation);
             this.Context.SaveChanges();
@@ -91,7 +103,7 @@ namespace ARS.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            Location location = this.Context.Locations.FirstOrDefault(c => c.LocationId  == id);
+            Location location = this.Context.Locations.FirstOrDefault(c => c.id  == id);
 
             if (location == null)
             {
