@@ -19,7 +19,7 @@ export const routes = <Layout>
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
     <Route path='/Helpdesk' component={ Helpdesk } />
-    <Route path='/helpdesk/TicketForm' component={TicketForm} />
+    <Route path='/TicketForm' component={TicketForm} />
     {/* <Route path='/reservation' component={ Reservation } /> */}
     <Route path='/reservation' component={ Reservations } />
 </Layout>;

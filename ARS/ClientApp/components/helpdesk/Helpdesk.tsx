@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { Ticket } from '../Model'
 import * as api from '../Api';
 import { TicketComponent } from './Ticket';
+import { Link } from 'react-router-dom';
 
 export type TicketState = {tickets:immutable.List<Ticket>}
 
@@ -18,11 +19,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 "image": null,
                 "problemId": 1,
                 "problem": {
-                    "name": "Kan geen reservering plaatsen",
-                    "classroom": {
-                        "name": "H.3.312",
-                        "locationId": 1
-                    }
+                    "name": "Kan geen reservering plaatsen"
+                },
+                "classroomId": 1,
+                "classroom":{
+                    "name": "H.3.312",
+                    "locationId": 1
                 },
                 "userId": 1,
                 "user": {
@@ -39,11 +41,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 "image": null,
                 "problemId": 1,
                 "problem": {
-                    "name": "Kan geen reservering plaatsen",
-                    "classroom": {
-                        "name": "H.3.312",
-                        "locationId": 1
-                    }
+                    "name": "Kan geen reservering plaatsen"
+                },
+                "classroomId": 1,
+                "classroom": {
+                    "name": "H.3.312",
+                    "locationId": 1
                 },
                 "userId": 1,
                 "user": {
@@ -60,11 +63,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 "image": null,
                 "problemId": 1,
                 "problem": {
-                    "name": "Kan geen reservering plaatsen",
-                    "classroom": {
-                        "name": "H.3.312",
-                        "locationId": 1
-                    }
+                    "name": "Kan geen reservering plaatsen"
+                },
+                "classroomId": 1,
+                "classroom": {
+                    "name": "H.3.312",
+                    "locationId": 1
                 },
                 "userId": 1,
                 "user": {
@@ -81,11 +85,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 "image": null,
                 "problemId": 1,
                 "problem": {
-                    "name": "Kan geen reservering plaatsen",
-                    "classroom": {
-                        "name": "H.3.312",
-                        "locationId": 1
-                    }
+                    "name": "Kan geen reservering plaatsen"
+                },
+                "classroomId": 1,
+                "classroom": {
+                    "name": "H.3.312",
+                    "locationId": 1
                 },
                 "userId": 1,
                 "user": {
@@ -102,11 +107,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 "image": null,
                 "problemId": 1,
                 "problem": {
-                    "name": "Kan geen reservering plaatsen",
-                    "classroom": {
-                        "name": "H.3.312",
-                        "locationId": 1
-                    }
+                    "name": "Kan geen reservering plaatsen"
+                },
+                "classroomId": 1,
+                "classroom": {
+                    "name": "H.3.312",
+                    "locationId": 1
                 },
                 "userId": 1,
                 "user": {
@@ -139,7 +145,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             <div className="page-header">
                 <h4>Helpdesk overview : Student tickets</h4>
                 <div className="ticketsBtn">
-                    <button href="/classroom">Add</button>
+                    <button type="button"><Link className='button' to={ '/TicketForm' }>Add</Link></button>
                     <button>Edit</button>
                 </div>
             </div>

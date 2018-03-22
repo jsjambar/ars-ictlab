@@ -23,10 +23,7 @@ namespace ARS.Controllers
                     Date = DateTime.Now,
                     UserId =1,
                     Problem = new Problem{
-                        Name = "Kan geen reserveringen plaatsen.",
-                        ClassRoom = new ClassRoom{
-                            Name = "H.3.312"
-                        }
+                        Name = "Kan geen reserveringen plaatsen."
                     },
                     Description = "Dashboard laat geen beeld zien, kan geen reservering plaatsen."
                 });

@@ -64,3 +64,16 @@ export async function getTickets() : Promise<Immutable.List<Ticket>>{
   let json = await res.json()
   return json as Immutable.List<Ticket>
 }
+
+
+export async function set_ticket(ticket: Object) {
+    let res = await fetch(`/api/Ticket/create`,
+    {
+        method: 'post',
+        body: JSON.stringify(ticket),
+        credentials: 'include',
+        headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) throw Error(res.statusText)
+    return "Ticket submitted"
+}

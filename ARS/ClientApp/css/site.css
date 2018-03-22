@@ -39,6 +39,43 @@ h4{
 
 /* HELPDESK */
 
+/* TicketForm */
+.problem select{
+    margin-left: 100px;
+    width: 150px;
+}
+
+.location select{
+    margin-left: 130px;
+    width: 150px;
+}
+
+.classroom select{
+    margin-left: 115px;
+    width: 150px;
+}
+
+.description textarea{
+    margin-left: 110px;
+    width: 250px;
+    height: 200px;
+}
+
+.date select{
+    margin-left: 156px;
+}
+
+.time select{
+    margin-left: 155px;
+}
+
+.formButton button{
+    margin-right: 10px;
+}
+
+
+/* TicketForm */
+
 @media (max-width: 767px) {
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
     body {

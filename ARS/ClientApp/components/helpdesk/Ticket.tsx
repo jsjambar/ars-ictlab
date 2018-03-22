@@ -16,10 +16,10 @@ export class TicketComponent extends React.Component<TicketComponentProps, {}> {
                 <th scope="row">{this.props.ticket.ticketId}    </th>
                 <td>{this.props.ticket.user.firstName +" "+ this.props.ticket.user.lastName}</td>
                 <td>{this.props.ticket.user.username}</td>
-                <td>{this.props.ticket.problem.classroom.locationId}</td>
-                <td>{this.props.ticket.problem.classroom.name}</td>
+                <td>{this.props.ticket.classroom.locationId}</td>
+                <td>{this.props.ticket.classroom.name}</td>
                 <td>{this.props.ticket.date}</td>
-                <td>{this.props.ticket.time}</td>
+                <td>{this.props.ticket.date.getTime}</td>
                 <td>{this.props.ticket.problem.name}</td>
             </tr>
     }

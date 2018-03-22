@@ -9,7 +9,5 @@ namespace ARS.Models
     {
         public long ProblemId { get; set; }
         public string Name { get; set; }
-        public int ClassRoomId { get; set; }
-        public ClassRoom ClassRoom { get; set; }
     }
 }

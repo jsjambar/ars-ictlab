@@ -42,8 +42,7 @@ export type Reservation = {
 
 export type Problem = {
     ProblemId:number|null,
-    name:string,
-    classroom: Classroom
+    name:string
 }
 
 export type Ticket = {
@@ -51,7 +50,7 @@ export type Ticket = {
     user: User,
     image: string,
     date: Date,
-    time: Date,
-    problem: Problem
+    problem: Problem,
+    classroom: Classroom,
     description: string
 }
