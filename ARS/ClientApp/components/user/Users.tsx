@@ -57,6 +57,14 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         .catch(e => console.log("error, " + e))
     }
 
+    updateUser(u:User){
+        api.update_user(u)
+        .then(m => console.log("success, " + m))
+        .then(_ => this.switchPage({name:"show"}))
+        .then(_ => this.getUsers())
+        .catch(e => console.log("error, " + e))
+    }
+
     switchPage(page:Page){
         this.setState({...this.state, page:page})
     }
@@ -116,7 +124,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                             Show Users
                         </button>
                         <hr />  
-                        <UserComponent user={this.state.page.user} deleteUser={id => this.deleteUser(id)} />
+                        <UserComponent user={this.state.page.user} deleteUser={id => this.deleteUser(id)} updateUser={u => this.updateUser(u)} />
                     </div>
                 : null
             }

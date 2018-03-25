@@ -36,6 +36,17 @@ export async function delete_user(id:number){
     )
 }
 
+export async function update_user(u:User){
+    let res = await fetch('/api/User/'+u.id,
+        {
+            method:'put',
+            body: JSON.stringify(u),
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+}
+
 export async function set_reservation(reservation: Object) {
     let res = await fetch(`/api/Reservation/add`,
     {
