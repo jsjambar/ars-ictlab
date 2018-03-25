@@ -38,6 +38,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         api.set_user(user)
         .then(m => console.log("success, " + m))
         .then(_ => this.switchPage("show"))
+        .then(_ => this.getUsers())
         .catch(e => console.log("error, " + e))
     }
 
