@@ -3,7 +3,7 @@ import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import { User } from '../Model'
 
-export type UserComponentProps = {user:User}
+export type UserComponentProps = {user:User, deleteUser:(id:number)=>void}
 
 export class UserComponent extends React.Component<UserComponentProps, {}> {
     constructor() {
@@ -34,7 +34,7 @@ export class UserComponent extends React.Component<UserComponentProps, {}> {
                 Edit
             </button>
             &nbsp;
-            <button className="btn btn-danger" onClick={() => console.log("Delete")}>
+            <button className="btn btn-danger" onClick={() => this.props.deleteUser(this.props.user.id)}>
                 Delete
             </button>
         </div>

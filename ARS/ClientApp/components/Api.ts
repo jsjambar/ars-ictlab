@@ -25,6 +25,17 @@ export async function set_user(user) {
   return "Registered"
 }
 
+export async function delete_user(id:number){
+    let res = await fetch('/api/User/'+id,
+        {
+            method:'delete',
+            body:{},
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+}
+
 export async function set_reservation(reservation: Object) {
     let res = await fetch(`/api/Reservation/add`,
     {
