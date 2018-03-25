@@ -22,28 +22,28 @@ export class UserForm extends React.Component<UserFormProps, UserFormState> {
     }
 
     verifyForm():boolean{
-        // const u = this.state.user
-        // return u.username == "" ||
-        // u.first_name == "" ||
-        // u.last_name == "" ||
-        // u.password == "" || 
-        // u.role_id == 0
-        return true
+        const u = this.state.user
+        return u.username == "" ||
+        u.first_name == "" ||
+        u.last_name == "" ||
+        u.password == "" || 
+        u.role_id == 0
     }
 
     public render() {
         return <div className="row">
             {JSON.stringify(this.state.user)}
-            {/* <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, user:{...this.state.user, username:e.currentTarget.value}})} /><br />
-            <input className="form-control" type="text" placeholder="Firstname" onChange={e => this.setState({...this.state, user:{...this.state.user, firstname:e.currentTarget.value}})} /><br />
-            <input className="form-control" type="text" placeholder="Lastname" onChange={e => this.setState({...this.state, user:{...this.state.user, lastname:e.currentTarget.value}})} /><br />
+            <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, user:{...this.state.user, username:e.currentTarget.value}})} /><br />
+            <input className="form-control" type="text" placeholder="Firstname" onChange={e => this.setState({...this.state, user:{...this.state.user, first_name:e.currentTarget.value}})} /><br />
+            <input className="form-control" type="text" placeholder="Lastname" onChange={e => this.setState({...this.state, user:{...this.state.user, last_name:e.currentTarget.value}})} /><br />
             <input className="form-control"type="password" placeholder="Password" onChange={e => this.setState({...this.state, user:{...this.state.user, password:e.currentTarget.value}})} /><br />
-            <select className="form-control" onChange={e => this.setState({...this.state, user:{...this.state.user, roleId:+e.currentTarget.value}})} >
+            <select className="form-control" onChange={e => this.setState({...this.state, user:{...this.state.user, role_id:+e.currentTarget.value}})} >
+                <option value="0">Select Role   </option>
                 <option value="1">Student</option>
                 <option value="2">Administrator</option>
             </select>
             <br />
-            <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.props.setUser(this.state.user)}>Add User</button> */}
+            <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.props.setUser(this.state.user)}>Add User</button>
         </div>
     }
 
