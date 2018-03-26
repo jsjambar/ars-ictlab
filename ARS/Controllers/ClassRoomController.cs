@@ -61,6 +61,12 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("location/{id}", Name = "GetLocationClassrooms")]
+        public IEnumerable<Classroom> GetClassByLocId(long id)
+        {
+            return this.Context.Classrooms.Where(c => c.location_id == id).ToList();
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] Classroom classroom)
         {

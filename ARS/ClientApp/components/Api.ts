@@ -1,6 +1,6 @@
 import * as Immutable from "immutable"
 
-import { User, Role, Classroom, Location, Reservation,Problem, Ticket } from './Model'
+import { User, Role, Classroom, Location, Reservation, Problem, Ticket } from './Model'
 import { UserComponent } from "./user/User";
 
 export async function get_users() : Promise<Immutable.List<User>> {
@@ -59,15 +59,15 @@ export async function getUser(userId:Number) : Promise<User> {
 }
 
 export async function getTickets() : Promise<Immutable.List<Ticket>>{
-  let res = await fetch(`/api/Ticket/all`, 
+    let res = await fetch(`/api/Ticket/all`, 
     { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
-  if (!res.ok) throw Error(res.statusText)
-  let json = await res.json()
-  return json as Immutable.List<Ticket>
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Immutable.List<Ticket>
 }
 
 
-export async function set_ticket(ticket: Object) {
+export async function createTicket(ticket: Object) {
     let res = await fetch(`/api/Ticket/create`,
     {
         method: 'post',
@@ -77,6 +77,30 @@ export async function set_ticket(ticket: Object) {
         })
     if (!res.ok) throw Error(res.statusText)
     return "Ticket submitted"
+}
+
+export async function getProblems() : Promise<Immutable.List<Problem>>{
+    let res = await fetch(`/api/Problem/all`, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Immutable.List<Problem>
+}
+
+export async function getProblem(problem_id: Number) : Promise<Problem>{
+    let res = await fetch(`/api/Problem/` + problem_id, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Problem
+}
+
+export async function getLocationClassrooms(location_id:Number) : Promise<Immutable.List<Classroom>> {
+    let res = await fetch(`/api/classroom/location/` + location_id, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+      if (!res.ok) throw Error(res.statusText)
+      let json = await res.json()
+      return json as Immutable.List<Classroom>;
 }
 
 export async function createClassroom(classroom){

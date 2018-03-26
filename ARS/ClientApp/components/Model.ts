@@ -47,12 +47,10 @@ export type Problem = {
 export type Ticket = {
     id: number|null,
     user_id: number,
-    user: User,
     image: string,
-    date: Date,
+    created_at: Date,
     problem_id: number,
-    problem: Problem,
     classroom_id: number,
-    classroom: Classroom,
-    description: string
+    description: string,
+    solved: boolean
 }

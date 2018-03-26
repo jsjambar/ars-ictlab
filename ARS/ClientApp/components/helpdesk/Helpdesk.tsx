@@ -13,118 +13,113 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         super();
         let sampleTickets = [
             {
-                "ticketId": 1,
-                "date": "2018-03-19T12:37:03.7368648+01:00",
+                "id": 1,
+                "created_at": "2018-03-19T12:37:03.7368648+01:00",
                 "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
-                "image": null,
-                "problemId": 1,
+                "image": "hallo.png",
+                "problem_id": 1,
                 "problem": {
                     "name": "Kan geen reservering plaatsen"
                 },
-                "classroomId": 1,
+                "classroom_id": 1,
                 "classroom":{
                     "name": "H.3.312",
-                    "locationId": 1
+                    "location_id": 1
                 },
-                "userId": 1,
+                "user_id": 1,
                 "user": {
                     "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal",
-                    "birthDate": "0001-01-01T00:00:00",
+                    "first_name": "Mark",
+                    "last_name": "Thal"
                 }
             },
             {
-                "ticketId": 2,
-                "date": "2018-03-19T11:49:38.8496539+01:00",
-                "description": "Kan geen reservering plaatsen 1",
-                "image": null,
-                "problemId": 1,
+                "id": 2,
+                "created_at": "2018-03-19T12:37:03.7368648+01:00",
+                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
+                "image": "hallo.png",
+                "problem_id": 1,
                 "problem": {
                     "name": "Kan geen reservering plaatsen"
                 },
-                "classroomId": 1,
-                "classroom": {
+                "classroom_id": 1,
+                "classroom":{
                     "name": "H.3.312",
-                    "locationId": 1
+                    "location_id": 1
                 },
-                "userId": 1,
+                "user_id": 1,
                 "user": {
                     "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal",
-                    "birthDate": "0001-01-01T00:00:00",
+                    "first_name": "Mark",
+                    "last_name": "Thal"
                 }
             },
             {
-                "ticketId": 3,
-                "date": "2018-03-19T11:49:38.8496539+01:00",
-                "description": "Kan geen reservering plaatsen 2",
-                "image": null,
-                "problemId": 1,
+                "id": 3,
+                "created_at": "2018-03-19T12:37:03.7368648+01:00",
+                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
+                "image": "hallo.png",
+                "problem_id": 1,
                 "problem": {
                     "name": "Kan geen reservering plaatsen"
                 },
-                "classroomId": 1,
-                "classroom": {
+                "classroom_id": 1,
+                "classroom":{
                     "name": "H.3.312",
-                    "locationId": 1
+                    "location_id": 1
                 },
-                "userId": 1,
+                "user_id": 1,
                 "user": {
                     "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal",
-                    "birthDate": "0001-01-01T00:00:00",
+                    "first_name": "Mark",
+                    "last_name": "Thal"
                 }
             },
             {
-                "ticketId": 4,
-                "date": "2018-03-19T11:49:38.8496539+01:00",
-                "description": "Kan geen reservering plaatsen 3",
-                "image": null,
-                "problemId": 1,
+                "id": 4,
+                "created_at": "2018-03-19T12:37:03.7368648+01:00",
+                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
+                "image": "hallo.png",
+                "problem_id": 1,
                 "problem": {
                     "name": "Kan geen reservering plaatsen"
                 },
-                "classroomId": 1,
-                "classroom": {
+                "classroom_id": 1,
+                "classroom":{
                     "name": "H.3.312",
-                    "locationId": 1
+                    "location_id": 1
                 },
-                "userId": 1,
+                "user_id": 1,
                 "user": {
                     "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal",
-                    "birthDate": "0001-01-01T00:00:00",
+                    "first_name": "Mark",
+                    "last_name": "Thal"
                 }
             },
             {
-                "ticketId": 5,
-                "date": "2018-03-19T11:49:38.8496539+01:00",
-                "description": "Kan geen reservering plaatsen 4",
-                "image": null,
-                "problemId": 1,
+                "id": 5,
+                "created_at": "2018-03-19T12:37:03.7368648+01:00",
+                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
+                "image": "hallo.png",
+                "problem_id": 1,
                 "problem": {
                     "name": "Kan geen reservering plaatsen"
                 },
-                "classroomId": 1,
-                "classroom": {
+                "classroom_id": 1,
+                "classroom":{
                     "name": "H.3.312",
-                    "locationId": 1
+                    "location_id": 1
                 },
-                "userId": 1,
+                "user_id": 1,
                 "user": {
                     "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal",
-                    "birthDate": "0001-01-01T00:00:00",
+                    "first_name": "Mark",
+                    "last_name": "Thal"
                 }
-            }
+            },
         ];
         
-        this.state= { tickets: immutable.List<Ticket>(sampleTickets) };
+        this.state= { tickets: immutable.List<Ticket>()};
     }
     
     componentWillMount(){
@@ -134,8 +129,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
     getTickets(){
         api.getTickets()
         .then(tickets => {
-              
-            //this.setState({tickets:tickets})
+              this.setState({tickets:tickets})
         })
         .catch(e => console.log("getTickets, " + e))
     }
@@ -164,6 +158,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                     <th scope="col">Date</th>
                                     <th scope="col">Time</th>
                                     <th scope="col">Type problem</th>
+                                    <th scope="col">Solved</th>
                                 </tr>
                             </thead>
                             <tbody>
