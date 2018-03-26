@@ -45,7 +45,7 @@ namespace ARS.Controllers
             return CreatedAtRoute("GetClassroom", new { id = classroom.id}, classroom);
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public IEnumerable<Classroom> GetAll()
         {
             return this.Context.Classrooms.ToList();
