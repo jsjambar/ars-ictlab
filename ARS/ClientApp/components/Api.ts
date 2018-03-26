@@ -58,7 +58,7 @@ export async function getUser(userId:Number) : Promise<User> {
     return json as User;
 }
 
-export async function createClassroom(classroom){
+export async function createClassroom(classroom){    
     let res = await fetch(`api/Classroom`, {
         method: 'post',
         body: JSON.stringify(classroom), 

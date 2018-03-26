@@ -35,8 +35,9 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
     }
 
     getDate(hour){
-        const date = new Date();
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+        var date = new Date();
+        var newDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
+        return newDate;
     }
 
     handleChange(event){
@@ -160,9 +161,9 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                     </select>
                     <br/>
 
-                    <input type="checkbox" name="public"/> Make the room public (this includes students)
+                    <input type="checkbox" name="public" onChange={this.handleChange} checked={this.state.public} /> Make the room public (this includes students)
                     <br/>
-                    <input type="checkbox" name="available"/> Disable the room
+                    <input type="checkbox" name="available" onChange={this.handleChange} checked={this.state.available} /> Disable the room
                     <br/>
                     <button type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
                 </form>

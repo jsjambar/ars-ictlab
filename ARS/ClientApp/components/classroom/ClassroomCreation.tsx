@@ -31,8 +31,10 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     }
 
     getDate(hour){
-        const date = new Date();
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+        var date = new Date();
+        var newDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+        newDate.setHours(hour);
+        return newDate;
     }
 
     handleChange(event){
@@ -59,17 +61,17 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
 
     createClassroom() {
         const values = this.state;
-        console.log(new Object({
-            id: 0,
-            location_id: values.location,
-            name: values.room,
-            start_time: this.getDate(values.start), 
-            end_time: this.getDate(values.end),
-            is_public: values.public,
-            is_disabled: values.available
-        }));
-
-        
+        api.createClassroom(
+            new Object({
+                id: 0,
+                location_id: values.location,
+                name: values.room,
+                start_time: this.getDate(values.start), 
+                end_time: this.getDate(values.end),
+                is_public: values.public,
+                is_disabled: values.available
+            })
+        );
         //redirect or something id undno
     }
 
@@ -138,9 +140,9 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
                     </select>
                     <br/>
 
-                    <input type="checkbox" name="public" onChange={this.handleChange} /> Make the room public (this includes students)
+                    <input type="checkbox" name="public" onChange={this.handleChange} checked={this.state.public} /> Make the room public (this includes students)
                     <br/>
-                    <input type="checkbox" name="available" onChange={this.handleChange} /> Disable the room
+                    <input type="checkbox" name="available" onChange={this.handleChange} checked={this.state.available} /> Disable the room
                     <br/>
                     <button type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
                 </form>
