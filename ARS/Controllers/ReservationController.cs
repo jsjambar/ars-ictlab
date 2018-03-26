@@ -23,7 +23,7 @@ namespace ARS.Controllers
             {
                 this.Context.Reservations.Add(new Reservation
                 {
-                    id = 1,
+                    id = 0,
                     user_id = 1,
                     created_at = new DateTime(2018, 03, 18),
                     start_time = new DateTime(2018, 03, 19, 9, 0, 0),
@@ -34,7 +34,7 @@ namespace ARS.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public IActionResult Create([FromBody] Reservation reservation)
         {
             if (reservation == null)
@@ -45,13 +45,26 @@ namespace ARS.Controllers
             this.Context.Reservations.Add(reservation);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetReservation", new { id = reservation.id }, reservation);
+            return CreatedAtRoute("GetReservation", new { reservation.id }, reservation);
         }
 
         [HttpGet("all")]
         public IEnumerable<Reservation> getAll()
         {
             return this.Context.Reservations.ToList();
+        }
+
+        [HttpGet("{id}", Name = "getReservation")]
+        public IActionResult GetById(long id)
+        {
+            Reservation item = this.Context.Reservations.FirstOrDefault(c => c.id == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return new ObjectResult(item);
         }
     }
 }

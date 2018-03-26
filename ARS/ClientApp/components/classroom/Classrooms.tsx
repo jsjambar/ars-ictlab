@@ -62,7 +62,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         if(values.location != 0 && values.classroom != 0 && 
             values.description != "" && values.start != 0 && values.end != 0){
             this.setReservation();
-            console.log("aishdhdashdsuhdsu");
         } else {
             // show errors for the missing values
         }
@@ -70,7 +69,16 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     setReservation() {
         const values = this.state;
-        //api.set_reservation(new Object({ date: "0000-00-00", start: values.start, end: values.end, classroom: values.classroom }));
+        const date = new Date();
+        api.set_reservation(
+            new Object({
+                id: 0,
+                classroom_id: values.classroom,
+                created_at: date,
+                start: values.start,
+                end: values.end
+            })
+        );
     }
 
     public render() {

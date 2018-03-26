@@ -13,15 +13,15 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         this.state = { reservations: "Loading..." };
     }
 
-    //componentWillMount() {
-    //    this.getReservations()
-    //}
+    componentWillMount() {
+        this.getReservations()
+    }
 
-    //getReservations() {
-    //    api.get_reservations()
-    //    .then(reservations => this.setState({ reservations: reservations }))
-    //    .catch(e => console.log("getReservations, " + e))
-    //}
+    getReservations() {
+        api.get_reservations()
+        .then(reservations => this.setState({ reservations: reservations }))
+        .catch(e => console.log("getReservations, " + e))
+    }
 
     public render() {
         return <div>
@@ -35,10 +35,10 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">ClassroomId</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">StartTime</th>
-                                    <th scope="col">EndTime</th>
+                                    <th scope="col">Classroom Id</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Start Time</th>
+                                    <th scope="col">End Time</th>
                                 </tr>
                             </thead>
                             <tbody>
