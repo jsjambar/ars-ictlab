@@ -86,7 +86,7 @@ export async function getClassroom(classroomId:Number) : Promise<Classroom> {
       return json as Classroom;
 }
 
-export async function updateClassroom(classroom, classroomId){
+export async function updateClassroom(classroomId, classroom){
     let res = await fetch(`api/classroom/` + classroomId, {
         method: 'put',
         body: JSON.stringify(classroom), 
