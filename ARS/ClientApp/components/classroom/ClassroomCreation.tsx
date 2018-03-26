@@ -59,17 +59,17 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
 
     createClassroom() {
         const values = this.state;
-        api.createClassroom(
-            new Object({
-                id: 0,
-                location_id: values.location,
-                name: values.room,
-                start_time: this.getDate(values.start), 
-                end_time: this.getDate(values.end),
-                is_public: values.public,
-                is_disabled: values.available
-            })
-        );
+        console.log(new Object({
+            id: 0,
+            location_id: values.location,
+            name: values.room,
+            start_time: this.getDate(values.start), 
+            end_time: this.getDate(values.end),
+            is_public: values.public,
+            is_disabled: values.available
+        }));
+
+        
         //redirect or something id undno
     }
 
@@ -84,7 +84,6 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     }
 
     locationList() {
-        console.log(this.state.locations);
         const listItems = this.state.locations.map((location) =>
           <option value={location.id}>
             {location.name}
@@ -139,9 +138,9 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
                     </select>
                     <br/>
 
-                    <input type="checkbox" name="public"/> Make the room public (this includes students)
+                    <input type="checkbox" name="public" onChange={this.handleChange} /> Make the room public (this includes students)
                     <br/>
-                    <input type="checkbox" name="available"/> Disable the room
+                    <input type="checkbox" name="available" onChange={this.handleChange} /> Disable the room
                     <br/>
                     <button type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
                 </form>

@@ -77,6 +77,11 @@ namespace ARS.Controllers
             }
 
             foundClassroom.name = classroom.name;
+            foundClassroom.location_id = classroom.location_id;
+            foundClassroom.start_time = classroom.start_time;
+            foundClassroom.end_time = classroom.end_time;
+            foundClassroom.is_public = classroom.is_public;
+            foundClassroom.is_disabled = classroom.is_disabled;
 
             this.Context.Classrooms.Update(foundClassroom);
             this.Context.SaveChanges();
