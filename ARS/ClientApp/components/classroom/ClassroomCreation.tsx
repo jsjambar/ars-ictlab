@@ -31,8 +31,10 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     }
 
     getDate(hour){
-        const date = new Date();
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+        var date = new Date();
+        var newDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+        newDate.setHours(hour);
+        return newDate;
     }
 
     handleChange(event){
@@ -84,7 +86,6 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     }
 
     locationList() {
-        console.log(this.state.locations);
         const listItems = this.state.locations.map((location) =>
           <option value={location.id}>
             {location.name}
@@ -139,9 +140,9 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
                     </select>
                     <br/>
 
-                    <input type="checkbox" name="public"/> Make the room public (this includes students)
+                    <input type="checkbox" name="public" onChange={this.handleChange} checked={this.state.public} /> Make the room public (this includes students)
                     <br/>
-                    <input type="checkbox" name="available"/> Disable the room
+                    <input type="checkbox" name="available" onChange={this.handleChange} checked={this.state.available} /> Disable the room
                     <br/>
                     <button type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
                 </form>

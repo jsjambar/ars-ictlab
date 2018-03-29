@@ -25,6 +25,27 @@ export async function set_user(user) {
   return "Registered"
 }
 
+export async function delete_user(id:number){
+    let res = await fetch('/api/User/'+id,
+        {
+            method:'delete',
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+}
+
+export async function update_user(u:User){
+    let res = await fetch('/api/User/'+u.id,
+        {
+            method:'put',
+            body: JSON.stringify(u),
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+}
+
 export async function set_reservation(reservation: Object) {
     let res = await fetch(`/api/Reservation/add`,
     {
@@ -123,12 +144,21 @@ export async function getLocations() : Promise<Immutable.List<Location>> {
   return json as Immutable.List<Location>
 }
 
+
 export async function getLocation(location_id: Number) : Promise<Location> {
     let res = await fetch(`/api/Location/` + location_id, 
     { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
   if (!res.ok) throw Error(res.statusText)
   let json = await res.json()
   return json as Location
+}
+
+export async function getClassrooms() : Promise<Immutable.List<Classroom>> {
+    let res = await fetch(`/api/classroom/all`, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+      if (!res.ok) throw Error(res.statusText)
+      let json = await res.json()
+      return json as Immutable.List<Classroom>;
 }
 
 export async function getClassroom(classroomId:Number) : Promise<Classroom> {
@@ -139,9 +169,9 @@ export async function getClassroom(classroomId:Number) : Promise<Classroom> {
       return json as Classroom;
 }
 
-export async function updateClassroom(classroom, classroomId){
+export async function updateClassroom(classroomId, classroom){
     let res = await fetch(`api/classroom/` + classroomId, {
-        method: 'post',
+        method: 'put',
         body: JSON.stringify(classroom), 
         credentials: 'include', 
         headers:{'content-type': 'application/json'}
@@ -149,4 +179,16 @@ export async function updateClassroom(classroom, classroomId){
 
     if (!res.ok) throw Error(res.statusText)
     return "Updated classroom";
+}
+
+
+export async function deleteClassroom(classroomId){
+    let res = await fetch(`api/classroom/` + classroomId, {
+        method: 'delete',
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) return false;
+    return true;
 }
