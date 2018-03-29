@@ -46,7 +46,7 @@ export type Problem = {
 
 export type Ticket = {
     id: number|null,
-    user_id: number,
+    user_id: number|null,
     image: string,
     created_at: Date,
     problem_id: number,

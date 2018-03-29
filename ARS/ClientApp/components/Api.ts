@@ -123,6 +123,14 @@ export async function getLocations() : Promise<Immutable.List<Location>> {
   return json as Immutable.List<Location>
 }
 
+export async function getLocation(location_id: Number) : Promise<Location> {
+    let res = await fetch(`/api/Location/` + location_id, 
+    { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+  if (!res.ok) throw Error(res.statusText)
+  let json = await res.json()
+  return json as Location
+}
+
 export async function getClassroom(classroomId:Number) : Promise<Classroom> {
     let res = await fetch(`/api/classroom/` + classroomId, 
         { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })

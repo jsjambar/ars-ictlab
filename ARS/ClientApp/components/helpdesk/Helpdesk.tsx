@@ -159,6 +159,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                     <th scope="col">Time</th>
                                     <th scope="col">Type problem</th>
                                     <th scope="col">Solved</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,7 +184,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                 </tr>
                             </thead>
                             <tbody>
-
+                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} />)}
                             </tbody>
                         </table>
                     </div> */}
