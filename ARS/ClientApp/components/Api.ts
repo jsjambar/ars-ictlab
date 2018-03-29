@@ -29,7 +29,6 @@ export async function delete_user(id:number){
     let res = await fetch('/api/User/'+id,
         {
             method:'delete',
-            body:{},
             credentials: 'include',
             headers:{'content-type': 'application/json'}
         }
