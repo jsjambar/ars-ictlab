@@ -80,7 +80,7 @@ export async function getUser(userId:Number) : Promise<User> {
     return json as User;
 }
 
-export async function createClassroom(classroom){
+export async function createClassroom(classroom){    
     let res = await fetch(`api/Classroom`, {
         method: 'post',
         body: JSON.stringify(classroom), 
@@ -100,6 +100,14 @@ export async function getLocations() : Promise<Immutable.List<Location>> {
   return json as Immutable.List<Location>
 }
 
+export async function getClassrooms() : Promise<Immutable.List<Classroom>> {
+    let res = await fetch(`/api/classroom/all`, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+      if (!res.ok) throw Error(res.statusText)
+      let json = await res.json()
+      return json as Immutable.List<Classroom>;
+}
+
 export async function getClassroom(classroomId:Number) : Promise<Classroom> {
     let res = await fetch(`/api/classroom/` + classroomId, 
         { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
@@ -108,9 +116,9 @@ export async function getClassroom(classroomId:Number) : Promise<Classroom> {
       return json as Classroom;
 }
 
-export async function updateClassroom(classroom, classroomId){
+export async function updateClassroom(classroomId, classroom){
     let res = await fetch(`api/classroom/` + classroomId, {
-        method: 'post',
+        method: 'put',
         body: JSON.stringify(classroom), 
         credentials: 'include', 
         headers:{'content-type': 'application/json'}
@@ -118,4 +126,15 @@ export async function updateClassroom(classroom, classroomId){
 
     if (!res.ok) throw Error(res.statusText)
     return "Updated classroom";
+}
+
+export async function deleteClassroom(classroomId){
+    let res = await fetch(`api/classroom/` + classroomId, {
+        method: 'delete',
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) return false;
+    return true;
 }
