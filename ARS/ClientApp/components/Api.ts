@@ -105,3 +105,14 @@ export async function updateClassroom(classroomId, classroom){
     if (!res.ok) throw Error(res.statusText)
     return "Updated classroom";
 }
+
+export async function deleteClassroom(classroomId){
+    let res = await fetch(`api/classroom/` + classroomId, {
+        method: 'delete',
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) return false;
+    return true;
+}

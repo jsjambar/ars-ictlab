@@ -97,6 +97,10 @@ namespace ARS.Controllers
         {
             Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == id);
 
+            var response = new ObjectResult( new {
+                errorStatus = 0
+            });
+
             if(classroom == null)
             {
                 return NotFound();
@@ -105,7 +109,7 @@ namespace ARS.Controllers
             this.Context.Classrooms.Remove(classroom);
             this.Context.SaveChanges();
 
-            return new NoContentResult();
+            return response;
         }
     }
 }

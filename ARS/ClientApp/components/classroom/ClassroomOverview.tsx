@@ -27,13 +27,16 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
         .catch(e => console.log("getClassrooms, " + e))
     }
 
+    update(){
+        console.log("Updated list.");
+    }
+
     public render() {
         return <div>
             <div className="page-header">
                 <h4>Admin: classroom overview</h4>
                 <div className="ticketsBtn">
                     <button className="btn btn-primary" type="button">Add</button>
-                    <button className="btn btn-primary">Edit</button>
                 </div>
             </div>
             {
