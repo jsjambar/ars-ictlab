@@ -61,6 +61,17 @@ export async function getReservation(reservationId: Number): Promise<Reservation
     return json as Reservation;
 }
 
+export async function delete_reservation(reservationId) {
+    let res = await fetch(`/api/Reservation/` + reservationId,
+        {
+            method: 'delete',
+            credentials: 'include',
+            headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) return false;
+    return true;
+}
+
 export async function getUser(userId:Number) : Promise<User> {
   let res = await fetch(`/api/user/` + userId, 
       { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })

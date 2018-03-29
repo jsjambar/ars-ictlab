@@ -66,5 +66,21 @@ namespace ARS.Controllers
 
             return new ObjectResult(item);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            Reservation reservation = this.Context.Reservations.FirstOrDefault(c => c.id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            this.Context.Reservations.Remove(reservation);
+            this.Context.SaveChanges();
+
+            return new NoContentResult();
+        }
     }
 }
