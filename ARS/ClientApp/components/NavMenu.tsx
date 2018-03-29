@@ -17,16 +17,17 @@ export class NavMenu extends React.Component<{}, {}> {
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
                     <ul className='nav navbar-nav'>
-                        {/* <li>
-                            <NavLink to={ '/' } exact activeClassName='active'>
+                        <li>
+                            <NavLink to={ '/home' } exact activeClassName='active'>
                                 <span className='glyphicon glyphicon-home'></span> Home
                             </NavLink>
-                        </li> */}
-                        <li>
+                        </li>
+                        <li>    
                             <NavLink to={'/classroom'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-th-list'></span> Classrooms
+                                <span className='glyphicon glyphicon-th-list'></span> Schedules
                             </NavLink>
                         </li>
+
                         <li>
                             <NavLink to={'/user'} activeClassName='active'>
                                 <span className='glyphicon glyphicon-user'></span> User
@@ -47,6 +48,13 @@ export class NavMenu extends React.Component<{}, {}> {
                                 <span className='glyphicon glyphicon-user'></span> Helpdesk
                             </NavLink>
                         </li>
+
+                        <li>
+                            <NavLink to={'/admin/classrooms/overview'} activeClassName='active'>
+                                <span className='glyphicon glyphicon-cog'></span> Classrooms panel
+                            </NavLink>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>
