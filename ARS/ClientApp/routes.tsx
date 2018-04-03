@@ -7,6 +7,7 @@ import { Users } from './components/user/Users';
 import { Schedule } from './components/user/Schedule';
 import  { Helpdesk } from './components/helpdesk/Helpdesk';
 import {TicketForm} from './components/helpdesk/TicketForm';
+import {TicketEdit} from './components/helpdesk/TicketEdit';
 // import { Reservation } from './components/Reservation'
 
 import { Reservations } from './components/Reservation/Reservations';
@@ -21,8 +22,9 @@ export const routes = <Layout>
     <Route path='/home' component={ Schedule } />
     <Route path='/classroom' component={ Classrooms } />
     <Route path='/user' component={ Users } />
-    <Route path='/Helpdesk' component={ Helpdesk } />
-    <Route path='/TicketForm' component={TicketForm} />
+    <Route path='/Helpdesk/Overview' component={ Helpdesk } />
+    <Route path='/Helpdesk/Add/TicketForm' component={TicketForm} />
+    <Route path='/Helpdesk/Tickets/:id/edit' component={ TicketEdit } />
     {/* <Route path='/reservation' component={ Reservation } /> */}
     <Route path='/reservation' component={ Reservations } />
     <Route path='/admin/classrooms/overview' component={ ClassroomOverview }/>

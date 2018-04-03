@@ -87,6 +87,13 @@ export async function getTickets() : Promise<Immutable.List<Ticket>>{
     return json as Immutable.List<Ticket>
 }
 
+export async function getTicket(id: number) : Promise<Ticket>{
+    let res = await fetch(`/api/Ticket/` + id, 
+    { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Ticket
+}
 
 export async function createTicket(ticket: Object) {
     let res = await fetch(`/api/Ticket/create`,
@@ -98,6 +105,30 @@ export async function createTicket(ticket: Object) {
         })
     if (!res.ok) throw Error(res.statusText)
     return "Ticket submitted"
+}
+
+export async function updateTicket(ticket_id, ticket){
+    let res = await fetch(`api/Ticket/` + ticket_id, {
+        method: 'put',
+        body: JSON.stringify(ticket), 
+        credentials: 'include', 
+        headers:{'content-type': 'application/json'}
+    });
+
+    if (!res.ok) throw Error(res.statusText)
+    return "Updated ticket";
+}
+
+export async function deleteTicket(ticket_id){
+    let res = await fetch('/api/Ticket/'+ticket_id,
+        {
+            method:'delete',
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+    if (!res.ok) return false;
+    return true;
 }
 
 export async function getProblems() : Promise<Immutable.List<Problem>>{

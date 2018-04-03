@@ -6,120 +6,15 @@ import * as api from '../Api';
 import { TicketComponent } from './Ticket';
 import { Link } from 'react-router-dom';
 
-export type TicketState = {tickets:immutable.List<Ticket>}
+export type TicketState = { tickets:immutable.List<Ticket> }
+
 
 export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor(){
         super();
-        let sampleTickets = [
-            {
-                "id": 1,
-                "created_at": "2018-03-19T12:37:03.7368648+01:00",
-                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
-                "image": "hallo.png",
-                "problem_id": 1,
-                "problem": {
-                    "name": "Kan geen reservering plaatsen"
-                },
-                "classroom_id": 1,
-                "classroom":{
-                    "name": "H.3.312",
-                    "location_id": 1
-                },
-                "user_id": 1,
-                "user": {
-                    "username": "0910212",
-                    "first_name": "Mark",
-                    "last_name": "Thal"
-                }
-            },
-            {
-                "id": 2,
-                "created_at": "2018-03-19T12:37:03.7368648+01:00",
-                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
-                "image": "hallo.png",
-                "problem_id": 1,
-                "problem": {
-                    "name": "Kan geen reservering plaatsen"
-                },
-                "classroom_id": 1,
-                "classroom":{
-                    "name": "H.3.312",
-                    "location_id": 1
-                },
-                "user_id": 1,
-                "user": {
-                    "username": "0910212",
-                    "first_name": "Mark",
-                    "last_name": "Thal"
-                }
-            },
-            {
-                "id": 3,
-                "created_at": "2018-03-19T12:37:03.7368648+01:00",
-                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
-                "image": "hallo.png",
-                "problem_id": 1,
-                "problem": {
-                    "name": "Kan geen reservering plaatsen"
-                },
-                "classroom_id": 1,
-                "classroom":{
-                    "name": "H.3.312",
-                    "location_id": 1
-                },
-                "user_id": 1,
-                "user": {
-                    "username": "0910212",
-                    "first_name": "Mark",
-                    "last_name": "Thal"
-                }
-            },
-            {
-                "id": 4,
-                "created_at": "2018-03-19T12:37:03.7368648+01:00",
-                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
-                "image": "hallo.png",
-                "problem_id": 1,
-                "problem": {
-                    "name": "Kan geen reservering plaatsen"
-                },
-                "classroom_id": 1,
-                "classroom":{
-                    "name": "H.3.312",
-                    "location_id": 1
-                },
-                "user_id": 1,
-                "user": {
-                    "username": "0910212",
-                    "first_name": "Mark",
-                    "last_name": "Thal"
-                }
-            },
-            {
-                "id": 5,
-                "created_at": "2018-03-19T12:37:03.7368648+01:00",
-                "description": "Dashboard laat geen beeld zien, kan geen reservering plaatsen.",
-                "image": "hallo.png",
-                "problem_id": 1,
-                "problem": {
-                    "name": "Kan geen reservering plaatsen"
-                },
-                "classroom_id": 1,
-                "classroom":{
-                    "name": "H.3.312",
-                    "location_id": 1
-                },
-                "user_id": 1,
-                "user": {
-                    "username": "0910212",
-                    "first_name": "Mark",
-                    "last_name": "Thal"
-                }
-            },
-        ];
-        
-        this.state= { tickets: immutable.List<Ticket>()};
+        this.state= {
+            tickets: immutable.List<Ticket>()
+        };
     }
     
     componentWillMount(){
@@ -139,28 +34,26 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             <div className="page-header">
                 <h4>Helpdesk overview : Student tickets</h4>
                 <div className="ticketsBtn">
-                    <button type="button"><Link className='button' to={ '/TicketForm' }>Add</Link></button>
-                    <button>Edit</button>
+                    <Link className="btn btn-primary" to={ '/Helpdesk/Add/TicketForm' }>Add</Link>
                 </div>
             </div>
-            {
-                //this.state.tickets != "Loading..." ? 
                 <div>
                     <div>
                         <table className="table">
                             <thead>
-                                <tr>
-                                    <th scope="col"># Ticket</th>
-                                    <th scope="col">Student</th>
-                                    <th scope="col">Student number</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Room</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col">Type problem</th>
-                                    <th scope="col">Solved</th>
-                                    <th scope="col"></th>
-                                </tr>
+                                    <tr>
+                                        <th scope="col"># Ticket</th>
+                                        <th scope="col">Student</th>
+                                        <th scope="col">Student number</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Room</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Type problem</th>
+                                        <th scope="col">Solved</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
                             </thead>
                             <tbody>
                                 {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} />)}
@@ -189,8 +82,6 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                         </table>
                     </div> */}
                 </div>
-                //:"loading..."
-            }
         </div>
     }
 }

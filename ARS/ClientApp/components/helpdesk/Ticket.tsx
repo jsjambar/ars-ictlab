@@ -3,6 +3,7 @@ import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import { Ticket, User, Classroom, Problem, Location } from '../Model';
 import * as api from '../Api';
+import { Link } from 'react-router-dom'
 
 export type TicketComponentProps = {ticket:Ticket, key:number}
 
@@ -86,6 +87,20 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .catch(e => console.log("getLocation, " + e))
     }
 
+    delete_Ticket(){
+        var wantsToDelete = window.confirm("Are you sure you want to delete this Ticket?");
+        if(wantsToDelete){
+            var ticket_id = this;
+            api.deleteTicket(ticket_id)
+            .then(function(deleted){
+                if(deleted){
+                    location.reload();
+                }
+            })
+            .then(m => console.log("success, " + m));
+        }
+    }
+
     public render() {
         var g = new Date(this.props.ticket.created_at);
         var solved = ""
@@ -96,16 +111,17 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         }
 
         return <tr>
-            <th scope="row">{this.props.ticket.id}</th>
-            <td>{this.state.user.first_name + this.state.user.last_name}</td>
-            <td>{this.state.user.username}</td>
-            <td>{this.state.location.name}</td>
-            <td>{this.state.classroom.name}</td>
-            <td>{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</td>
-            <td>{g.getHours() + ":" + g.getMinutes()}</td>
-            <td>{this.state.problem.name}</td>
-            <td>{solved}</td>
-        </tr>
+                <th scope="row">{this.props.ticket.id}</th>
+                <td>{this.state.user.first_name + this.state.user.last_name}</td>
+                <td>{this.state.user.username}</td>
+                <td>{this.state.location.name}</td>
+                <td>{this.state.classroom.name}</td>
+                <td>{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</td>
+                <td>{g.getHours() + ":" + g.getMinutes()}</td>
+                <td>{this.state.problem.name}</td>
+                <td>{solved}</td>
+                <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
+                <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
+            </tr>
     }
-
 }

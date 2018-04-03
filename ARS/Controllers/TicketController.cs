@@ -50,25 +50,59 @@ namespace ARS.Controllers
             return CreatedAtRoute("GetTicket", new { id = ticket.id }, ticket);
         }
 
+        [HttpGet("{id}", Name = "GetTicket")]
+        public IActionResult GetById(long id)
+        {
+            Ticket item = this.Context.Tickets.FirstOrDefault(t => t.id == id);
 
-        // [HttpPost("create1")]
-        // public JsonResult Create([FromBody] Ticket ticket)
-        // {
-        //     if (ticket == null)
-        //     {
-        //         return Json(new { Message = "Ticket is empty"});
-        //     }
+            if (item == null)
+            {
+                return NotFound();
+            }
 
-        //     // ticket.Date = DateTime.Now;
-        //     // ticket.UserId = 1;
-        //     // ticket.Description = "Dashboard laat geen beeld zien, kan geen reservering plaatsen.";
+            return new ObjectResult(item);
+        }
 
-        //     this.Context.Tickets.Add(ticket);
-        //     this.Context.SaveChanges();
+        [HttpPut("{id}")]
+        public IActionResult Update(long id, [FromBody] Ticket ticket)
+        {
+            if (ticket == null || ticket.id != id)
+            {
+                return BadRequest();
+            }
 
-        //     return Json(ticket);
+            Ticket item = this.Context.Tickets.FirstOrDefault(t => t.id == id);
 
-        //     //return CreatedAtRoute("GetTicket", new { id = ticket.TicketId }, ticket);
-        // }
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            item.description = ticket.description;
+            item.classroom_id = ticket.classroom_id;
+            item.solved = ticket.solved;
+            item.problem_id = ticket.problem_id;
+
+            this.Context.Tickets.Update(item);
+            this.Context.SaveChanges();
+
+            return new NoContentResult();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            Ticket item = this.Context.Tickets.FirstOrDefault(t => t.id == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            this.Context.Tickets.Remove(item);
+            this.Context.SaveChanges();
+
+            return new NoContentResult();
+        }
     }
 }
