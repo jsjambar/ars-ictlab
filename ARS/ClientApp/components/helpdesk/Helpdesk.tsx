@@ -6,14 +6,15 @@ import * as api from '../Api';
 import { TicketComponent } from './Ticket';
 import { Link } from 'react-router-dom';
 
-export type TicketState = { tickets:immutable.List<Ticket> }
+export type TicketState = { UserTickets:immutable.List<Ticket>, SystemTickets: immutable.List<Ticket>}
 
 
 export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor(){
         super();
         this.state= {
-            tickets: immutable.List<Ticket>()
+            UserTickets: immutable.List<Ticket>(),
+            SystemTickets: immutable.List<Ticket>()
         };
     }
     
@@ -22,9 +23,10 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
     }
 
     getTickets(){
-        api.getTickets()
-        .then(tickets => {
-              this.setState({tickets:tickets})
+        api.getUserTickets()
+        .then(Tickets => {
+              this.setState({UserTickets:Tickets[0],
+                SystemTickets:Tickets[1]})
         })
         .catch(e => console.log("getTickets, " + e))
     }
@@ -56,7 +58,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                     </tr>
                             </thead>
                             <tbody>
-                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
+                                {this.state.UserTickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
                             </tbody>
                         </table>
                     </div>
@@ -79,7 +81,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                             </thead>
                             <tbody>
                                 
-                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"system"} />)}
+                                {this.state.SystemTickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"system"} />)}
                             </tbody>
                         </table>
                     </div>

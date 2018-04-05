@@ -55,11 +55,13 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
     }
 
     getUser(){
-        api.getUser(this.props.ticket.user_id)
-        .then(user => {
-              this.setState({user:user})
-        })
-        .catch(e => console.log("getUser, " + e))
+        if(this.props.ticket.user_id != 0){
+            api.getUser(this.props.ticket.user_id)
+            .then(user => {
+                this.setState({user:user})
+            })
+            .catch(e => console.log("getUser, " + e))
+        }
     }
 
     getProblem(){

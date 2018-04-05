@@ -31,8 +31,23 @@ namespace ARS.Controllers
         }
 
         [HttpGet("all")]
-        public IEnumerable<Ticket> GetAll(){
-            return this.Context.Tickets.ToList();
+        public List<IEnumerable<Ticket>> GetAll(){
+            List<IEnumerable<Ticket>> f = new List<IEnumerable<Ticket>>();
+            List<Ticket> userTicket = new List<Ticket>();
+            List<Ticket> systemTicket = new List<Ticket>();
+            foreach (Ticket t in this.Context.Tickets)
+            {
+                if(t.user_id == 0){
+                    systemTicket.Add(t);
+                }
+                else{
+                    userTicket.Add(t);
+                }
+            }
+            f.Add(userTicket);
+            f.Add(systemTicket);
+
+            return f;
         }
 
 
