@@ -8,9 +8,8 @@ import { Schedule } from './components/user/Schedule';
 import  { Helpdesk } from './components/helpdesk/Helpdesk';
 import {TicketForm} from './components/helpdesk/TicketForm';
 import {TicketEdit} from './components/helpdesk/TicketEdit';
-// import { Reservation } from './components/Reservation'
-
-import { Reservations } from './components/Reservation/Reservations';
+import { Reservations } from './components/Reservation/ReservationOverview';
+import { ReservationEdit } from './components/Reservation/ReservationEdit';
 import { Login } from './components/user/Login';
 import { ClassroomCreation } from './components/classroom/ClassroomCreation';
 import { ClassroomEdit } from './components/classroom/ClassroomEdit';
@@ -27,6 +26,10 @@ export const routes = <Layout>
     <Route path='/helpdesk/tickets/:id/edit' component={ TicketEdit } />
     <Route path='/reservations' component={ Reservations } />
     <Route path='/admin/classrooms/overview' component={ ClassroomOverview }/>
+    <Route path='/classroom' component={ Classrooms } />
+    <Route path='/user' component={ Users } />
+    <Route path='/reservation/overview' component={ Reservations } />
+    <Route path='/reservation/:id/edit' component={ ReservationEdit } />
     <Route path='/admin/classrooms/create' component={ ClassroomCreation }/>
     <Route path='/admin/classrooms/:id/edit' component={ ClassroomEdit } />
 </Layout>;

@@ -8,7 +8,6 @@ export async function get_users() : Promise<Immutable.List<User>> {
       { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
-    console.log(json)
     return json as Immutable.List<User>
 }
  
@@ -46,14 +45,14 @@ export async function update_user(u:User){
     )
 }
 
-export async function set_reservation(reservation: Object) {
+export async function set_reservation(reservation) {
     let res = await fetch(`/api/Reservation/add`,
     {
         method: 'post',
         body: JSON.stringify(reservation),
         credentials: 'include',
         headers: { 'content-type': 'application/json' }
-        })
+    })
     if (!res.ok) throw Error(res.statusText)
     return "Reservation made"
 }
@@ -70,6 +69,37 @@ export async function get_reservations(): Promise<Immutable.List<Reservation>>  
     return json as Immutable.List<Reservation>
 }
 
+export async function getReservation(reservationId: Number): Promise<Reservation> {
+    let res = await fetch(`/api/Reservation/` + reservationId,
+        {
+            method: 'get',
+            credentials: 'include',
+            headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Reservation;
+}
+
+export async function updateReservation(reservationId, reservation) {
+    let res = await fetch(`api/Reservation/` + reservationId, {
+        method: 'put',
+        body: JSON.stringify(reservation),
+        credentials: 'include',
+        headers: { 'content-type': 'application/json' }
+    });
+}
+
+export async function deleteReservation(reservationId) {
+    let res = await fetch(`/api/Reservation/` + reservationId,
+        {
+            method: 'delete',
+            credentials: 'include',
+            headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) return false;
+    return true;
+}
 
 export async function getUser(userId:Number) : Promise<User> {
   let res = await fetch(`/api/user/` + userId, 
