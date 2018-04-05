@@ -5,7 +5,7 @@ import { Ticket, User, Classroom, Problem, Location } from '../Model';
 import * as api from '../Api';
 import { Link } from 'react-router-dom'
 
-export type TicketComponentProps = {ticket:Ticket, key:number}
+export type TicketComponentProps = {ticket:Ticket, key:number, type:"user"|"system"}
 
 interface TicketState{
     user: User,
@@ -101,8 +101,39 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         }
     }
 
+    usershow(g, solved){
+        return <tr> 
+            <th scope="row">{this.props.ticket.id}</th>
+            <td>{this.state.user.first_name + this.state.user.last_name}</td>
+            <td>{this.state.user.username}</td>
+            <td>{this.state.location.name}</td>
+            <td>{this.state.classroom.name}</td>
+            <td>{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</td>
+            <td>{g.getHours() + ":" + g.getMinutes()}</td>
+            <td>{this.state.problem.name}</td>
+            <td>{solved}</td>
+            <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
+            <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
+        </tr>
+    }
+
+    systemshow(g, solved){
+        return <tr> 
+            <th scope="row">{this.props.ticket.id}</th>
+            <td>{this.state.location.name}</td>
+            <td>{this.state.classroom.name}</td>
+            <td>{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</td>
+            <td>{g.getHours() + ":" + g.getMinutes()}</td>
+            <td>{this.state.problem.name}</td>
+            <td>{solved}</td>
+            <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
+            <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
+        </tr>
+    }
+
     public render() {
         var g = new Date(this.props.ticket.created_at);
+
         var solved = ""
         if(this.props.ticket.solved){
             solved = "Solved"
@@ -110,18 +141,11 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             solved = "Not solved"
         }
 
-        return <tr>
-                <th scope="row">{this.props.ticket.id}</th>
-                <td>{this.state.user.first_name + this.state.user.last_name}</td>
-                <td>{this.state.user.username}</td>
-                <td>{this.state.location.name}</td>
-                <td>{this.state.classroom.name}</td>
-                <td>{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</td>
-                <td>{g.getHours() + ":" + g.getMinutes()}</td>
-                <td>{this.state.problem.name}</td>
-                <td>{solved}</td>
-                <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
-                <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
-            </tr>
+        if(this.props.type == "user"){
+            return this.usershow(g, solved)
+        }
+        else{
+            return this.systemshow(g, solved)
+        }
     }
 }

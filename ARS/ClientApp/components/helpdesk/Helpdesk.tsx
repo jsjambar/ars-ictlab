@@ -56,12 +56,12 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                     </tr>
                             </thead>
                             <tbody>
-                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} />)}
+                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
                             </tbody>
                         </table>
                     </div>
                     
-                    {/* <div className="systemTicketDiv">
+                    <div className="systemTicketDiv">
                         <div className="page-header">
                             <h4>Helpdesk overview : System tickets</h4>
                         </div>
@@ -74,13 +74,15 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                     <th scope="col">Date</th>
                                     <th scope="col">Time</th>
                                     <th scope="col">Type problem</th>
+                                    <th scope="col">Solved</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} />)}
+                                
+                                {this.state.tickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"system"} />)}
                             </tbody>
                         </table>
-                    </div> */}
+                    </div>
                 </div>
         </div>
     }
