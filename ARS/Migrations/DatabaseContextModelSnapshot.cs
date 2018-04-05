@@ -143,6 +143,8 @@ namespace ARS.Migrations
                     b.Property<long>("id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("classroom_id");
+
                     b.Property<DateTime>("created_at");
 
                     b.Property<string>("description");
@@ -151,11 +153,11 @@ namespace ARS.Migrations
 
                     b.Property<int>("problem_id");
 
-                    b.Property<long?>("problemid");
+                    b.Property<bool>("solved");
+
+                    b.Property<int>("user_id");
 
                     b.HasKey("id");
-
-                    b.HasIndex("problemid");
 
                     b.ToTable("Tickets");
                 });
@@ -200,13 +202,6 @@ namespace ARS.Migrations
                     b.HasOne("ARS.Models.User", "user")
                         .WithMany()
                         .HasForeignKey("userid");
-                });
-
-            modelBuilder.Entity("ARS.Models.Ticket", b =>
-                {
-                    b.HasOne("ARS.Models.Problem", "problem")
-                        .WithMany()
-                        .HasForeignKey("problemid");
                 });
 #pragma warning restore 612, 618
         }

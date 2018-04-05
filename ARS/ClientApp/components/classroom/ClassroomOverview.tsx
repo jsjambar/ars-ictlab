@@ -4,6 +4,7 @@ import * as api from '../Api';
 import * as immutable from 'immutable'
 import { Classroom } from '../Model' 
 import { ClassroomComponent } from './Classroom';
+import { Link } from 'react-router-dom'
 
 interface ClassroomOverviewState { 
     classrooms: immutable.List<Classroom> | "Loading..."
@@ -36,7 +37,7 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
             <div className="page-header">
                 <h4>Admin: classroom overview</h4>
                 <div className="ticketsBtn">
-                    <button className="btn btn-primary" type="button">Add</button>
+                    <Link className="btn btn-primary" to={`/admin/classrooms/create`}>Add</Link>
                 </div>
             </div>
             {

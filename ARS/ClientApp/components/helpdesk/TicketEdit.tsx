@@ -121,6 +121,8 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             classroom_id: values.classroom_id,
             user_id: values.user_id,
             solved: values.solved}));
+
+            window.location.replace('/helpdesk/overview');
     }
 
     getTicket(ticket_id){

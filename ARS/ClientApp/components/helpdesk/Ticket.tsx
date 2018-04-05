@@ -147,5 +147,6 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         else{
             return this.systemshow(g, solved)
         }
+
     }
 }
