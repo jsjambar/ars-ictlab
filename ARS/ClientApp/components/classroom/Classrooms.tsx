@@ -85,6 +85,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                 end_time: this.getDate(values.end)
             })
         );
+        window.location.replace('/reservation/overview');
     }
 
     public render() {
@@ -129,6 +130,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                         <option value="9">9:00</option>
                         <option value="10">10:00</option>
                         <option value="11">11:00</option>
+                        <option value="12">12:00</option>
                     </select>
                     
                     <br/>
@@ -136,11 +138,11 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <label>End Time:</label>
                     <select name="end" value={`${this.state.end}`} onChange={this.handleChange}>
                         <option value="0">Select an end time</option>
-                        <option value="9">9:00</option>
-                        <option value="10">10:00</option>
-                        <option value="11">11:00</option>
-                        <option value="12">12:00</option>
                         <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                        <option value="17">17:00</option>
                     </select>
 
                     <br/>
