@@ -35,8 +35,9 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
     }
 
     getDate(hour){
-        const date = new Date();
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour);
+        var date = new Date();
+        var newDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
+        return newDate;
     }
 
     handleChange(event){
@@ -64,6 +65,7 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
     updateClassroom() {
         const values = this.state;
         api.updateClassroom(
+            values.id,
             new Object({
                 id: values.id,
                 location_id: values.location,
@@ -72,9 +74,9 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                 end_time: this.getDate(values.end),
                 is_public: values.public,
                 is_disabled: values.available
-            }), values.id
+            })
         );
-        //redirect or something id undno
+        window.location.replace('/admin/classrooms/overview');
     }
 
     componentWillMount(){
@@ -94,12 +96,12 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
         api.getClassroom(classroomId)
         .then(classroom => this.setState({
             id: classroom.id,
-            end: classroom.end_time.getHours(),
+            end: new Date(classroom.end_time).getHours(),
             available: classroom.is_disabled,
             public: classroom.is_public,
             location: classroom.location_id,
             room: classroom.name,
-            start: classroom.start_time.getHours()
+            start: new Date(classroom.start_time).getHours()
         }))
         .catch(e => console.log("getClassroom, " + e))
     }
@@ -159,9 +161,9 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                     </select>
                     <br/>
 
-                    <input type="checkbox" name="public"/> Make the room public (this includes students)
+                    <input type="checkbox" name="public" onChange={this.handleChange} checked={this.state.public} /> Make the room public (this includes students)
                     <br/>
-                    <input type="checkbox" name="available"/> Disable the room
+                    <input type="checkbox" name="available" onChange={this.handleChange} checked={this.state.available} /> Disable the room
                     <br/>
                     <button type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
                 </form>

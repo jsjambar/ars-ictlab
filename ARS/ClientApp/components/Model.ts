@@ -1,3 +1,5 @@
+import { Classrooms } from "./classroom/Classrooms";
+
 export type User = {
     id:number|0,
     username:string,
@@ -19,7 +21,7 @@ export type Classroom = {
     end_time:Date,
     is_public:boolean,
     is_disabled:boolean
-    location_id:number,
+    location_id:number
 }
 
 export type Location = {
@@ -40,4 +42,15 @@ export type Reservation = {
 export type Problem = {
     id:number|null,
     name:string
+}
+
+export type Ticket = {
+    id: number|null,
+    user_id: number|null,
+    image: string,
+    created_at: Date,
+    problem_id: number,
+    classroom_id: number,
+    description: string,
+    solved: boolean
 }

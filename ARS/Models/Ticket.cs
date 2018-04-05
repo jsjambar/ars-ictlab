@@ -12,6 +12,8 @@ namespace ARS.Models
         public string description { get; set; }
         public string image { get; set; }
         public int problem_id { get; set; }
-        public Problem problem { get; set; }
+        public int classroom_id { get; set; }
+        public int user_id { get; set; }
+        public bool solved { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ARS.Migrations
 {
-    public partial class newDatabaseStructure : Migration
+    public partial class databaseStructure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,25 @@ namespace ARS.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tickets",
+                columns: table => new
+                {
+                    id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    classroom_id = table.Column<int>(nullable: false),
+                    created_at = table.Column<DateTime>(nullable: false),
+                    description = table.Column<string>(nullable: true),
+                    image = table.Column<string>(nullable: true),
+                    problem_id = table.Column<int>(nullable: false),
+                    solved = table.Column<bool>(nullable: false),
+                    user_id = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tickets", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -82,29 +101,6 @@ namespace ARS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tickets",
-                columns: table => new
-                {
-                    id = table.Column<long>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    created_at = table.Column<DateTime>(nullable: false),
-                    description = table.Column<string>(nullable: true),
-                    image = table.Column<string>(nullable: true),
-                    problem_id = table.Column<int>(nullable: false),
-                    problemid = table.Column<long>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tickets", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Tickets_Problems_problemid",
-                        column: x => x.problemid,
-                        principalTable: "Problems",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,11 +185,6 @@ namespace ARS.Migrations
                 name: "IX_Reservations_userid",
                 table: "Reservations",
                 column: "userid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_problemid",
-                table: "Tickets",
-                column: "problemid");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -203,6 +194,9 @@ namespace ARS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notification");
+
+            migrationBuilder.DropTable(
+                name: "Problems");
 
             migrationBuilder.DropTable(
                 name: "Reservations");
@@ -218,9 +212,6 @@ namespace ARS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Problems");
         }
     }
 }

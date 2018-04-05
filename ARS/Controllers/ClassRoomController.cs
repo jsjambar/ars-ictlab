@@ -36,13 +36,16 @@ namespace ARS.Controllers
                 return BadRequest();
             }
 
+            classroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
+            classroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
+
             this.Context.Classrooms.Add(classroom);
             this.Context.SaveChanges();
 
             return CreatedAtRoute("GetClassroom", new { id = classroom.id}, classroom);
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public IEnumerable<Classroom> GetAll()
         {
             return this.Context.Classrooms.ToList();
@@ -61,6 +64,12 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("location/{id}", Name = "GetLocationClassrooms")]
+        public IEnumerable<Classroom> GetClassByLocId(long id)
+        {
+            return this.Context.Classrooms.Where(c => c.location_id == id).ToList();
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] Classroom classroom)
         {
@@ -77,6 +86,11 @@ namespace ARS.Controllers
             }
 
             foundClassroom.name = classroom.name;
+            foundClassroom.location_id = classroom.location_id;
+            foundClassroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
+            foundClassroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
+            foundClassroom.is_public = classroom.is_public;
+            foundClassroom.is_disabled = classroom.is_disabled;
 
             this.Context.Classrooms.Update(foundClassroom);
             this.Context.SaveChanges();
@@ -89,6 +103,10 @@ namespace ARS.Controllers
         {
             Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == id);
 
+            var response = new ObjectResult( new {
+                errorStatus = 0
+            });
+
             if(classroom == null)
             {
                 return NotFound();
@@ -97,7 +115,7 @@ namespace ARS.Controllers
             this.Context.Classrooms.Remove(classroom);
             this.Context.SaveChanges();
 
-            return new NoContentResult();
+            return response;
         }
     }
 }
