@@ -120,7 +120,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
                 <td>{g.getHours() + ":" + g.getMinutes()}</td>
                 <td>{this.state.problem.name}</td>
                 <td>{solved}</td>
-                <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
+                <td><Link className="btn btn-primary" to={`/helpdesk/tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
                 <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
             </tr>
     }

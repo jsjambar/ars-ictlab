@@ -116,6 +116,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             classroom_id: values.classroom_id, 
             user_id: values.user_id, 
             solved: values.solved}));
+            window.location.replace('/helpdesk/overview');
     }
 
     public render() {

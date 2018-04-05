@@ -34,7 +34,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             <div className="page-header">
                 <h4>Helpdesk overview : Student tickets</h4>
                 <div className="ticketsBtn">
-                    <Link className="btn btn-primary" to={ '/Helpdesk/Add/TicketForm' }>Add</Link>
+                    <Link className="btn btn-primary" to={ '/helpdesk/create' }>Add</Link>
                 </div>
             </div>
                 <div>

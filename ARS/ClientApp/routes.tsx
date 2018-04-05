@@ -20,13 +20,12 @@ import { ClassroomOverview } from './components/classroom/ClassroomOverview';
 export const routes = <Layout>
     <Route exact path='/' component={ Login } />
     <Route path='/home' component={ Schedule } />
-    <Route path='/classroom' component={ Classrooms } />
-    <Route path='/user' component={ Users } />
-    <Route path='/Helpdesk/Overview' component={ Helpdesk } />
-    <Route path='/Helpdesk/Add/TicketForm' component={TicketForm} />
-    <Route path='/Helpdesk/Tickets/:id/edit' component={ TicketEdit } />
-    {/* <Route path='/reservation' component={ Reservation } /> */}
-    <Route path='/reservation' component={ Reservations } />
+    <Route path='/classrooms' component={ Classrooms } />
+    <Route path='/admin/users' component={ Users } />
+    <Route path='/helpdesk/overview' component={ Helpdesk } />
+    <Route path='/helpdesk/create' component={TicketForm} />
+    <Route path='/helpdesk/tickets/:id/edit' component={ TicketEdit } />
+    <Route path='/reservations' component={ Reservations } />
     <Route path='/admin/classrooms/overview' component={ ClassroomOverview }/>
     <Route path='/admin/classrooms/create' component={ ClassroomCreation }/>
     <Route path='/admin/classrooms/:id/edit' component={ ClassroomEdit } />

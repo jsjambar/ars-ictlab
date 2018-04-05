@@ -76,7 +76,7 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                 is_disabled: values.available
             })
         );
-        //redirect or something id undno
+        window.location.replace('/admin/classrooms/overview');
     }
 
     componentWillMount(){
