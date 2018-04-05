@@ -22,7 +22,7 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         .then(reservations => this.setState({ reservations: reservations }))
         .catch(e => console.log("getReservations, " + e))
     }
-
+    
     public render() {
         return <div>
             <div className="page-header">

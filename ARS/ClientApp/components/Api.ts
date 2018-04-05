@@ -50,7 +50,7 @@ export async function get_reservations(): Promise<Immutable.List<Reservation>>  
 }
 
 export async function getReservation(reservationId: Number): Promise<Reservation> {
-    let res = await fetch(`/api/reseravtion/` + reservationId,
+    let res = await fetch(`/api/Reservation/` + reservationId,
         {
             method: 'get',
             credentials: 'include',
@@ -61,7 +61,16 @@ export async function getReservation(reservationId: Number): Promise<Reservation
     return json as Reservation;
 }
 
-export async function delete_reservation(reservationId) {
+export async function updateReservation(reservationId, reservation) {
+    let res = await fetch(`api/Reservation/` + reservationId, {
+        method: 'put',
+        body: JSON.stringify(reservation),
+        credentials: 'include',
+        headers: { 'content-type': 'application/json' }
+    });
+}
+
+export async function deleteReservation(reservationId) {
     let res = await fetch(`/api/Reservation/` + reservationId,
         {
             method: 'delete',
@@ -82,7 +91,7 @@ export async function getUser(userId:Number) : Promise<User> {
 
 export async function createClassroom(classroom){
     let res = await fetch(`api/Classroom`, {
-        method: 'post',
+        method: 'put',
         body: JSON.stringify(classroom), 
         credentials: 'include', 
         headers:{'content-type': 'application/json'}
