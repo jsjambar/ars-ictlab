@@ -40,7 +40,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             const valid = this.verifyScheduleSelection();
         });
     }
-
+        
     verifyScheduleSelection(){
         const values = this.state;
 
@@ -62,15 +62,29 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         if(values.location != 0 && values.classroom != 0 && 
             values.description != "" && values.start != 0 && values.end != 0){
             this.setReservation();
-            console.log("aishdhdashdsuhdsu");
         } else {
             // show errors for the missing values
         }
     }
 
+    getDate(hour) {
+        const date = new Date();
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
+    }
+
     setReservation() {
         const values = this.state;
-        //api.set_reservation(new Object({ date: "0000-00-00", start: values.start, end: values.end, classroom: values.classroom }));
+        const date = new Date();
+        date.setHours(date.getUTCHours() + 2);
+        api.set_reservation(
+            new Object({
+                id: 0,
+                classroom_id: values.classroom,
+                created_at: date,
+                start_time: this.getDate(values.start),
+                end_time: this.getDate(values.end)
+            })
+        );
     }
 
     public render() {
@@ -112,9 +126,9 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <label>Start time:</label>
                     <select name="start" value={`${this.state.start}`} onChange={this.handleChange}>
                         <option value="0">Select a start time</option>
-                        <option value="1">9:00</option>
-                        <option value="2">10:00</option>
-                        <option value="3">11:00</option>
+                        <option value="9">9:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
                     </select>
                     
                     <br/>
@@ -122,9 +136,11 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <label>End Time:</label>
                     <select name="end" value={`${this.state.end}`} onChange={this.handleChange}>
                         <option value="0">Select an end time</option>
-                        <option value="1">9:00</option>
-                        <option value="2">10:00</option>
-                        <option value="3">11:00</option>
+                        <option value="9">9:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="12">12:00</option>
+                        <option value="13">13:00</option>
                     </select>
 
                     <br/>
