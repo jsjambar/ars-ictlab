@@ -27,6 +27,9 @@ namespace App1.Droid
 		public static void UpdateIdValues()
 		{
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::App1.Droid.Resource.Attribute.actionBarSize;
+			global::ZXing.Mobile.Resource.Id.contentFrame = global::App1.Droid.Resource.Id.contentFrame;
+			global::ZXing.Mobile.Resource.Layout.zxingscanneractivitylayout = global::App1.Droid.Resource.Layout.zxingscanneractivitylayout;
+			global::ZXing.Mobile.Resource.Layout.zxingscannerfragmentlayout = global::App1.Droid.Resource.Layout.zxingscannerfragmentlayout;
 		}
 		
 		public partial class Animation
@@ -2931,6 +2934,9 @@ namespace App1.Droid
 			// aapt resource value: 0x7f08007a
 			public const int container = 2131230842;
 			
+			// aapt resource value: 0x7f0800b9
+			public const int contentFrame = 2131230905;
+			
 			// aapt resource value: 0x7f080053
 			public const int contentPanel = 2131230803;
 			
@@ -3048,8 +3054,8 @@ namespace App1.Droid
 			// aapt resource value: 0x7f08000f
 			public const int lottie_layer_name = 2131230735;
 			
-			// aapt resource value: 0x7f0800ba
-			public const int masked = 2131230906;
+			// aapt resource value: 0x7f0800bb
+			public const int masked = 2131230907;
 			
 			// aapt resource value: 0x7f0800a6
 			public const int media_actions = 2131230886;
@@ -3363,8 +3369,8 @@ namespace App1.Droid
 			// aapt resource value: 0x7f08000e
 			public const int view_offset_helper = 2131230734;
 			
-			// aapt resource value: 0x7f0800b9
-			public const int visible = 2131230905;
+			// aapt resource value: 0x7f0800ba
+			public const int visible = 2131230906;
 			
 			// aapt resource value: 0x7f080098
 			public const int volume_item_container = 2131230872;
@@ -3662,6 +3668,12 @@ namespace App1.Droid
 			
 			// aapt resource value: 0x7f030043
 			public const int Toolbar = 2130903107;
+			
+			// aapt resource value: 0x7f030044
+			public const int zxingscanneractivitylayout = 2130903108;
+			
+			// aapt resource value: 0x7f030045
+			public const int zxingscannerfragmentlayout = 2130903109;
 			
 			static Layout()
 			{

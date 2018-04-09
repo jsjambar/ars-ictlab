@@ -3157,6 +3157,7 @@ containing a value of this type.
         public static final int clip_vertical=0x7f08003b;
         public static final int collapseActionView=0x7f080025;
         public static final int container=0x7f08007a;
+        public static final int contentFrame=0x7f0800b9;
         public static final int contentPanel=0x7f080053;
         public static final int coordinator=0x7f08007b;
         public static final int custom=0x7f08005a;
@@ -3196,7 +3197,7 @@ containing a value of this type.
         public static final int listMode=0x7f080010;
         public static final int list_item=0x7f08004d;
         public static final int lottie_layer_name=0x7f08000f;
-        public static final int masked=0x7f0800ba;
+        public static final int masked=0x7f0800bb;
         public static final int media_actions=0x7f0800a6;
         public static final int middle=0x7f080023;
         public static final int mini=0x7f08003f;
@@ -3301,7 +3302,7 @@ containing a value of this type.
         public static final int up=0x7f080009;
         public static final int useLogo=0x7f080019;
         public static final int view_offset_helper=0x7f08000e;
-        public static final int visible=0x7f0800b9;
+        public static final int visible=0x7f0800ba;
         public static final int volume_item_container=0x7f080098;
         public static final int weak=0x7f080045;
         public static final int withText=0x7f080028;
@@ -3394,6 +3395,8 @@ containing a value of this type.
         public static final int support_simple_spinner_dropdown_item=0x7f030041;
         public static final int tabbar=0x7f030042;
         public static final int toolbar=0x7f030043;
+        public static final int zxingscanneractivitylayout=0x7f030044;
+        public static final int zxingscannerfragmentlayout=0x7f030045;
     }
     public static final class string {
         public static final int abc_action_bar_home_description=0x7f090015;

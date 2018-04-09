@@ -4,9 +4,7 @@
              x:Class="App1.Overview">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="App overview"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Button x:Name="QRCodeScannerButton" Text="Scan QR code"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
