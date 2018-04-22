@@ -7,6 +7,7 @@ using ZXing.Net.Mobile;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ZXing.Mobile;
+using ZXing.Net.Mobile.Forms;
 
 namespace App1
 {
@@ -17,15 +18,28 @@ namespace App1
 		{
 			InitializeComponent ();
 
-            QRCodeScannerButton.Click += (sender, e) => {
-                #if __ANDROID__
-                    MobileBarCodeScanner.Initialize(Application);
-                #endif
+            QRCodeScannerButton.Clicked += async (sender, e) => {
+                //#if __ANDROID__
+                //    MobileBarcodeScanner.Initialize(Application);
+                //#endif
 
-                var scanner = new ZXing.Mobile.MobileBarcodeScanner();
-                var result = await scanner.Scan();
+                //var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+                //var result = await scanner.Scan();
 
-                if (result != null) DisplayAlert("Scanner result", $"Result of QR-scan: {result.Text}", "Okay");
+                //if (result != null) await DisplayAlert("Scanner result", $"Result of QR-scan: {result.Text}", "Okay");
+
+                ZXingScannerPage scanPage = new ZXingScannerPage();
+
+                scanPage.OnScanResult += (result) => {
+                    scanPage.IsScanning = false;
+
+                    Device.BeginInvokeOnMainThread(() => {
+                        Navigation.PopModalAsync();
+                        DisplayAlert("QR Code", $"Result: {result.Text}", "Okay");
+                    });
+                };
+
+                await Navigation.PushModalAsync(scanPage);
             };
         }
 	}
