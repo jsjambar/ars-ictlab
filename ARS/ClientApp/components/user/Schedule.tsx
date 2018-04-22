@@ -15,14 +15,14 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
     }
 
     componentWillMount(){
-        //this.getUser()
+        this.getUser()
     }
 
     getUser(){
         api.getUser(1)
         .then(user => this.setState({
             user: user, 
-            iframe:  "https://calendar.google.com/calendar/embed?src=" + user.username + "@hr.nl&ctz=Europe%2FAmsterdam"
+            iframe:  "https://calendar.google.com/calendar/embed?src=" + user.username + "@hr.nl&ctz=Europe%2FAmsterdam&language=nl"
         }))
         .catch(e => console.log("getUser, " + e))
     }
@@ -30,7 +30,7 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
     public render() {
         return <div>
             <div className="page-header">
-                <h1>Schedule of Andy the black</h1>
+                <h1>Your schedule</h1>
             </div>
             <div>
                 {

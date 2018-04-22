@@ -23,8 +23,9 @@ namespace ARS.Controllers
             {
                 this.Context.Users.Add(new User
                 {
-                    first_name = "Mark",
-                    last_name = "Thal"
+                    first_name = "Jason",
+                    last_name = "Sjambar",
+                    username = "0907663"
                 });
 
                 this.Context.SaveChanges();
