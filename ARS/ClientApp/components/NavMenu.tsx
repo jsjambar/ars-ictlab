@@ -64,6 +64,12 @@ export class NavMenu extends React.Component<{}, {}> {
                         </li>
 
                         <li>
+                            <NavLink to={'/admin/notifications/overview'} activeClassName='active'>
+                                <span className='glyphicon glyphicon-bell'></span> Notifications
+                            </NavLink>
+                        </li>
+
+                        <li>
                             <NavLink to={'/analytics'} activeClassName='active'>
                                 <span className='glyphicon glyphicon-signal'></span> Analytics
                             </NavLink>
