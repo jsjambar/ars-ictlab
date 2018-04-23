@@ -3,10 +3,11 @@ import { User } from './Model'
 
 export async function checkCredentials(username:String, password:String) {
     // idk
+    return false;
 }
 
 export async function isLoggedIn() : Promise<Boolean> {
-    return true;
+    return false;
 }
 
 export async function hasPermission(user:User) : Promise<Boolean> {
