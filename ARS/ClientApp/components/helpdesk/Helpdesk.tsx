@@ -80,7 +80,6 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                                 </tr>
                             </thead>
                             <tbody>
-                                
                                 {this.state.SystemTickets.map((t,k) => <TicketComponent key={k} ticket={t} type={"system"} />)}
                             </tbody>
                         </table>
