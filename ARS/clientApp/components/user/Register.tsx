@@ -29,16 +29,21 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
     }
 
     componentWillMount(){
-
+        //auth
     }
 
     verifyForm():boolean{
         const u = this.state.user
-        return u.username == "" ||
-        u.first_name == "" ||
-        u.last_name == "" ||
-        u.password == "" || 
-        u.role_id == 0
+        return u.username != "" &&
+        u.first_name != "" &&
+        u.last_name != "" &&
+        u.password != "" &&
+        this.verifyMailAddress()
+    }
+
+    verifyMailAddress():boolean{
+        const p = this.state.user.username
+        return p.substr(p.length - 6) == "@hr.nl" && !isNaN(+p.slice(0 , p.length - 6))
     }
 
     setUser(user:User){
@@ -59,12 +64,12 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
             {
                 this.state.success == "pending" ?
                     <div className="row">
-                        <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, user:{...this.state.user, username:e.currentTarget.value}})} /><br />
+                        <input className="form-control" type="text" placeholder="School Mail" onChange={e => this.setState({...this.state, user:{...this.state.user, username:e.currentTarget.value}})} /><br />
                         <input className="form-control" type="text" placeholder="Firstname" onChange={e => this.setState({...this.state, user:{...this.state.user, first_name:e.currentTarget.value}})} /><br />
                         <input className="form-control" type="text" placeholder="Lastname" onChange={e => this.setState({...this.state, user:{...this.state.user, last_name:e.currentTarget.value}})} /><br />
                         <input className="form-control"type="password" placeholder="Password" onChange={e => this.setState({...this.state, user:{...this.state.user, password:e.currentTarget.value}})} /><br />
                         <br />
-                        <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.setUser(this.state.user)}>Add User</button>
+                        <button disabled={!this.verifyForm()} className="btn btn-primary" onClick={() => this.setUser(this.state.user)}>Add User</button>
                     </div>
                 : this.state.success ?
                     <div className="alert alert-success">

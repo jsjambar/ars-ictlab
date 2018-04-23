@@ -36,6 +36,7 @@
     "webpack-hot-middleware": "2.18.2"
   },
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "immutable": "https://registry.npmjs.org/immutable/-/immutable-3.8.2.tgz"
   }
 }
