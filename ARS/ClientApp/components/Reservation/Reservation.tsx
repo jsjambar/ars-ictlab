@@ -26,12 +26,16 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
     }
 
     public render() {
+        var created_at = new Date(this.props.reservation.created_at);
+        var start_time = new Date(this.props.reservation.start_time);
+        var end_time = new Date(this.props.reservation.end_time);
+
         return <tr>
             <th scope="row">{this.props.reservation.id}</th>
             <td>{this.props.reservation.classroom_id}</td>
-            <td>{this.props.reservation.created_at}</td>
-            <td>{this.props.reservation.start_time}</td>
-            <td>{this.props.reservation.end_time}</td>
+            <td>{created_at.getDate () + "-" + (created_at.getMonth()+1) + "-" + created_at.getFullYear()}</td>
+            <td>{start_time.getHours() + ":" + ((start_time.getMinutes() < 10 ? '0' : '') + start_time.getMinutes())}</td>
+            <td>{end_time.getHours() + ":" + ((end_time.getMinutes() < 10 ? '0' : '') + end_time.getMinutes())}</td>
             <td>
                 <Link className="btn btn-primary" to={`/reservation/${this.props.reservation.id}/edit`}>Edit</Link>
                 <button type="button" className="btn btn-primary btn-danger" name="delete_reservation" onClick={this.confirmDeletion.bind(this.props.reservation.id)}>Delete</button>
