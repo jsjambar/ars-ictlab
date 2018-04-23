@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ARS.Models;
+using static QRCoder.PayloadGenerator;
+using QRCoder;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Drawing;
 
 namespace ARS.Controllers
 {
@@ -31,11 +36,34 @@ namespace ARS.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] Classroom classroom)
         {
-            if(classroom == null)
-            {
+
+            if(classroom == null){
                 return BadRequest();
             }
 
+            Url generator = new Url("https://www.google.nl"); // replace with url to shorthand reservation creation.
+            string payload = generator.ToString();
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            var qrCodeAsBitmap = qrCode.GetGraphic(20);
+
+            Random rndm = new Random();
+            var firstPart = rndm.Next(1, 2000000);
+            var randomName = firstPart.ToString() + classroom.name;
+            var fileRoute = Directory.GetCurrentDirectory() + "/wwwroot/qrcodes/" + randomName + ".png";
+
+            using (var m = new MemoryStream())
+            {
+                qrCodeAsBitmap.Save(m, ImageFormat.Png);
+                var img = Image.FromStream(m);
+                Console.WriteLine(fileRoute);
+                img.Save(fileRoute);
+                img.Dispose();
+            }
+
+            classroom.qr_code = fileRoute;
             classroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
             classroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
 
