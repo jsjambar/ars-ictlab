@@ -16,7 +16,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     componentWillMount(){
-        this.isLoggedIn();
+        // this.isLoggedIn();
     }
 
     isLoggedIn(){
@@ -31,17 +31,23 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
         auth.checkCredentials(this.state.username, this.state.password);
     }
 
+    verifyForm():boolean{
+        return this.state.username == "" || this.state.password == ""
+    }
+
     public render() {
         return <div>
+            {JSON.stringify(this.state)}
             <div className="page-header">
                 <h1>Log in to the ARS</h1>
             </div>
-            <div>
-            <label>Username</label>
-            <input type="text" name="username" placeholder="Username" value={`${this.state.username}`}/>
-            <br/>
-            <input type="password" name="password" placeholder="Password"/>
+            <div className="row">
+                <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, username:e.currentTarget.value})} /><br />
+                <input className="form-control" type="password" placeholder="Password" onChange={e => this.setState({...this.state, password:e.currentTarget.value})}  /><br />
+                <br />
+                <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => console.log(this.state.username + " " + this.state.password)}>Add User</button>
             </div>
+            
         </div>
     }
 }

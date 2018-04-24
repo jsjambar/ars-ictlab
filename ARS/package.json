@@ -31,10 +31,12 @@
     "style-loader": "0.18.2",
     "typescript": "2.4.1",
     "url-loader": "0.5.9",
-    "webpack": "^2.5.1",
+    "webpack": "^2.7.0",
+    "webpack-cli": "^2.0.15",
     "webpack-hot-middleware": "2.18.2"
   },
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "immutable": "https://registry.npmjs.org/immutable/-/immutable-3.8.2.tgz"
   }
 }
