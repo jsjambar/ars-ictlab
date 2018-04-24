@@ -2,11 +2,16 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import { Reservation } from '../Model';
+import DatePicker from 'react-datepicker';
+import * as moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface ScheduleState { 
     location: String|0, 
     classroom: String|0, 
     description: String|"",
+    date_of_reservation: Date|0,
+    chosen_date: Object,
     start: Number|0,
     end: Number|0,
     showSchedule:Boolean|false, 
@@ -20,12 +25,15 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             location: 0,
             classroom: 0,
             description: "",
+            date_of_reservation: 0,
+            chosen_date: moment(),
             start:0,
             end:0,
             showSchedule: false,
             iframe: ""
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
         this.verifyReservation = this.verifyReservation.bind(this);
     }
 
@@ -37,23 +45,15 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.setState({
             [name] : value
         }, () => {
-            const valid = this.verifyScheduleSelection();
+            //kalender tonen
         });
     }
-        
-    verifyScheduleSelection(){
-        const values = this.state;
 
-        if(values.location != 0 && values.classroom != 0){
-            this.setState({
-                showSchedule: true,
-                iframe: "https://calendar.google.com/calendar/embed?src=" + this.state.classroom + "@hr.nl&ctz=Europe%2FAmsterdam"
-            })
-        } else {
-            this.setState({
-                showSchedule: false
-            })
-        }
+    handleDateChange(date) {
+        this.setState({
+          chosen_date: date
+        }) 
+        this.setDateFromObject(date);
     }
 
     verifyReservation(){
@@ -61,28 +61,41 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         // refactor this to a re-usable function
         if(values.location != 0 && values.classroom != 0 && 
             values.description != "" && values.start != 0 && values.end != 0){
+            if(values.date_of_reservation == 0){ 
+                this.setState({ date_of_reservation: this.getFormattedDate(0) });
+            }
             this.setReservation();
         } else {
             // show errors for the missing values
         }
     }
+   
 
-    getDate(hour) {
+    getFormattedDate(hour) {
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
+    setDateFromObject(obj){
+        const self = this;
+        Object.keys(obj).map(function(keyName, keyIndex) {
+            if(keyName == '_d' && obj[keyName] !== null){
+                self.setState({
+                    date_of_reservation: new Date(obj[keyName])
+                })
+            }
+        });
+    }
+
     setReservation() {
         const values = this.state;
-        const date = new Date();
-        date.setHours(date.getUTCHours() + 2);
         api.set_reservation(
             new Object({
                 id: 0,
                 classroom_id: values.classroom,
-                created_at: date,
-                start_time: this.getDate(values.start),
-                end_time: this.getDate(values.end)
+                date_of_reservation: values.date_of_reservation,
+                start_time: this.getFormattedDate(values.start),
+                end_time: this.getFormattedDate(values.end)
             })
         );
         window.location.replace('/reservation/overview');
@@ -124,6 +137,9 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
                     <br/>
 
+                    <label>Date:</label>
+                    <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
+
                     <label>Start time:</label>
                     <select name="start" value={`${this.state.start}`} onChange={this.handleChange}>
                         <option value="0">Select a start time</option>
@@ -151,16 +167,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                 </form>
 
             </div>
-
-            {
-                this.state.showSchedule ?
-                <div>
-                    <iframe src={`${this.state.iframe}`} width='100%' height='650' scrolling='no' frameBorder='0'></iframe>
-                </div>
-                :
-                ""
-            }
-
+           
         </div>;
     }
 

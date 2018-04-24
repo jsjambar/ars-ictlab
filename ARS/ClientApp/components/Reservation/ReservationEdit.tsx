@@ -31,7 +31,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     getDate(hour){
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
-    }   
+    }
 
     handleChange(event){
         const target = event.target;
@@ -48,10 +48,8 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         // refactor this to a re-usable function
         if (values.room != 0 && values.start != 0 && values.end != 0){
             this.updateReservation();
-            
         } else {
             console.log("Not valid.");
-            // show errors for the missing values
         }
     }
 
@@ -61,7 +59,8 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
             values.id,
             new Object({
                 id: values.id,
-                created_at: this.getDate(values.date),
+                created_at: this.getDate(0),
+                date_of_reservation: values.date,
                 start_time: this.getDate(values.start), 
                 end_time: this.getDate(values.end),
                 classroom_id: values.room,

@@ -31,6 +31,7 @@ export type Location = {
 
 export type Reservation = {
     id:number|null,
+    date_of_reservation:Date,
     created_at:Date,
     start_time:Date,
     end_time:Date,
