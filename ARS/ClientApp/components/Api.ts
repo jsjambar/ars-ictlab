@@ -2,6 +2,7 @@ import * as Immutable from "immutable"
 
 import { User, Role, Classroom, Location, Reservation, Problem, Ticket } from './Model'
 import { UserComponent } from "./user/User";
+import { Auth } from "./Authentication"
 
 export async function get_users() : Promise<Immutable.List<User>> {
     let res = await fetch(`/api/User/all`, 
@@ -12,7 +13,6 @@ export async function get_users() : Promise<Immutable.List<User>> {
 }
  
 export async function set_user(user) {
-  console.log("user to add: " + JSON.stringify(user))
   let res = await fetch(`/api/User/add`, 
       { method: 'post',
         body: JSON.stringify(user), 
@@ -43,6 +43,42 @@ export async function update_user(u:User){
             headers:{'content-type': 'application/json'}
         }
     )
+}
+
+export async function login_user(s:{username:string,password:string}){
+    let res = await fetch('/api/User/login',
+        {
+            method:'post',
+            body: JSON.stringify(s),
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json
+}
+
+export async function logout_user(){
+    let res = await fetch('/api/User/logout',
+        {
+            method:'get',
+            credentials:'include',
+            headers:{'content-type':'application/json'}
+        })
+}
+
+export async function check_user(){
+    let res = await fetch('/api/User/auth',
+        {
+            method:'get',
+            credentials: 'include',
+            headers:{'content-type': 'application/json'}
+        }
+    )
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json.auth as Auth
 }
 
 export async function set_reservation(reservation) {
