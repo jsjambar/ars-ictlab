@@ -27,11 +27,18 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
         .catch(e => console.log("getUser, " + e))
     }
 
+    logout_user(){
+        api.logout_user()
+        .then(() => window.location.replace('/login'))
+        .catch(console.log)
+    }
+
     public render() {
         return <div>
             <div className="page-header">
                 <h1>Your schedule</h1>
             </div>
+            <button className="btn btn-danger" onClick={() => this.logout_user()}>Logout</button>
             <div>
                 {
                     this.state.user != 0 && this.state.iframe != "" ?

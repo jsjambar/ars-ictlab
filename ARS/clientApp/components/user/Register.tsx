@@ -43,7 +43,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
 
     verifyMailAddress():boolean{
         const p = this.state.user.username
-        return p.substr(p.length - 6) == "@hr.nl" && !isNaN(+p.slice(0 , p.length - 6))
+        return p.substr(p.length - 6) == "@hr.nl" && !isNaN(+p.slice(0 , p.length - 6)) && p.length != 6
     }
 
     setUser(user:User){
@@ -56,7 +56,6 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
 
     public render() {
         return <div>
-            {JSON.stringify(this.state)}
             <div className="page-header">
                 <h1>Register</h1>
             </div>
