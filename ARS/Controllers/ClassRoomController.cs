@@ -58,7 +58,6 @@ namespace ARS.Controllers
             {
                 qrCodeAsBitmap.Save(m, ImageFormat.Png);
                 var img = Image.FromStream(m);
-                Console.WriteLine(fileRoute);
                 img.Save(fileRoute);
                 img.Dispose();
             }

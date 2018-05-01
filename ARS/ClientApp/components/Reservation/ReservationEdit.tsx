@@ -4,13 +4,17 @@ import * as api from '../Api';
 import * as immutable from 'immutable'
 import { Location, Classroom } from '../Model' 
 import { Link } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import * as moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface ReservationEditState {
     id: 0 | number, 
-    date: 0 | number,
+    date: 0 | Date,
+    chosen_date: Object,
     start: 0 | number,
     end: 0 | number,
-    room: 0 | number,
+    room: 0 | number
 }
 
 export class ReservationEdit extends React.Component<RouteComponentProps<{}>, ReservationEditState> {
@@ -19,11 +23,13 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         this.state = { 
             id: 0,
             date: 0,
+            chosen_date: moment(),
             start: 0,
             end: 0,
             room: 0,
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
         this.verifyReservation = this.verifyReservation.bind(this);
         this.getReservation = this.getReservation.bind(this);
     }
@@ -40,6 +46,24 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     
         this.setState({
             [name] : value
+        });
+    }
+
+    handleDateChange(date) {
+        this.setState({
+          chosen_date: date
+        }) 
+        this.setDateFromObject(date);
+    }
+
+    setDateFromObject(obj){
+        const self = this;
+        Object.keys(obj).map(function(keyName, keyIndex) {
+            if(keyName == '_d' && obj[keyName] !== null){
+                self.setState({
+                    date: new Date(obj[keyName])
+                })
+            }
         });
     }
 
@@ -79,11 +103,11 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         api.getReservation(reservationId)
             .then(reservation => this.setState({
                 id: reservation.id,
-                date: new Date(reservation.created_at).getFullYear(),
+                chosen_date: moment(reservation.date_of_reservation),
                 start: new Date(reservation.start_time).getHours(),
                 end: new Date(reservation.end_time).getHours(),
-                room: reservation.classroom_id
-            }))
+                room: reservation.classroom_id,
+            }, () => this.setDateFromObject(this.state.chosen_date) ))
             .catch(e => console.log("getReservation, " + e))
     }
     
@@ -96,6 +120,14 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                     <label>Room</label>
                     <input type="text" name="room" placeholder="Classroom name" value={`${this.state.room}`} onChange={this.handleChange} />
                     <br/>
+
+                    <label>Date:</label>
+                    {
+                        this.state.date != 0 ?
+                        <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
+                        :
+                        ""
+                    }
 
                     <label>Reservation time start:</label>
                     <select name="start" value={`${this.state.start}`} onChange={this.handleChange}>
