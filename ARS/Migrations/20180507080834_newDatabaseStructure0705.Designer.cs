@@ -11,8 +11,8 @@ using System;
 namespace ARS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180405103540_databaseStructure")]
-    partial class databaseStructure
+    [Migration("20180507080834_newDatabaseStructure0705")]
+    partial class newDatabaseStructure0705
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,6 +109,8 @@ namespace ARS.Migrations
                     b.Property<int>("classroom_id");
 
                     b.Property<DateTime>("created_at");
+
+                    b.Property<DateTime>("date_of_reservation");
 
                     b.Property<DateTime>("end_time");
 

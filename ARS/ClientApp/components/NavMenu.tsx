@@ -12,6 +12,10 @@ const adminHeader = {
     marginTop: '20px'
 };
 
+const marginLeft =  {
+    marginLeft: '20px'
+}
+
 export type NavMenuState = {auth:Auth}
 
 export class NavMenu extends React.Component<{}, NavMenuState> {
@@ -34,6 +38,12 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
         .catch(e => console.log(e))
+    }
+
+    logout_user(){
+        api.logout_user()
+        .then(() => window.location.replace('/login'))
+        .catch(console.log)
     }
 
     public render() {
@@ -88,6 +98,9 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                         <span className='glyphicon glyphicon-info-sign'></span> Helpdesk
                                     </NavLink>
                                 </li>
+                                <li>
+                                    <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
+                                </li>
                             </ul>
                         :
                             <ul className='nav navbar-nav'>
@@ -109,6 +122,8 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                         <span className='glyphicon glyphicon-signal'></span> Analytics
                                     </NavLink>
                                 </li>
+
+                                <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
                             </ul>
                     }
                 </div>
