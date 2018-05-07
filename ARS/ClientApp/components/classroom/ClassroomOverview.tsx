@@ -28,10 +28,6 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
         .catch(e => console.log("getClassrooms, " + e))
     }
 
-    update(){
-        console.log("Updated list.");
-    }
-
     public render() {
         return <div>
             <div className="page-header">

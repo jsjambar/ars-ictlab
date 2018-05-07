@@ -37,6 +37,8 @@
   },
   "dependencies": {
     "crypto-js": "^3.1.9-1",
-    "immutable": "https://registry.npmjs.org/immutable/-/immutable-3.8.2.tgz"
+    "immutable": "https://registry.npmjs.org/immutable/-/immutable-3.8.2.tgz",
+    "moment": "^2.22.1",
+    "react-datepicker": "^1.4.1"
   }
 }

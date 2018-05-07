@@ -26,6 +26,7 @@ namespace ARS.Controllers
                     id = 0,
                     user_id = 1,
                     created_at = new DateTime(2018, 03, 18),
+                    date_of_reservation = new DateTime(2018, 04, 23),
                     start_time = new DateTime(2018, 03, 19, 9, 0, 0),
                     end_time = new DateTime(2018, 03, 19, 11, 0, 0),
                 });
@@ -42,7 +43,8 @@ namespace ARS.Controllers
                 return BadRequest();
             }
 
-            reservation.created_at = new DateTime(reservation.created_at.Year, reservation.created_at.Month, reservation.created_at.Day, reservation.created_at.Hour + 2, 0, 0);
+            reservation.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
+            reservation.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             reservation.start_time = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             reservation.end_time = new DateTime(reservation.end_time.Year, reservation.end_time.Month, reservation.end_time.Day, reservation.end_time.Hour + 2, 0, 0);
 
@@ -85,7 +87,9 @@ namespace ARS.Controllers
             {
                 return NotFound();
             }
-            
+
+            item.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
+            item.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             item.classroom_id = reservation.classroom_id;
             item.start_time = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             item.end_time = new DateTime(reservation.end_time.Year, reservation.end_time.Month, reservation.end_time.Day, reservation.end_time.Hour + 2, 0, 0);

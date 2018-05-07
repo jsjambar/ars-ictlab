@@ -9,6 +9,7 @@ namespace ARS.Models
     {
         public long id { get; set; }
         public DateTime created_at { get; set; }
+        public DateTime date_of_reservation { get; set; }
         public DateTime start_time { get; set; }
         public DateTime end_time { get; set; }
         public int user_id { get; set; }
