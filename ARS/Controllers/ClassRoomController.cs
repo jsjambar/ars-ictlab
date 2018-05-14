@@ -26,7 +26,38 @@ namespace ARS.Controllers
             if(this.Context.Classrooms.Count() == 0)
             {
                 this.Context.Classrooms.Add(new Classroom {
-                    name = "WD1016"
+                    name = "WD1016",
+                    location_id = 1
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WD1017",
+                    location_id = 1
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WD1018",
+                    location_id = 1
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WH1012",
+                    location_id = 2
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WH12",
+                    location_id = 2
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WN07",
+                    location_id = 3
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "Andy 4",
+                    location_id = 4
                 });
 
                 this.Context.SaveChanges();
@@ -76,6 +107,12 @@ namespace ARS.Controllers
         public IEnumerable<Classroom> GetAll()
         {
             return this.Context.Classrooms.ToList();
+        }
+
+        [HttpGet("location/{id}/classrooms")]
+        public IEnumerable<Classroom> GetClassroomsByLocationid(long id)
+        {
+            return this.Context.Classrooms.Where(c => c.location_id == id).ToList();
         }
 
         [HttpGet("{id}", Name = "GetClassroom")]

@@ -22,21 +22,25 @@ namespace ARS.Controllers
             {
                 this.Context.Locations.Add(new Location
                 {
+                    id = 1,
                     name = "Wijnhaven 61"
                 });
 
                 this.Context.Locations.Add(new Location
                 {
+                    id = 2,
                     name = "Wijnhaven 99"
                 });
 
                 this.Context.Locations.Add(new Location
                 {
+                    id = 3,
                     name = "Wijnhaven 122"
                 });
 
                 this.Context.Locations.Add(new Location
                 {
+                    id = 4,
                     name = "Wijnhaven 163"
                 });
 
