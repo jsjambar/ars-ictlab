@@ -31,11 +31,11 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         .catch(e => console.log("getTickets, " + e))
     }
 
-    public render(){
-        return <div>
-            <div className="page-header">
-                <h4>Helpdesk overview : Student tickets</h4>
-                <div className="ticketsBtn">
+    public render() {
+        return <div className="helpdesk">
+            <div className="page-header row">
+                <h1>Helpdesk overview : Student tickets</h1>
+                <div className="headerBtn">
                     <Link className="btn btn-primary" to={ '/helpdesk/create' }>Add</Link>
                 </div>
             </div>

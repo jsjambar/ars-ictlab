@@ -30,18 +30,18 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
         var start_time = new Date(this.props.reservation.start_time);
         var end_time = new Date(this.props.reservation.end_time);
 
-        return <tr>
-            <th scope="row">{this.props.reservation.id}</th>
-            <td>{this.props.reservation.classroom_id}</td>
-            <td>{created_at.getDate () + "-" + (created_at.getMonth()+1) + "-" + created_at.getFullYear()}</td>
-            <td>{start_time.getHours() + ":" + ((start_time.getMinutes() < 10 ? '0' : '') + start_time.getMinutes())}</td>
-            <td>{end_time.getHours() + ":" + ((end_time.getMinutes() < 10 ? '0' : '') + end_time.getMinutes())}</td>
-            <td>
+        return <div className="row">
+            <strong className="col-xs-1 first">{this.props.reservation.id}</strong>
+            <div className="col-xs-2">{this.props.reservation.classroom_id}</div>
+            <div className="col-xs-3 col-sm-2">{created_at.getDate() + "-" + (created_at.getMonth() + 1) + "-" + created_at.getFullYear()}</div>
+            <div className="col-xs-2">{start_time.getHours() + ":" + ((start_time.getMinutes() < 10 ? '0' : '') + start_time.getMinutes())}</div>
+            <div className="col-xs-2">{end_time.getHours() + ":" + ((end_time.getMinutes() < 10 ? '0' : '') + end_time.getMinutes())}</div>
+            <div className="col-xs-2 col-sm-3 last">
                 <Link className="btn btn-primary" to={`/reservation/${this.props.reservation.id}/edit`}>Edit</Link>
-                <button type="button" className="btn btn-primary btn-danger" name="delete_reservation" onClick={this.confirmDeletion.bind(this.props.reservation.id)}>Delete</button>
-            </td>
+                <button type="button" className="btn btn-primary btn-danger btn-last" name="delete_reservation" onClick={this.confirmDeletion.bind(this.props.reservation.id)}>Delete</button>
+            </div>
 
-        </tr>
+        </div>
     }
 
 }

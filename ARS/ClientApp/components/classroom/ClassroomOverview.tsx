@@ -33,35 +33,30 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
     }
 
     public render() {
-        return <div>
-            <div className="page-header">
-                <h4>Admin: classroom overview</h4>
-                <div className="ticketsBtn">
+        return <div className="classroomOverview">
+            <div className="page-header row">
+                <h1>Admin: classroom overview</h1>
+                <div className="headerBtn">
                     <Link className="btn btn-primary" to={`/admin/classrooms/create`}>Add</Link>
                 </div>
             </div>
             {
                 this.state.classrooms != "Loading..." ?
-                <div>
-                    <div>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Starting time</th>
-                                    <th scope="col">Ending time</th>
-                                    <th scope="col">Public for students</th>
-                                    <th scope="col">Available</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.classrooms.map((c,k) => <ClassroomComponent key={k} classroom={c} />)}
-                            </tbody>
-                        </table>
+                    <div className="row tbl">
+                        <div className="row head">
+                            <strong className="col-xs-1 col-sm-1 first" scope="col">#</strong>
+                            <strong className="col-xs-2 col-sm-1" scope="col">Name</strong>
+                            <strong className="col-xs-2 col-sm-1" scope="col">Location</strong>
+                            <strong className="col-sm-2 hideMobile" scope="col">Starting time</strong>
+                            <strong className="col-sm-2 hideMobile" scope="col">Ending time</strong>
+                            <strong className="col-xs-2 col-sm-1" scope="col">Public for students</strong>
+                            <strong className="col-xs-2 col-sm-1" scope="col">Available</strong>
+                            <strong className="col-xs-3 col-sm-3 last" scope="col"></strong>
+                        </div>
+                        <div className="row body">
+                            {this.state.classrooms.map((c, k) => <ClassroomComponent key={k} classroom={c} />)}
+                        </div>
                     </div>
-                </div>
                 : "Loading..."
             }
         </div>
