@@ -94,8 +94,8 @@ namespace ARS.Controllers
             }
 
             classroom.qr_code = fileRoute;
-            classroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
-            classroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
+            classroom.start_time = new DateTime(2018, 12, 12, 2, 0, 0);
+            classroom.end_time = new DateTime(2018, 12, 12, 2, 0, 0);
 
             this.Context.Classrooms.Add(classroom);
             this.Context.SaveChanges();
@@ -112,7 +112,7 @@ namespace ARS.Controllers
         [HttpGet("location/{id}/classrooms")]
         public IEnumerable<Classroom> GetClassroomsByLocationid(long id)
         {
-            return this.Context.Classrooms.Where(c => c.location_id == id).ToList();
+            return this.Context.Classrooms.Where(c => c.location_id == id && c.is_disabled == false).ToList();
         }
 
         [HttpGet("{id}", Name = "GetClassroom")]
@@ -131,7 +131,7 @@ namespace ARS.Controllers
         [HttpGet("location/{id}", Name = "GetLocationClassrooms")]
         public IEnumerable<Classroom> GetClassByLocId(long id)
         {
-            return this.Context.Classrooms.Where(c => c.location_id == id).ToList();
+            return this.Context.Classrooms.Where(c => c.location_id == id && c.is_disabled == false).ToList();
         }
 
         [HttpPut("{id}")]
@@ -151,8 +151,6 @@ namespace ARS.Controllers
 
             foundClassroom.name = classroom.name;
             foundClassroom.location_id = classroom.location_id;
-            foundClassroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
-            foundClassroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
             foundClassroom.is_public = classroom.is_public;
             foundClassroom.is_disabled = classroom.is_disabled;
 
