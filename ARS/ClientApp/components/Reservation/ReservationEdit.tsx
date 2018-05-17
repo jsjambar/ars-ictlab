@@ -6,15 +6,17 @@ import { Location, Classroom } from '../Model'
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
+import * as helper from '../Datehelper';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface ReservationEditState {
     id: 0 | number, 
     date: 0 | Date,
     chosen_date: Object,
-    start: 0 | number,
-    end: 0 | number,
-    room: 0 | number
+    start: 0 | Number,
+    end: 0 | Number,
+    room: 0 | number,
+    timeslot: Number
 }
 
 export class ReservationEdit extends React.Component<RouteComponentProps<{}>, ReservationEditState> {
@@ -27,6 +29,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
             start: 0,
             end: 0,
             room: 0,
+            timeslot: 0
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -46,7 +49,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     
         this.setState({
             [name] : value
-        });
+        }, () => this.setStartAndEnd(this.state.timeslot));
     }
 
     handleDateChange(date) {
@@ -54,6 +57,15 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
           chosen_date: date
         }) 
         this.setDateFromObject(date);
+    }
+
+    setStartAndEnd(chosenTimeslot){
+        let processedDate = helper.getDateByTimeslot(chosenTimeslot);
+
+        this.setState({
+            start: processedDate.start,
+            end: processedDate.end
+        });
     }
 
     setDateFromObject(obj){
@@ -107,7 +119,13 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 start: new Date(reservation.start_time).getHours(),
                 end: new Date(reservation.end_time).getHours(),
                 room: reservation.classroom_id,
-            }, () => this.setDateFromObject(this.state.chosen_date) ))
+            }, 
+            () => {
+                this.setDateFromObject(this.state.chosen_date);
+                let timeslot = helper.getTimeslotByTimes(this.state.start, this.state.end);
+                this.setState({ timeslot: timeslot });
+            }
+            ))
             .catch(e => console.log("getReservation, " + e))
     }
     
@@ -129,26 +147,17 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                         ""
                     }
 
-                    <label>Reservation time start:</label>
-                    <select name="start" value={`${this.state.start}`} onChange={this.handleChange}>
-                        <option value="0">Select a start time</option>
-                        <option value="9">9:00</option>
-                        <option value="10">10:00</option>
-                        <option value="11">11:00</option>
-                        <option value="12">12:00</option>
+                    <label>Timeslot:</label>
+                    <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
+                        <option value="0">Pick a time slot</option>
+                        <option value="1">9:00 - 11:00</option>
+                        <option value="2">11:00 - 13:00</option>
+                        <option value="3">13:00 - 15:00</option>
+                        <option value="4">15:00 - 17:00</option>
                     </select>
-                    <br/>
 
-                    <label>Reservation time end:</label>
-                    <select name="end" value={`${this.state.end}`} onChange={this.handleChange}>
-                        <option value="0">Select an end time</option>
-                        <option value="13">13:00</option>
-                        <option value="14">14:00</option>
-                        <option value="15">15:00</option>
-                        <option value="16">16:00</option>
-                        <option value="17">17:00</option>
-                    </select>
                     <br />
+
                     <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
                     <Link className="btn btn-primary" to={'/reservation/overview'}>Cancel</Link>
                 </form>

@@ -75,7 +75,7 @@ export class Register extends React.Component<RouteComponentProps<{}>, RegisterS
                         {this.state.user.username} has successfully registered.
                     </div>
                 : 
-                    <div className="alert alert-success">
+                    <div className="alert alert-danger">
                         Something went wrong with your registration.
                     </div>
             }
