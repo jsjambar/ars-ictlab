@@ -4,10 +4,14 @@ import * as api from '../Api';
 import { Reservation } from '../Model';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
+import * as immutable from 'immutable';
+import { Location } from '../Model' 
+import { Classroom } from '../Model'
+import * as helper from '../Datehelper'; 
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface ScheduleState { 
-    location: String|0, 
+    location: 0, 
     classroom: String|0, 
     description: String|"",
     date_of_reservation: Date|0,
@@ -15,7 +19,11 @@ interface ScheduleState {
     start: Number|0,
     end: Number|0,
     showSchedule:Boolean|false, 
-    iframe:String|"" 
+    iframe:String|"",
+    locations: immutable.List<Location> | immutable.List<Location>,
+    available_classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
+    temp: Number,
+    timeslot: Number
 }
 
 export class Classrooms extends React.Component<RouteComponentProps<{}>, ScheduleState> {
@@ -30,7 +38,11 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             start:0,
             end:0,
             showSchedule: false,
-            iframe: ""
+            iframe: "",
+            locations: immutable.List<Location>(),
+            available_classrooms: immutable.List<Classroom>(),
+            temp: 0,
+            timeslot: 0
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -46,6 +58,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             [name] : value
         }, () => {
             //kalender tonen
+            this.getClassrooms(this.state.location);
+            this.setStartAndEnd(this.state.timeslot);
         });
     }
 
@@ -69,8 +83,19 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             // show errors for the missing values
         }
     }
-   
 
+    setStartAndEnd(chosenTimeslot){
+        let processedDate = helper.getDateByTimeslot(chosenTimeslot);
+        this.setState({
+            start: processedDate.start,
+            end: processedDate.end
+        });
+    }
+
+    componentWillMount(){
+        this.getLocations();
+    }
+   
     getFormattedDate(hour) {
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
@@ -101,6 +126,47 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         window.location.replace('/reservation/overview');
     }
 
+    getLocations(){
+        api.getLocations()
+        .then(locations => this.setState({ locations : locations }))
+        .catch(e => console.log("getUsers, " + e))
+    }
+
+    getClassrooms(locationId){
+        api.getLocationClassrooms(locationId)
+        .then(classrooms => this.setState({ available_classrooms : classrooms }))
+        .catch(e => console.log("getUsers, " + e))
+    }
+
+    locationList() {
+        const listItems = this.state.locations.map((location) =>
+          <option value={location.id}>
+            {location.name}
+          </option>
+        );
+        return (
+         <select name='location' value={`${this.state.location}`} onChange={this.handleChange}>
+         <option value="0">Select a location</option>
+          {listItems}
+          </select>
+        );
+      }
+
+      classroomList() {
+        const listItems = this.state.available_classrooms.map((classroom) =>
+        <option value={classroom.id}>
+          {classroom.name}
+        </option>
+        );
+
+        return (
+        <select name='classroom' value={`${this.state.classroom}`} onChange={this.handleChange}>
+            <option value="0">Select a classroom</option>
+            {listItems}
+        </select>
+        );
+      }
+
     public render() {
         return <div>
 
@@ -109,26 +175,26 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                 <p>Please select a location and classroom.</p>
                 <form>
                     <label>Location</label>
-                    <select name='location' value={`${this.state.location}`} onChange={this.handleChange}>
-                        <option value="0">Select a location</option>
-                        <option value="1">Kralingse Zoom</option>
-                        <option value="2">Kralingse Zoom</option>
-                        <option value="3">Kralingse Zoom</option>
-                        <option value="4">Kralingse Zoom</option>
-                    </select>
+                    { 
+                        this.state.locations ?
+                            this.locationList()
+                        :
+                        null
+                    }
                     <br/>
                     <label>Classroom</label>
-                    <select name="classroom" value={`${this.state.classroom}`} onChange={this.handleChange}>
-                        <option value="0">Select a classroom</option>
-                        <option value="0907662">H.4.312</option>
-                        <option value="0907662">H.4.312</option>
-                        <option value="0907662">H.4.312</option>
-                        <option value="0907662">H.4.312</option>
-                    </select>
+                    { 
+                        this.state.available_classrooms ?
+                            this.classroomList()
+                        :
+                        null
+                    }
 
                     <br/>
 
-                    <label>Current room temp: 22</label> {/*todo: this should be updated after classroom+Location has been selected*/}
+                    <label>
+                        It's currently { this.state.temp ? this.state.temp : "invalid temperature" } degrees in the classroom.
+                    </label> {/*todo: this should be updated after classroom+Location has been selected*/}
                     
                     <br/>
 
@@ -140,25 +206,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <label>Date:</label>
                     <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
 
-                    <label>Start time:</label>
-                    <select name="start" value={`${this.state.start}`} onChange={this.handleChange}>
-                        <option value="0">Select a start time</option>
-                        <option value="9">9:00</option>
-                        <option value="10">10:00</option>
-                        <option value="11">11:00</option>
-                        <option value="12">12:00</option>
-                    </select>
-                    
-                    <br/>
-
-                    <label>End Time:</label>
-                    <select name="end" value={`${this.state.end}`} onChange={this.handleChange}>
-                        <option value="0">Select an end time</option>
-                        <option value="13">13:00</option>
-                        <option value="14">14:00</option>
-                        <option value="15">15:00</option>
-                        <option value="16">16:00</option>
-                        <option value="17">17:00</option>
+                    <label>Timeslot:</label>
+                    <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
+                        <option value="0">Pick a time slot</option>
+                        <option value="1">9:00 - 11:00</option>
+                        <option value="2">11:00 - 13:00</option>
+                        <option value="3">13:00 - 15:00</option>
+                        <option value="4">15:00 - 17:00</option>
                     </select>
 
                     <br/>
