@@ -15,7 +15,7 @@ import { ClassroomCreation } from './components/classroom/ClassroomCreation';
 import { ClassroomEdit } from './components/classroom/ClassroomEdit';
 import { ClassroomOverview } from './components/classroom/ClassroomOverview';
 import { Register } from './components/user/Register';
-
+import { Calendar } from './components/Calendar'
 
 export const routes = <Layout>
     <Route exact path='/' component={ Login } />
@@ -34,6 +34,6 @@ export const routes = <Layout>
     <Route path='/reservation/overview' component={ Reservations } />
     <Route path='/reservation/:id/edit' component={ ReservationEdit } />
     <Route path='/admin/classrooms/create' component={ ClassroomCreation }/>
-    <Route path='/admin/classrooms/:id/edit' component={ ClassroomEdit } />
+    <Route path='/admin/classrooms/:id/edit' component={ClassroomEdit} />
+    <Route path='/calendar' component={Calendar} />
 </Layout>;
-

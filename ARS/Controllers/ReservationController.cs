@@ -28,6 +28,7 @@ namespace ARS.Controllers
                     created_at = new DateTime(2018, 03, 18),
                     start_time = new DateTime(2018, 03, 19, 9, 0, 0),
                     end_time = new DateTime(2018, 03, 19, 11, 0, 0),
+                    classroom_id = 1
                 });
 
                 this.Context.SaveChanges();
