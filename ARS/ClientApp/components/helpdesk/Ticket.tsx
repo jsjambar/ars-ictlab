@@ -104,6 +104,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
     }
 
     usershow(g, solved){
+        
         return <tr> 
             <th scope="row">{this.props.ticket.id}</th>
             <td>{this.state.user.first_name + this.state.user.last_name}</td>
@@ -114,8 +115,15 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             <td>{g.getHours() + ":" + g.getMinutes()}</td>
             <td>{this.state.problem.name}</td>
             <td>{solved}</td>
-            <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
-            <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
+            {
+                this.state.user.role_id == 1 ?
+                    <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
+                :
+                    <tr>
+                        <td><Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link></td>
+                        <td><button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary">Delete</button></td>
+                    </tr>
+            }
         </tr>
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,8 +24,11 @@ namespace ARS.Controllers
             {
                 this.Context.Users.Add(new User
                 {
-                    first_name = "Mark",
-                    last_name = "Thal"
+                    first_name = "Global",
+                    last_name = "User",
+                    username = "1@hr.nl",
+                    password = "tset:HawaianJase",
+                    role_id = 2
                 });
 
                 this.Context.SaveChanges();
@@ -48,11 +52,19 @@ namespace ARS.Controllers
         }
 
         [HttpPost("login")]
-        public JsonResult Login([FromBody] string content)
+        public JsonResult Login([FromBody] LoginObject content)
         {
-            string username = HttpContext.Request.Query["Username"];
-            string password = HttpContext.Request.Query["Password"];
-            return Json(this.Context.Users.Where(u => u.username == username && u.password == Helper.HashPassword(password)));
+            User user = this.Context.Users.FirstOrDefault(u => u.username == content.username && u.password == Helper.HashPassword(content.password));
+            if(user == null)
+                return Json(new {response = "failed"});
+            Response.Cookies.Append("login", user.id.ToString());
+            return Json(new {response = "success"});
+        }
+
+        [HttpGet("logout")]
+        public void Logout()
+        {
+            Response.Cookies.Delete("login");
         }
 
         [HttpGet("all")]
@@ -113,5 +125,10 @@ namespace ARS.Controllers
 
             return new NoContentResult();
         }
+    }
+
+    public class LoginObject {
+        public string username { get; set; }
+        public string password { get; set; }
     }
 }

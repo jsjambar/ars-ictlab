@@ -50,6 +50,12 @@ namespace ARS.Controllers
             return f;
         }
 
+        [HttpGet("User/{id}", Name = "getUserTickets")]
+        public List<Ticket> GetByUserId(long id)
+        {
+            return this.Context.Tickets.Where(t => t.user_id == id).ToList();
+        }
+
 
         [HttpPost("create")]
         public IActionResult Create([FromBody] Ticket ticket)

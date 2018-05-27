@@ -14,10 +14,13 @@ import { Login } from './components/user/Login';
 import { ClassroomCreation } from './components/classroom/ClassroomCreation';
 import { ClassroomEdit } from './components/classroom/ClassroomEdit';
 import { ClassroomOverview } from './components/classroom/ClassroomOverview';
+import { Register } from './components/user/Register';
 
 
 export const routes = <Layout>
     <Route exact path='/' component={ Login } />
+    <Route path='/login' component={ Login } />
+    <Route path='/Register' component={ Register } />
     <Route path='/home' component={ Schedule } />
     <Route path='/classrooms' component={ Classrooms } />
     <Route path='/admin/users' component={ Users } />

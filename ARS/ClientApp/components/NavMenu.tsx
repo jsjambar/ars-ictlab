@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import * as Authentication from './Authentication'
+import { Auth } from './Authentication';
+import * as api from './Api'
 
 const adminHeader = {
     color: '#9d9d9d',
@@ -9,7 +12,40 @@ const adminHeader = {
     marginTop: '20px'
 };
 
-export class NavMenu extends React.Component<{}, {}> {
+const marginLeft =  {
+    marginLeft: '20px'
+}
+
+export type NavMenuState = {auth:Auth}
+
+export class NavMenu extends React.Component<{}, NavMenuState> {
+    constructor() {
+        super();
+        this.state = {
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
+        }
+    }
+
+    componentWillMount(){
+        this.check_auth()
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}))
+        .catch(e => console.log(e))
+    }
+
+    logout_user(){
+        api.logout_user()
+        .then(() => window.location.replace('/login'))
+        .catch(console.log)
+    }
+
     public render() {
         return <div className='main-nav'>
             <div className='navbar navbar-inverse'>
@@ -24,58 +60,77 @@ export class NavMenu extends React.Component<{}, {}> {
                 </div>
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
-                    <ul className='nav navbar-nav'>
-                        <li>
-                            <NavLink to={ '/home' } exact activeClassName='active'>
-                                <span className='glyphicon glyphicon-home'></span> Home
-                            </NavLink>
-                        </li>
-                        <li>    
-                            <NavLink to={'/classrooms'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-th-list'></span> Schedules
-                            </NavLink>
-                        </li>
+                    {
+                        this.state.auth.permission == 0 ?
+                            <ul className='nav navbar-nav'>
+                                <li>
+                                    <NavLink to={ '/login' } exact activeClassName='active'>
+                                        <span className='glyphicon glyphicon-user'></span> Login
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to={ '/register' } activeClassName='active'>
+                                        <span className='glyphicon glyphicon-user'></span> Register
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        : this.state.auth.permission == 1 ?
+                            <ul className='nav navbar-nav'>
+                                <li>
+                                    <NavLink to={ '/home' } activeClassName='active'>
+                                        <span className='glyphicon glyphicon-home'></span> Home
+                                    </NavLink>
+                                </li>
+                                <li>    
+                                    <NavLink to={'/classrooms'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-th-list'></span> Schedules
+                                    </NavLink>
+                                </li>
 
-                        <li>
-                            <NavLink to={'/reservation/overview'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-th'></span> Reservations
-                            </NavLink>
-                        </li>
-                    
-                        <li>
-                            <NavLink to={'/helpdesk/overview'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-info-sign'></span> Helpdesk
-                            </NavLink>
-                        </li>
-                    </ul>
-                    
-                    <li style={adminHeader}><span className='glyphicon glyphicon-cog'></span> Admin panel</li>
-                    <ul className='nav navbar-nav'>
-                        <li>
-                            <NavLink to={'/admin/classrooms/overview'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-list'></span> Classrooms
-                            </NavLink>
-                        </li>
+                                <li>
+                                    <NavLink to={'/reservation/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-th'></span> Reservations
+                                    </NavLink>
+                                </li>
+                            
+                                <li>
+                                    <NavLink to={'/helpdesk/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-info-sign'></span> Helpdesk
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
+                                </li>
+                            </ul>
+                        :
+                            <ul className='nav navbar-nav'>
+                                <li style={adminHeader}><span className='glyphicon glyphicon-cog'></span> Admin panel</li>
+                                <li>
+                                    <NavLink to={'/admin/classrooms/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-list'></span> Classrooms
+                                    </NavLink>
+                                </li>
 
-                        <li>
-                            <NavLink to={'/admin/users/overview'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-user'></span> Users
-                            </NavLink>
-                        </li>
+                                <li>
+                                    <NavLink to={'/admin/users/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-user'></span> Users
+                                    </NavLink>
+                                </li>
 
-                        <li>
-                            <NavLink to={'/admin/notifications/overview'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-bell'></span> Notifications
-                            </NavLink>
-                        </li>
+                                <li>
+                                    <NavLink to={'/helpdesk/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-info-sign'></span> Helpdesk
+                                    </NavLink>
+                                </li>
 
-                        <li>
-                            <NavLink to={'/analytics'} activeClassName='active'>
-                                <span className='glyphicon glyphicon-signal'></span> Analytics
-                            </NavLink>
-                        </li>
-                    
-                    </ul>
+                                <li>
+                                    <NavLink to={'/analytics'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-signal'></span> Analytics
+                                    </NavLink>
+                                </li>
+                                <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
+                            </ul>
+                    }
                 </div>
             </div>
         </div>;

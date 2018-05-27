@@ -29,7 +29,7 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
         return <tr>
             <th scope="row">{this.props.reservation.id}</th>
             <td>{this.props.reservation.classroom_id}</td>
-            <td>{this.props.reservation.created_at}</td>
+            <td>{this.props.reservation.date_of_reservation}</td>
             <td>{this.props.reservation.start_time}</td>
             <td>{this.props.reservation.end_time}</td>
             <td>

@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ARS.Models;
+using static QRCoder.PayloadGenerator;
+using QRCoder;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Drawing;
 
 namespace ARS.Controllers
 {
@@ -21,7 +26,38 @@ namespace ARS.Controllers
             if(this.Context.Classrooms.Count() == 0)
             {
                 this.Context.Classrooms.Add(new Classroom {
-                    name = "WD1016"
+                    name = "WD1016",
+                    location_id = 1
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WD1017",
+                    location_id = 1
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WD1018",
+                    location_id = 1
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WH1012",
+                    location_id = 2
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WH12",
+                    location_id = 2
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "WN07",
+                    location_id = 3
+                });
+
+                this.Context.Classrooms.Add(new Classroom {
+                    name = "Andy 4",
+                    location_id = 4
                 });
 
                 this.Context.SaveChanges();
@@ -31,13 +67,35 @@ namespace ARS.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] Classroom classroom)
         {
-            if(classroom == null)
-            {
+
+            if(classroom == null){
                 return BadRequest();
             }
 
-            classroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
-            classroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
+            Url generator = new Url("https://www.google.nl"); // replace with url to shorthand reservation creation.
+            string payload = generator.ToString();
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            var qrCodeAsBitmap = qrCode.GetGraphic(20);
+
+            Random rndm = new Random();
+            var firstPart = rndm.Next(1, 2000000);
+            var randomName = firstPart.ToString() + classroom.name;
+            var fileRoute = Directory.GetCurrentDirectory() + "/wwwroot/qrcodes/" + randomName + ".png";
+
+            using (var m = new MemoryStream())
+            {
+                qrCodeAsBitmap.Save(m, ImageFormat.Png);
+                var img = Image.FromStream(m);
+                img.Save(fileRoute);
+                img.Dispose();
+            }
+
+            classroom.qr_code = fileRoute;
+            classroom.start_time = new DateTime(2018, 12, 12, 2, 0, 0);
+            classroom.end_time = new DateTime(2018, 12, 12, 2, 0, 0);
 
             this.Context.Classrooms.Add(classroom);
             this.Context.SaveChanges();
@@ -49,6 +107,12 @@ namespace ARS.Controllers
         public IEnumerable<Classroom> GetAll()
         {
             return this.Context.Classrooms.ToList();
+        }
+
+        [HttpGet("location/{id}/classrooms")]
+        public IEnumerable<Classroom> GetClassroomsByLocationid(long id)
+        {
+            return this.Context.Classrooms.Where(c => c.location_id == id && c.is_disabled == false).ToList();
         }
 
         [HttpGet("{id}", Name = "GetClassroom")]
@@ -67,7 +131,7 @@ namespace ARS.Controllers
         [HttpGet("location/{id}", Name = "GetLocationClassrooms")]
         public IEnumerable<Classroom> GetClassByLocId(long id)
         {
-            return this.Context.Classrooms.Where(c => c.location_id == id).ToList();
+            return this.Context.Classrooms.Where(c => c.location_id == id && c.is_disabled == false).ToList();
         }
 
         [HttpPut("{id}")]
@@ -87,8 +151,6 @@ namespace ARS.Controllers
 
             foundClassroom.name = classroom.name;
             foundClassroom.location_id = classroom.location_id;
-            foundClassroom.start_time = new DateTime(classroom.start_time.Year, classroom.start_time.Month, classroom.start_time.Day, classroom.start_time.Hour + 2, 0, 0);
-            foundClassroom.end_time = new DateTime(classroom.end_time.Year, classroom.end_time.Month, classroom.end_time.Day, classroom.end_time.Hour + 2, 0, 0);
             foundClassroom.is_public = classroom.is_public;
             foundClassroom.is_disabled = classroom.is_disabled;
 

@@ -32,6 +32,7 @@ namespace ARS
             services.AddMvc();
             // var connection = configuration.GetConnectionString("RConnection");
             var connection = @"User ID=postgres;Password=geheim;Host=localhost;Port=5433;Database=Reservation_System;Pooling=true;";
+
             // services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
 
             services.AddDbContext<DatabaseContext>(options =>
