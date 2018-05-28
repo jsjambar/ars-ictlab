@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ARS.Migrations
 {
-    public partial class databaseStructure : Migration
+    public partial class newDatabaseStructure0705 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -144,6 +144,7 @@ namespace ARS.Migrations
                     Classroomid = table.Column<long>(nullable: true),
                     classroom_id = table.Column<int>(nullable: false),
                     created_at = table.Column<DateTime>(nullable: false),
+                    date_of_reservation = table.Column<DateTime>(nullable: false),
                     end_time = table.Column<DateTime>(nullable: false),
                     start_time = table.Column<DateTime>(nullable: false),
                     user_id = table.Column<int>(nullable: false),

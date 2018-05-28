@@ -30,8 +30,6 @@ export class ClassroomComponent extends React.Component<classroomComponentProps,
             <th scope="row">{this.props.classroom.id}</th>
             <td>{this.props.classroom.name}</td>
             <td>{this.props.classroom.location_id}</td>
-            <td>{this.props.classroom.start_time}</td>
-            <td>{this.props.classroom.end_time}</td>
             <td>{this.props.classroom.is_public ? "Yes" : "No"}</td>
             <td>{this.props.classroom.is_disabled ? "No" : "Yes"}</td>
             <td><Link className="btn btn-primary" to={`/admin/classrooms/${this.props.classroom.id}/edit`}>Edit</Link></td>

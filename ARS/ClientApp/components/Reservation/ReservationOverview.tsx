@@ -36,7 +36,7 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Classroom Id</th>
-                                    <th scope="col">Created At</th>
+                                    <th scope="col">Date of reservation</th>
                                     <th scope="col">Start Time</th>
                                     <th scope="col">End Time</th>
                                     <th scope="col"></th>

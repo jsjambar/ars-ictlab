@@ -109,6 +109,8 @@ namespace ARS.Migrations
 
                     b.Property<DateTime>("created_at");
 
+                    b.Property<DateTime>("date_of_reservation");
+
                     b.Property<DateTime>("end_time");
 
                     b.Property<DateTime>("start_time");

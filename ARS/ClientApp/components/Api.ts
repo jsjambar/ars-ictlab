@@ -82,6 +82,8 @@ export async function check_user(){
 }
 
 export async function set_reservation(reservation) {
+    console.log(JSON.stringify(reservation));
+
     let res = await fetch(`/api/Reservation/add`,
     {
         method: 'post',
@@ -288,4 +290,12 @@ export async function deleteClassroom(classroomId){
 
     if (!res.ok) return false;
     return true;
+}
+
+export async function getClassroomEvents(classroomId: Number): Promise<object> {
+    let res = await fetch(`api/reservation/classroomById/${classroomId}`,
+        { method: 'get', credentials: 'include', headers: { 'content-type': 'application/json' } })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Classroom;
 }

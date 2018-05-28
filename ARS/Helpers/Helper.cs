@@ -22,6 +22,5 @@ namespace ARS.Helpers
             Array.Reverse( charArray );
             return new string( charArray );
         }
-
     }
 }

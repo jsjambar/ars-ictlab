@@ -5,7 +5,7 @@ import * as api from './Api'
 export type Auth = {
     is_loggedin:boolean
     user:User|null,
-    permission:number //0 = No Persmission, 1 = Student, 2 = Administrator
+    permission:number //0 = No Permission, 1 = Student, 2 = Administrator
 }
 
 export async function check_auth():Promise<Auth>{
