@@ -6,7 +6,7 @@ export type User = {
     first_name:string,
     last_name:string,
     password:string,
-    role_id:number,
+    role_id:number, //0 = No Persmission, 1 = Student, 2 = Administrator
 }
 
 export type Role = {
@@ -31,6 +31,7 @@ export type Location = {
 
 export type Reservation = {
     id:number|null,
+    date_of_reservation:Date,
     created_at:Date,
     start_time:Date,
     end_time:Date,

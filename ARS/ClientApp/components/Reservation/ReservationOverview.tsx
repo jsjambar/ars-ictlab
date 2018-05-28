@@ -34,7 +34,7 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
                         <div className="row head">
                             <strong className="col-xs-1 first">#</strong>
                             <strong className="col-xs-2">Classroom Id</strong>
-                            <strong className="col-xs-3 col-sm-2">Created At</strong>
+                            <strong className="col-xs-3 col-sm-2">Date of reservation</strong>
                             <strong className="col-xs-2">Start Time</strong>
                             <strong className="col-xs-2">End Time</strong>
                             <strong className="col-xs-2 col-sm-3 last"></strong>

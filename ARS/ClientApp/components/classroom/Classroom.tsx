@@ -30,8 +30,6 @@ export class ClassroomComponent extends React.Component<classroomComponentProps,
             <strong className="col-xs-1 first" scope="row">{this.props.classroom.id}</strong>
             <div className="col-xs-2 col-sm-1">{this.props.classroom.name}</div>
             <div className="col-xs-2 col-sm-1">{this.props.classroom.location_id}</div>
-            <div className="col-sm-2 hideMobile">{this.props.classroom.start_time}</div>
-            <div className="col-sm-2 hideMobile">{this.props.classroom.end_time}</div>
             <div className="col-xs-2 col-sm-1">{this.props.classroom.is_public ? "Yes" : "No"}</div>
             <div className="col-xs-2 col-sm-1">{this.props.classroom.is_disabled ? "No" : "Yes"}</div>
             <div className="col-xs-3 col-sm-3 last">

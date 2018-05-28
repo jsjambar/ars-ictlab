@@ -28,10 +28,6 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
         .catch(e => console.log("getClassrooms, " + e))
     }
 
-    update(){
-        console.log("Updated list.");
-    }
-
     public render() {
         return <div className="classroomOverview">
             <div className="page-header row">
@@ -47,8 +43,6 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
                             <strong className="col-xs-1 col-sm-1 first" scope="col">#</strong>
                             <strong className="col-xs-2 col-sm-1" scope="col">Name</strong>
                             <strong className="col-xs-2 col-sm-1" scope="col">Location</strong>
-                            <strong className="col-sm-2 hideMobile" scope="col">Starting time</strong>
-                            <strong className="col-sm-2 hideMobile" scope="col">Ending time</strong>
                             <strong className="col-xs-2 col-sm-1" scope="col">Public for students</strong>
                             <strong className="col-xs-2 col-sm-1" scope="col">Available</strong>
                             <strong className="col-xs-3 col-sm-3 last" scope="col"></strong>
