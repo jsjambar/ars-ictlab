@@ -116,7 +116,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         const values = this.state;
         api.set_reservation(
             new Object({
-                id: 0,
+                //id: 0,
                 classroom_id: values.classroom,
                 date_of_reservation: values.date_of_reservation,
                 start_time: this.getFormattedDate(values.start),

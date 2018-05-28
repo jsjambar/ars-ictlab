@@ -73,6 +73,22 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("classroomById/{id}")]
+        public IEnumerable<object> GetReservationsByClassroomId(long id)
+        {
+            List<Reservation> reservations = this.Context.Reservations.Where(r => r.classroom_id == id).ToList();
+            List<object> events = new List<object>();
+
+            reservations.ForEach(r => {
+                events.Add(new {
+                    Start = r.start_time,
+                    End = r.end_time
+                });
+            });
+
+            return events;
+        }
+
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] Reservation reservation)
         {
