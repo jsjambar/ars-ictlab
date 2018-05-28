@@ -72,7 +72,14 @@ namespace ARS.Controllers
                 return BadRequest();
             }
 
-            Url generator = new Url("https://www.google.nl"); // replace with url to shorthand reservation creation.
+            classroom.start_time = new DateTime(2018, 12, 12, 2, 0, 0);
+            classroom.end_time = new DateTime(2018, 12, 12, 2, 0, 0);
+
+            this.Context.Classrooms.Add(classroom);
+            this.Context.SaveChanges();
+
+            Classroom newClassroom = this.Context.Classrooms.FirstOrDefault(t => t.id == classroom.id);
+            Url generator = new Url("https://localhost:5000/reserve/"+newClassroom.id);
             string payload = generator.ToString();
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
@@ -82,7 +89,7 @@ namespace ARS.Controllers
 
             Random rndm = new Random();
             var firstPart = rndm.Next(1, 2000000);
-            var randomName = firstPart.ToString() + classroom.name;
+            var randomName = firstPart.ToString() + newClassroom.id.ToString();
             var fileRoute = Directory.GetCurrentDirectory() + "/wwwroot/qrcodes/" + randomName + ".png";
 
             using (var m = new MemoryStream())
@@ -93,11 +100,8 @@ namespace ARS.Controllers
                 img.Dispose();
             }
 
-            classroom.qr_code = fileRoute;
-            classroom.start_time = new DateTime(2018, 12, 12, 2, 0, 0);
-            classroom.end_time = new DateTime(2018, 12, 12, 2, 0, 0);
-
-            this.Context.Classrooms.Add(classroom);
+            newClassroom.qr_code = "/qrcodes/" + randomName + ".png";
+            this.Context.Classrooms.Update(newClassroom);
             this.Context.SaveChanges();
 
             return CreatedAtRoute("GetClassroom", new { id = classroom.id}, classroom);

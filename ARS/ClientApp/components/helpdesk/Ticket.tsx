@@ -33,7 +33,8 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
                 end_time: new Date,
                 location_id: 0,
                 is_public: false,
-                is_disabled: true
+                is_disabled: true,
+                qr_code: ""
             },
             problem:{
                 id:0,
