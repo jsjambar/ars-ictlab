@@ -118,11 +118,16 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                 </li>
 
                                 <li>
+                                    <NavLink to={'/helpdesk/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-info-sign'></span> Helpdesk
+                                    </NavLink>
+                                </li>
+
+                                <li>
                                     <NavLink to={'/analytics'} activeClassName='active'>
                                         <span className='glyphicon glyphicon-signal'></span> Analytics
                                     </NavLink>
                                 </li>
-
                                 <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
                             </ul>
                     }

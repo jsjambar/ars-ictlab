@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import * as immutable from 'immutable'
-import { Location, Classroom } from '../Model' 
+import { Location, Classroom } from '../Model'
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
@@ -22,7 +22,7 @@ interface ReservationEditState {
 export class ReservationEdit extends React.Component<RouteComponentProps<{}>, ReservationEditState> {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             id: 0,
             date: 0,
             chosen_date: moment(),
@@ -37,16 +37,16 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         this.getReservation = this.getReservation.bind(this);
     }
 
-    getDate(hour){
+    getDate(hour) {
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
-    handleChange(event){
+    handleChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-    
+
         this.setState({
             [name] : value
         }, () => this.setStartAndEnd(this.state.timeslot));
@@ -79,10 +79,10 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         });
     }
 
-    verifyReservation(){
+    verifyReservation() {
         const values = this.state;
         // refactor this to a re-usable function
-        if (values.room != 0 && values.start != 0 && values.end != 0){
+        if (values.room != 0 && values.start != 0 && values.end != 0) {
             this.updateReservation();
         } else {
             console.log("Not valid.");
@@ -97,7 +97,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 id: values.id,
                 created_at: this.getDate(0),
                 date_of_reservation: values.date,
-                start_time: this.getDate(values.start), 
+                start_time: this.getDate(values.start),
                 end_time: this.getDate(values.end),
                 classroom_id: values.room,
             })
@@ -105,12 +105,12 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         window.location.replace("/reservation/overview");
     }
 
-    componentWillMount(){
+    componentWillMount() {
         const { match: { params } } = this.props;
         var reservationId = Object.keys(params).map(function (key) { return params[key] })[0];
         this.getReservation(reservationId);
     }
-    
+
     getReservation(reservationId) {
         api.getReservation(reservationId)
             .then(reservation => this.setState({
@@ -128,38 +128,53 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
             ))
             .catch(e => console.log("getReservation, " + e))
     }
-    
+
     public render() {
-        return <div>
+        return <div className="reservations">
             <div className="page-header">
                 <h1>Edit Reservation {this.state.id}</h1>
+            </div>
+            <div>
                 <p>Please enter the new data to update this reservation.</p>
                 <form>
-                    <label>Room</label>
-                    <input type="text" name="room" placeholder="Classroom name" value={`${this.state.room}`} onChange={this.handleChange} />
+                    <div className="row">
+                        <label>Room</label>
+                    </div>
+
+                    <div className="row">
+                        <input type="text" name="room" placeholder="Classroom name" value={`${this.state.room}`} onChange={this.handleChange} />
+                    </div>
                     <br/>
 
-                    <label>Date:</label>
-                    {
-                        this.state.date != 0 ?
-                        <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
-                        :
-                        ""
-                    }
+                    <div className="row">
+                        <label>Date:</label>
+                        {
+                            this.state.date != 0 ?
+                            <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
+                            :
+                            ""
+                        }
+                    </div>
 
-                    <label>Timeslot:</label>
-                    <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
-                        <option value="0">Pick a time slot</option>
-                        <option value="1">9:00 - 11:00</option>
-                        <option value="2">11:00 - 13:00</option>
-                        <option value="3">13:00 - 15:00</option>
-                        <option value="4">15:00 - 17:00</option>
-                    </select>
+                        <div className="row">
+                            <label>Timeslot:</label>
+                    </div>
+                    <div className="row">
+                        <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
+                            <option value="0">Pick a time slot</option>
+                            <option value="1">9:00 - 11:00</option>
+                            <option value="2">11:00 - 13:00</option>
+                            <option value="3">13:00 - 15:00</option>
+                            <option value="4">15:00 - 17:00</option>
+                        </select>
+                    </div>
 
                     <br />
 
-                    <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
-                    <Link className="btn btn-primary" to={'/reservation/overview'}>Cancel</Link>
+                    <div className="row">
+                        <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
+                        <Link className="btn btn-secondary" to={'/reservation/overview'}>Cancel</Link>
+                    </div>
                 </form>
 
             </div>

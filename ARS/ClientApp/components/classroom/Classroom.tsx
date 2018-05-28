@@ -26,15 +26,17 @@ export class ClassroomComponent extends React.Component<classroomComponentProps,
     }
 
     public render() {
-        return <tr>
-            <th scope="row">{this.props.classroom.id}</th>
-            <td>{this.props.classroom.name}</td>
-            <td>{this.props.classroom.location_id}</td>
-            <td>{this.props.classroom.is_public ? "Yes" : "No"}</td>
-            <td>{this.props.classroom.is_disabled ? "No" : "Yes"}</td>
-            <td><Link className="btn btn-primary" to={`/admin/classrooms/${this.props.classroom.id}/edit`}>Edit</Link></td>
-            <td><button onClick={this.confirmDeletion.bind(this.props.classroom.id)} className="btn btn-primary">Delete</button></td>
-        </tr>
+        return <div className="row">
+            <strong className="col-xs-1 first" scope="row">{this.props.classroom.id}</strong>
+            <div className="col-xs-2 col-sm-1">{this.props.classroom.name}</div>
+            <div className="col-xs-2 col-sm-1">{this.props.classroom.location_id}</div>
+            <div className="col-xs-2 col-sm-1">{this.props.classroom.is_public ? "Yes" : "No"}</div>
+            <div className="col-xs-2 col-sm-1">{this.props.classroom.is_disabled ? "No" : "Yes"}</div>
+            <div className="col-xs-3 col-sm-3 last">
+                <Link className="btn btn-primary" to={`/admin/classrooms/${this.props.classroom.id}/edit`}>Edit</Link>
+                <button onClick={this.confirmDeletion.bind(this.props.classroom.id)} className="btn btn-danger btn-last">Delete</button>
+            </div>
+        </div>
     }
 
 }

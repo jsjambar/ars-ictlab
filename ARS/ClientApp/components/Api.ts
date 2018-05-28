@@ -145,12 +145,20 @@ export async function getUser(userId:Number) : Promise<User> {
     return json as User;
 }
 
-export async function getUserTickets() : Promise<Immutable.List<Ticket>>{
+export async function getAllTickets() : Promise<Immutable.List<Ticket>>{
     let res = await fetch(`/api/Ticket/all`, 
     { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
     return json as Immutable.List<Ticket>
+}
+
+export async function getUserTickets(user_id:Number) : Promise<Immutable.List<Ticket>> {
+    let res = await fetch(`/api/Ticket/User/` + user_id, 
+        { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
+      if (!res.ok) throw Error(res.statusText)
+      let json = await res.json()
+      return json as Immutable.List<Ticket>;
 }
 
 export async function getTicket(id: number) : Promise<Ticket>{
