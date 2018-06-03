@@ -21,7 +21,8 @@ export type Classroom = {
     end_time:Date,
     is_public:boolean,
     is_disabled:boolean
-    location_id:number
+    location_id:number,
+    qr_code:string
 }
 
 export type Location = {
