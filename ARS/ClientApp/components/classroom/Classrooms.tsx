@@ -60,6 +60,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             //kalender tonen
             this.getClassrooms(this.state.location);
             this.setStartAndEnd(this.state.timeslot);
+            //this.getClassroomEvents(this.state.classroom);
         });
     }
 

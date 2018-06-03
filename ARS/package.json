@@ -42,6 +42,7 @@
     "iana-tz-data": "^2017.1.0",
     "immutable": "https://registry.npmjs.org/immutable/-/immutable-3.8.2.tgz",
     "moment": "^2.22.1",
-    "react-big-calendar": "^0.19.1"
+    "react-big-calendar": "^0.19.1",
+    "react-datepicker": "^1.5.0"
   }
 }

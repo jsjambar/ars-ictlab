@@ -55,3 +55,9 @@ export type Ticket = {
     description: string,
     solved: boolean
 }
+
+export type ClassroomWithEvents = {
+
+    start: Date,
+    end: Date
+}

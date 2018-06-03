@@ -82,8 +82,9 @@ namespace ARS.Controllers
 
             reservations.ForEach(r => {
                 events.Add(new {
-                    Start = r.start_time,
-                    End = r.end_time
+                    title = $"Classroom reservation, {r.start_time} till {r.end_time}",
+                    start = r.start_time,
+                    end = r.end_time
                 });
             });
 
