@@ -31,6 +31,12 @@ select, input {
     margin-bottom: 5px;
 }
 
+input.checkbox {
+    width: auto;
+    height: auto;
+    float: left;
+}
+
 label {
     margin: 5px 0px 0px 0px;
 }
@@ -41,6 +47,10 @@ label {
     select, input {
         width: 100%;
         height: 30px;
+    }
+
+    input.checkbox {
+        width: auto;
     }
 
     .hideMobile {
@@ -71,38 +81,43 @@ label {
 
     /* SCHEDULES */
     /* Styling for the schedules form */
-    .schedules select {
+    .schedules select, .ticketForm select {
         margin-bottom: 5px;
     }
 
-    .schedules .description {
+    .schedules .description, .ticketForm .description {
         display: block;
         margin-bottom: 10px;
         width: 250px;
         height: 75px;
     }
 
-    .schedules .row {
+    .schedules .row, .ticketForm row {
         margin: 0px;
+    }
+
+    .ticketForm .btn {
+        margin-right: 10px;
     }
 
     @media (max-width: 767px) {
         /* On small screens, the form should span full with */
-        .schedules .description {
+        .schedules .description, .ticketForm .description {
             width: 100%;
         }
 
         .schedules select, .schedules input,
-        .schedules .datePicker .react-datepicker-wrapper,
-        .schedules .datePicker .react-datepicker-wrapper .react-datepicker__input-container {
+        .datePicker .react-datepicker-wrapper,
+        .datePicker .react-datepicker-wrapper .react-datepicker__input-container {
             width: 100%;
             height: 30px;
         }
 
-        .schedules .btn {
+        .schedules .btn, .ticketForm .btn {
             width: 100%;
             height: 30px;
             margin-bottom: 1rem;
+            margin-right: 0;
         }
     }
 
@@ -112,9 +127,15 @@ label {
         margin: 0px;
     }
 
+    .timeslots {
+        width: 200px;
+        height: 20px;
+    }
+
     /* TABLE STYLING */
 
     .tbl .btn {
+        width: 100%;
         margin-right: 5px;
         margin-bottom: 2px;
     }
@@ -135,10 +156,13 @@ label {
         font-weight: bold;
     }
 
+    .tbl .row .last {
+        display: flex;
+    }
+
     @media (max-width: 767px) {
         /* On small screens, the form should span full with */
         .tbl .btn {
-            width: 100%;
             margin-bottom: 5px;
         }
 
@@ -148,6 +172,7 @@ label {
 
         .tbl .row .last {
             padding-right: 0;
+            display: block;
         }
     }
 
@@ -159,7 +184,7 @@ label {
     /* HELPDESK */
 
     /* TicketForm */
-    .problem select {
+    /*.problem select {
         margin-left: 100px;
         width: 150px;
     }
@@ -190,7 +215,7 @@ label {
 
     .formButton button {
         margin-right: 10px;
-    }
+    }*/
 
 
     /* TicketForm */
@@ -209,41 +234,48 @@ label {
             width: calc(25% - 20px);
         }
 
-            .main-nav .navbar {
-                border-radius: 0px;
-                border-width: 0px;
-                height: 100%;
-            }
+        .main-nav .navbar {
+            border-radius: 0px;
+            border-width: 0px;
+            height: 100%;
+        }
 
-            .main-nav .navbar-header {
-                float: none;
-            }
+        .main-nav .navbar-header {
+            float: none;
+        }
 
-            .main-nav .navbar-collapse {
-                border-top: 1px solid #444;
-                padding: 0px;
-            }
+        .main-nav .navbar-collapse {
+            border-top: 1px solid #444;
+            padding: 0px;
+        }
 
-            .main-nav .navbar ul {
-                float: none;
-            }
+        .main-nav .navbar ul {
+            float: none;
+        }
 
-            .main-nav .navbar li {
-                float: none;
-                font-size: 15px;
-                margin: 6px;
-            }
+        .main-nav .navbar li {
+            float: none;
+            font-size: 15px;
+            margin: 6px;
+        }
 
-                .main-nav .navbar li a {
-                    padding: 10px 16px;
-                    border-radius: 4px;
-                }
+        .main-nav .navbar li a {
+            padding: 10px 16px;
+            border-radius: 4px;
+        }
 
-            .main-nav .navbar a {
-                /* If a menu item's text is too long, truncate it */
-                width: 100%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+    .main-nav .navbar a {
+        /* If a menu item's text is too long, truncate it */
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+}
+
+@media (max-width: 767px) {
+
+    .btn.btn-full-width-mobile {
+        width: 100%;
+    }
+}

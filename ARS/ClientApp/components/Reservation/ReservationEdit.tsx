@@ -146,7 +146,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                     </div>
                     <br/>
 
-                    <div className="row">
+                    <div className="row datePicker">
                         <label>Date:</label>
                         {
                             this.state.date != 0 ?
@@ -155,9 +155,10 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                             ""
                         }
                     </div>
+                    <br/>
 
-                        <div className="row">
-                            <label>Timeslot:</label>
+                    <div className="row">
+                        <label>Timeslot:</label>
                     </div>
                     <div className="row">
                         <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>

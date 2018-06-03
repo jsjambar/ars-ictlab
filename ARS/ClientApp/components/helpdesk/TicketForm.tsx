@@ -120,44 +120,60 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     }
 
     public render() {
-        return <div>
+        return <div className="ticketForm">
             <div className="page-header">
-                <h4>Ticket Form</h4>
+                <h1>Ticket Form</h1>
             </div>
             <p>Fill in form before submitting ticket.</p>
             <form>
-                <div className="problem"> 
-                    <label>Problem type:</label>
-                    <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a problem</option>
-                        {this.populateOptions(this.state.problemOptions)}
-                    </select>
+                <div className="problem">
+                    <div className="row">
+                        <label>Problem type:</label>
+                    </div>
+                    <div className="row">
+                        <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
+                            <option value="0">Select a problem</option>
+                            {this.populateOptions(this.state.problemOptions)}
+                        </select>
+                    </div>
                 </div>
-                <br/>
-                <div className="location"> 
-                    <label>Location:</label>
-                    <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a location</option>
-                        {this.populateOptions(this.state.locationOptions)}
-                    </select>
+                <br />
+                <div className="location">
+                    <div className="row">
+                        <label>Location:</label>
+                    </div>
+                    <div className="row">
+                        <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
+                            <option value="0">Select a location</option>
+                            {this.populateOptions(this.state.locationOptions)}
+                        </select>
+                    </div>
                 </div>
                 <br/>
                 <div className="classroom"> 
-                    <label>Classroom:</label>
+                    <div className="row">
+                        <label>Classroom:</label>
+                    </div>
+                    <div className="row">
                     <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
                         <option value="0">Select a classroom</option>
                         {this.populateOptions(this.state.classroomOptions)}
-                    </select>
+                        </select>
+                    </div>
                 </div>
                 <br/>
-                <div className="description"> 
-                    <label>Description:</label>
-                    <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                <div className=""> 
+                    <div className="row">
+                        <label>Description:</label>
+                    </div>
+                    <div className="row">
+                        <textarea className="description" name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                    </div>
                 </div>
                 <br/>
-                <div className="formButton"> 
+                <div className="formButton row"> 
                     <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
-                    <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
+                    <Link className="btn btn-danger" to={ '/Helpdesk/overview' }>Cancel</Link>
                 </div>
             </form>
         </div>;

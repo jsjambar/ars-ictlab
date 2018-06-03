@@ -40,12 +40,12 @@ export class ClassroomOverview extends React.Component<RouteComponentProps<{}>, 
                 this.state.classrooms != "Loading..." ?
                     <div className="row tbl">
                         <div className="row head">
-                            <strong className="col-xs-1 col-sm-1 first" scope="col">#</strong>
-                            <strong className="col-xs-2 col-sm-1" scope="col">Name</strong>
-                            <strong className="col-xs-2 col-sm-1" scope="col">Location</strong>
-                            <strong className="col-xs-2 col-sm-1" scope="col">Public for students</strong>
-                            <strong className="col-xs-2 col-sm-1" scope="col">Available</strong>
-                            <strong className="col-xs-3 col-sm-3 last" scope="col"></strong>
+                            <strong className="col-xs-1 first" scope="col">#</strong>
+                            <strong className="col-xs-2" scope="col">Name</strong>
+                            <strong className="col-xs-2" scope="col">Location</strong>
+                            <strong className="col-xs-2" scope="col">Public for students</strong>
+                            <strong className="col-xs-2" scope="col">Available</strong>
+                            <strong className="col-xs-3 last" scope="col"></strong>
                         </div>
                         <div className="row body">
                             {this.state.classrooms.map((c, k) => <ClassroomComponent key={k} classroom={c} />)}

@@ -118,13 +118,13 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             
                 {
                     this.state.user.role_id == 1 ?
-                        <div className="col-xs-2 col-sm-3 last">
-                            <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary btn-last">Delete</button>
+                        <div className="col-xs-3 last">
+                            <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-danger btn-last">Delete</button>
                         </div>
                     :
-                        <div className="col-xs-2 col-sm-3 last">
+                        <div className="col-xs-3 last">
                             <Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link>
-                            <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary btn-last">Delete</button>
+                            <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-danger btn-last">Delete</button>
                         </div>
                 }
         </div>
@@ -139,7 +139,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             <div className="col-xs-1">{g.getHours() + ":" + g.getMinutes()}</div>
             <div className="col-xs-2">{this.state.problem.name}</div>
             <div className="col-xs-1">{solved}</div>
-            <div className="col-xs-2 col-sm-3 last">
+            <div className="col-xs-3 last">
                 <Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link>
                 <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary btn-last">Delete</button>
             </div>
