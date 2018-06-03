@@ -35,7 +35,6 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             this.getTickets()
         })
         .catch(e => console.log("getClassroom, " + e))
-
     }
 
     getTickets(){
