@@ -9,12 +9,20 @@ import { Reservation } from '../components/Model'
 import { ClassroomWithEvents } from '../components/Model'
 import { ClassroomComponent } from '../components/classroom/Classroom';
 import { Link } from 'react-router-dom'
+import "react-big-calendar/lib/css/react-big-calendar.css"
 
 interface ClassroomOverviewState {
     classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
     reservations: immutable.List<Reservation> | "Loading...",
-    classroomsWithReservations: immutable.List<ClassroomWithEvents>,
-    classroom: String | 0
+    classroomsWithReservations: Array<ClassroomWithEvents>,
+    classroom: String | 0,
+    selected: Array<object>,
+    cellHeight: 30,
+    showModal: false,
+    locale: "nl",
+    rowsPerHour: 2,
+    numberOfDays: 4,
+    classRoomArray: Array<Classroom>
 }
 
 export type ReservationsState = { reservations: immutable.List<Reservation> | "Loading..." }
@@ -27,10 +35,30 @@ export class Calendar extends React.Component<RouteComponentProps<{}>, Classroom
         this.state = {
             classrooms: immutable.List<Classroom>(),
             reservations: "Loading...",
-            classroomsWithReservations: immutable.List<ClassroomWithEvents>(),
-            classroom: 0
+            classroomsWithReservations: Array<ClassroomWithEvents>(),
+            classroom: 0,
+            selected: [],
+            cellHeight: 30,
+            showModal: false,
+            locale: "nl",
+            rowsPerHour: 2,
+            numberOfDays: 4,
+            classRoomArray: []
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleCellSelection = this.handleCellSelection.bind(this)
+        this.handleItemEdit = this.handleItemEdit.bind(this)
+        this.handleRangeSelection = this.handleRangeSelection.bind(this)
+    }
+
+    handleCellSelection(item) {
+        console.log('handleCellSelection', item)
+    }
+    handleItemEdit(item) {
+        console.log('handleItemEdit', item)
+    }
+    handleRangeSelection(item) {
+        console.log('handleRangeSelection', item)
     }
 
     componentWillMount() {
@@ -46,7 +74,7 @@ export class Calendar extends React.Component<RouteComponentProps<{}>, Classroom
 
     getClassroomsWithEvents(id) {
         api.getClassroomEvents(id)
-            .then(classrooms => this.setState({ classroomsWithReservations: classrooms }), () => console.log(this.state.classroomsWithReservations))
+            .then(classrooms => this.setState({ classroomsWithReservations: classrooms.toArray() }), () => console.log(this.state.classroomsWithReservations))
             .catch(e => console.log("getClassroomsWithEvents, " + e))
     }
 
@@ -77,10 +105,10 @@ export class Calendar extends React.Component<RouteComponentProps<{}>, Classroom
         const name = target.name;
         const oldClassroom = this.state.classroom;
 
-        this.setState({
+        this.setState({...this.state,
             [name]: value
         }, () => {
-            this.setState({ classroomsWithReservations: immutable.List<ClassroomWithEvents>() }, () => {
+            this.setState({ classroomsWithReservations: Array<ClassroomWithEvents>() }, () => {
                 this.getClassroomsWithEvents(this.state.classroom)
             })
         })
@@ -92,7 +120,7 @@ export class Calendar extends React.Component<RouteComponentProps<{}>, Classroom
     }
 
     public render() {
-        return <div height="100%">
+        return <div height="200px">
             <BigCalendar views={Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])} events={this.state.classroomsWithReservations} timeslots={3} step={60} showMultiDayTimes />
             <label>Classroom</label>
             {
