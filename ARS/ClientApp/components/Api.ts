@@ -1,6 +1,6 @@
 import * as Immutable from "immutable"
 
-import { User, Role, Classroom, Location, Reservation, Problem, Ticket, ClassroomWithEvents } from './Model'
+import { User, Role, Classroom, Location, Reservation, Problem, Ticket, ClassroomWithEvents, Timeslot } from './Model'
 import { UserComponent } from "./user/User";
 import { Auth } from "./Authentication"
 
@@ -82,8 +82,6 @@ export async function check_user(){
 }
 
 export async function set_reservation(reservation) {
-    console.log(JSON.stringify(reservation));
-
     let res = await fetch(`/api/Reservation/add`,
     {
         method: 'post',
@@ -91,8 +89,10 @@ export async function set_reservation(reservation) {
         credentials: 'include',
         headers: { 'content-type': 'application/json' }
     })
+
     if (!res.ok) throw Error(res.statusText)
-    return "Reservation made"
+    let json = await res.json()
+    return json;
 }
 
 export async function get_reservations(): Promise<Immutable.List<Reservation>>  {

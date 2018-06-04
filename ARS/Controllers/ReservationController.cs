@@ -37,11 +37,21 @@ namespace ARS.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Create([FromBody] Reservation reservation)
+        public JsonResult Create([FromBody] Reservation reservation)
         {
             if (reservation == null)
             {
-                return BadRequest();
+                return new JsonResult(new { error = "1", errormessage = "Not found!" });
+            }
+
+            Reservation item = this.Context.Reservations.FirstOrDefault(
+                c => c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
+                c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
+                c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)
+            );
+
+            if(item != null){
+                return new JsonResult(new { error = "1", errormessage = "This timeslot has already been taken!" });
             }
 
             reservation.user_id = reservation.user_id;
@@ -53,7 +63,7 @@ namespace ARS.Controllers
             this.Context.Reservations.Add(reservation);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetReservation", new { reservation.id }, reservation);
+            return new JsonResult(new { error = "0", errormessage = "Success!" });
         }
 
         [HttpGet("all")]
@@ -61,6 +71,7 @@ namespace ARS.Controllers
         {
             return this.Context.Reservations.ToList();
         }
+
 
         [HttpGet("{id}", Name = "GetReservation")]
         public IActionResult GetById(long id)

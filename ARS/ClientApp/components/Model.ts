@@ -57,7 +57,11 @@ export type Ticket = {
 }
 
 export type ClassroomWithEvents = {
-
     start: Date,
     end: Date
+}
+
+export type Timeslot = {
+    id: number, 
+    time: string
 }

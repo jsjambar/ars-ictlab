@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
-import { Reservation } from '../Model';
+import { Reservation, Location, Classroom, Timeslot, ClassroomWithEvents } from '../Model';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 import * as immutable from 'immutable';
-import { Location } from '../Model' 
-import { Classroom } from '../Model'
 import * as helper from '../Datehelper'; 
 import BigCalendar from 'react-big-calendar';
-import { ClassroomWithEvents } from '../Model';
 import 'react-datepicker/dist/react-datepicker.css';
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
@@ -39,7 +36,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.state = { 
             location: 0,
             classroom: 0,
-            date_of_reservation: 0,
+            date_of_reservation: new Date(),
             chosen_date: moment(),
             start:0,
             end:0,
@@ -135,7 +132,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     setReservation() {
         const values = this.state;
-        api.set_reservation(
+        var res = api.set_reservation(
             new Object({
                 classroom_id: values.classroom,
                 user_id: this.state.auth.user.id,
@@ -144,7 +141,14 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                 end_time: this.getFormattedDate(values.end)
             })
         );
-        window.location.replace('/reservation/overview');
+
+        res.then(function(response){
+            if(response.error == 1){
+                alert(response.errormessage);
+            } else {
+                window.location.replace('/reservation/overview');
+            }
+        })
     }
 
     getLocations(){
@@ -163,6 +167,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         api.getClassroomEvents(id)
             .then(events => this.setClassroomReservations(events))
             .catch(e => console.log("getClassroomsWithEvents, " + e))
+
     }
 
     setClassroomReservations(events){
@@ -177,7 +182,9 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             )
         });
 
-        this.setState({ classroomsWithReservations: arrReservations });
+        this.setState({
+            classroomsWithReservations: arrReservations
+        })
     }
 
     locationList() {
@@ -209,6 +216,18 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         );
       }
 
+      timeslotList(){
+        return (
+        <select name='timeslot' value={`${this.state.timeslot}`} onChange={this.handleChange}>
+            <option value="0">Select a timeslot</option>
+            <option value="1">09:00 - 11:00</option>
+            <option value="2">11:00 - 13:00</option>
+            <option value="3">13:00 - 15:00</option>
+            <option value="4">15:00 - 17:00</option>
+        </select>
+        );
+      }
+
     public render() {
         return <div>
 
@@ -217,21 +236,11 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                 <p>Please select a location and classroom.</p>
                 <form>
                     <label>Location</label>
-                    { 
-                        this.state.locations ?
-                            this.locationList()
-                        :
-                        null
-                    }
+                    { this.state.locations ? this.locationList() : null }
                     <br/>
+                    
                     <label>Classroom</label>
-                    { 
-                        this.state.available_classrooms ?
-                            this.classroomList()
-                        :
-                        null
-                    }
-
+                    { this.state.available_classrooms ? this.classroomList() : null }
                     <br/>
 
                     <label>
@@ -241,19 +250,11 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <br/>
 
                     <label>Date:</label>
-                    <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
+                    <DatePicker minDate={moment()} defaultDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
 
                     <label>Timeslot:</label>
-                    <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
-                        <option value="0">Pick a time slot</option>
-                        <option value="1">9:00 - 11:00</option>
-                        <option value="2">11:00 - 13:00</option>
-                        <option value="3">13:00 - 15:00</option>
-                        <option value="4">15:00 - 17:00</option>
-                    </select>
-
+                    { this.timeslotList() }
                     <br/>
-
                     <button type="button" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
                 </form>
 
