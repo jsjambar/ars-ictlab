@@ -292,10 +292,10 @@ export async function deleteClassroom(classroomId){
     return true;
 }
 
-export async function getClassroomEvents(classroomId: Number): Promise<Immutable.List<ClassroomWithEvents>> {
+export async function getClassroomEvents(classroomId: Number): Promise<Array<ClassroomWithEvents>> {
     let res = await fetch(`api/reservation/classroomById/${classroomId}`,
         { method: 'get', credentials: 'include', headers: { 'content-type': 'application/json' } })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
-    return json as Immutable.List<ClassroomWithEvents>;
+    return json as Array<ClassroomWithEvents>;
 }

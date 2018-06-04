@@ -35,5 +35,4 @@ export const routes = <Layout>
     <Route path='/reservation/:id/edit' component={ ReservationEdit } />
     <Route path='/admin/classrooms/create' component={ ClassroomCreation }/>
     <Route path='/admin/classrooms/:id/edit' component={ClassroomEdit} />
-    <Route path='/calendar' component={Calendar} />
 </Layout>;

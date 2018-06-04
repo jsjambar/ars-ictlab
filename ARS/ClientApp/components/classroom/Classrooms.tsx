@@ -8,22 +8,21 @@ import * as immutable from 'immutable';
 import { Location } from '../Model' 
 import { Classroom } from '../Model'
 import * as helper from '../Datehelper'; 
+import { Calendar } from '../Calendar';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface ScheduleState { 
     location: 0, 
-    classroom: String|0, 
+    classroom: String | 0, 
     description: String|"",
     date_of_reservation: Date|0,
     chosen_date: Object,
     start: Number|0,
     end: Number|0,
-    showSchedule:Boolean|false, 
-    iframe:String|"",
     locations: immutable.List<Location> | immutable.List<Location>,
     available_classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
     temp: Number,
-    timeslot: Number
+    timeslot: Number,
 }
 
 export class Classrooms extends React.Component<RouteComponentProps<{}>, ScheduleState> {
@@ -37,8 +36,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             chosen_date: moment(),
             start:0,
             end:0,
-            showSchedule: false,
-            iframe: "",
             locations: immutable.List<Location>(),
             available_classrooms: immutable.List<Classroom>(),
             temp: 0,
@@ -57,10 +54,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.setState({
             [name] : value
         }, () => {
-            //kalender tonen
             this.getClassrooms(this.state.location);
             this.setStartAndEnd(this.state.timeslot);
-            //this.getClassroomEvents(this.state.classroom);
         });
     }
 
@@ -117,14 +112,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         const values = this.state;
         api.set_reservation(
             new Object({
-                //id: 0,
                 classroom_id: values.classroom,
                 date_of_reservation: values.date_of_reservation,
                 start_time: this.getFormattedDate(values.start),
                 end_time: this.getFormattedDate(values.end)
             })
         );
-        window.location.replace('/reservation/overview');
+        //window.location.replace('/reservation/overview');
     }
 
     getLocations(){
@@ -135,7 +129,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     getClassrooms(locationId){
         api.getLocationClassrooms(locationId)
-        .then(classrooms => this.setState({ available_classrooms : classrooms }))
+        .then(classrooms => this.setState({ available_classrooms : classrooms}))
         .catch(e => console.log("getUsers, " + e))
     }
 
@@ -195,7 +189,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
                     <label>
                         It's currently { this.state.temp ? this.state.temp : "invalid temperature" } degrees in the classroom.
-                    </label> {/*todo: this should be updated after classroom+Location has been selected*/}
+                    </label>
                     
                     <br/>
 
@@ -220,6 +214,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
                     <button type="button" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
                 </form>
+
+                { 
+                        this.state.classroom != 0 ?
+                            <Calendar selectedClassroom={this.state.classroom}/>
+                        :
+                        null
+                    }
 
             </div>
            

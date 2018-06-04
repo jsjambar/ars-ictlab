@@ -46,8 +46,8 @@ namespace ARS.Controllers
 
             reservation.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
             reservation.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            reservation.start_time = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            reservation.end_time = new DateTime(reservation.end_time.Year, reservation.end_time.Month, reservation.end_time.Day, reservation.end_time.Hour + 2, 0, 0);
+            reservation.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
+            reservation.end_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0);
 
             this.Context.Reservations.Add(reservation);
             this.Context.SaveChanges();
@@ -82,9 +82,9 @@ namespace ARS.Controllers
 
             reservations.ForEach(r => {
                 events.Add(new {
-                    title = $"Classroom reservation, {r.start_time} till {r.end_time}",
-                    start = r.start_time,
-                    end = r.end_time
+                    title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
+                    start = r.date_of_reservation.ToString(),
+                    end = r.date_of_reservation.ToString()
                 });
             });
 
@@ -109,8 +109,8 @@ namespace ARS.Controllers
             item.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
             item.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             item.classroom_id = reservation.classroom_id;
-            item.start_time = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            item.end_time = new DateTime(reservation.end_time.Year, reservation.end_time.Month, reservation.end_time.Day, reservation.end_time.Hour + 2, 0, 0);
+            item.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
+            item.end_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0);
 
             this.Context.Reservations.Update(item);
             this.Context.SaveChanges();

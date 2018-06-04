@@ -174,16 +174,21 @@ h4 {
     margin: auto;
 }
 
-    .example,
-    .example > * {
-        display: flex;
-        flex-direction: column;
-    }
+.example,
+.example > * {
+    display: flex;
+    flex-direction: column;
+}
 
-        .example .rbc-calendar {
-            flex: 1;
-            min-height: 580px;
-        }
+.example .rbc-calendar {
+    flex: 1;
+    min-height: 580px;
+}
+
+.rbc-month-view {
+    display:block !important;
+    height:100px !important;
+}
 
 .examples--list {
     display: flex;
