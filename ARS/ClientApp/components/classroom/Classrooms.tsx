@@ -13,10 +13,12 @@ import { ClassroomWithEvents } from '../Model';
 import 'react-datepicker/dist/react-datepicker.css';
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
+
 interface ScheduleState { 
     location: 0, 
-    classroom: String | 0, 
-    description: String|"",
+    classroom: String | 0,
     date_of_reservation: Date|0,
     chosen_date: Object,
     start: Number|0,
@@ -25,7 +27,8 @@ interface ScheduleState {
     available_classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
     temp: Number,
     timeslot: Number,
-    classroomsWithReservations: Array<ClassroomWithEvents>
+    classroomsWithReservations: Array<ClassroomWithEvents>,
+    auth:Auth
 }
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
@@ -36,7 +39,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.state = { 
             location: 0,
             classroom: 0,
-            description: "",
             date_of_reservation: 0,
             chosen_date: moment(),
             start:0,
@@ -45,7 +47,12 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             available_classrooms: immutable.List<Classroom>(),
             temp: 0,
             timeslot: 0,
-            classroomsWithReservations: Array<ClassroomWithEvents>()
+            classroomsWithReservations: Array<ClassroomWithEvents>(),
+            auth: {
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -82,7 +89,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         const values = this.state;
         // refactor this to a re-usable function
         if(values.location != 0 && values.classroom != 0 && 
-            values.description != "" && values.start != 0 && values.end != 0){
+            values.start != 0 && values.end != 0){
             if(values.date_of_reservation == 0){ 
                 this.setState({ date_of_reservation: this.getFormattedDate(0) });
             }
@@ -101,7 +108,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     componentWillMount(){
-        this.getLocations();
+        this.check_auth()
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}, () => this.getLocations()))
+        .catch(e => console.log(e))
     }
    
     getFormattedDate(hour) {
@@ -125,12 +138,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         api.set_reservation(
             new Object({
                 classroom_id: values.classroom,
+                user_id: this.state.auth.user.id,
                 date_of_reservation: values.date_of_reservation,
                 start_time: this.getFormattedDate(values.start),
                 end_time: this.getFormattedDate(values.end)
             })
         );
-        //window.location.replace('/reservation/overview');
+        window.location.replace('/reservation/overview');
     }
 
     getLocations(){
@@ -224,11 +238,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                         It's currently { this.state.temp ? this.state.temp : "invalid temperature" } degrees in the classroom.
                     </label>
                     
-                    <br/>
-
-                    <label>Description:</label>
-                    <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
-
                     <br/>
 
                     <label>Date:</label>

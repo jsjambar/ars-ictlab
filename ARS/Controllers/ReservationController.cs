@@ -44,6 +44,7 @@ namespace ARS.Controllers
                 return BadRequest();
             }
 
+            reservation.user_id = reservation.user_id;
             reservation.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
             reservation.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             reservation.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
@@ -74,10 +75,33 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("user/{id}")]
+        public IEnumerable<Reservation> GetUserReservations(long id)
+        {
+            return this.Context.Reservations.Where(r => r.user_id == id);
+        }
+
         [HttpGet("classroomById/{id}")]
         public IEnumerable<object> GetReservationsByClassroomId(long id)
         {
             List<Reservation> reservations = this.Context.Reservations.Where(r => r.classroom_id == id).ToList();
+            List<object> events = new List<object>();
+
+            reservations.ForEach(r => {
+                events.Add(new {
+                    title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
+                    start = r.date_of_reservation.ToString(),
+                    end = r.date_of_reservation.ToString()
+                });
+            });
+
+            return events;
+        }
+
+        [HttpGet("calendar/{id}")]
+        public IEnumerable<object> GetReservationsByUserId(long id)
+        {
+            List<Reservation> reservations = this.Context.Reservations.Where(r => r.user_id == id).ToList();
             List<object> events = new List<object>();
 
             reservations.ForEach(r => {

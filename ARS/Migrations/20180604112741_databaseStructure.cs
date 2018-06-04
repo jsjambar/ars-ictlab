@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ARS.Migrations
 {
-    public partial class newDatabaseStructure0705 : Migration
+    public partial class databaseStructure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

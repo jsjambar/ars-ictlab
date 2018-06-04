@@ -107,6 +107,19 @@ export async function get_reservations(): Promise<Immutable.List<Reservation>>  
     return json as Immutable.List<Reservation>
 }
 
+export async function getUserReservations(userId): Promise<Immutable.List<Reservation>>  {
+    let res = await fetch(`/api/Reservation/user/` + userId,
+        {
+            method: 'get',
+            credentials: 'include',
+            headers: { 'content-type': 'application/json' }
+        })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Immutable.List<Reservation>
+}
+
+
 export async function getReservation(reservationId: Number): Promise<Reservation> {
     let res = await fetch(`/api/Reservation/` + reservationId,
         {
@@ -290,6 +303,14 @@ export async function deleteClassroom(classroomId){
 
     if (!res.ok) return false;
     return true;
+}
+
+export async function getUserEvents(userId: Number): Promise<Array<ClassroomWithEvents>> {
+    let res = await fetch(`api/reservation/calendar/${userId}`,
+        { method: 'get', credentials: 'include', headers: { 'content-type': 'application/json' } })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Array<ClassroomWithEvents>;
 }
 
 export async function getClassroomEvents(classroomId: Number): Promise<Array<ClassroomWithEvents>> {

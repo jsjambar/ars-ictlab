@@ -8,9 +8,10 @@ import { ClassroomWithEvents } from '../components/Model'
 import { Link } from 'react-router-dom'
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
-export type CalendarProps = {selectedClassroom:String}
+export type CalendarProps = {userid:Number}
+
 interface CalendarState {
-    classroomsWithReservations: Array<ClassroomWithEvents>
+    userReservations: Array<ClassroomWithEvents>
 }
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
@@ -18,27 +19,27 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     constructor() {
         super();
         this.state = {
-            classroomsWithReservations: Array<ClassroomWithEvents>()
+            userReservations: Array<ClassroomWithEvents>()
         };
     }
 
     componentDidMount() {
-        this.getClassroomsWithEvents(this.props.selectedClassroom);
+        this.getUserEvents(this.props.userid);
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
-            this.getClassroomsWithEvents(this.props.selectedClassroom);
+            this.getUserEvents(this.props.userid);
         }
     }
 
-    getClassroomsWithEvents(id) {
-        api.getClassroomEvents(id)
-            .then(events => this.setClassroomReservations(events))
+    getUserEvents(userid) {
+        api.getUserEvents(userid)
+            .then(events => this.setUserReservations(events))
             .catch(e => console.log("getClassroomsWithEvents, " + e))
     }
 
-    setClassroomReservations(events){
+    setUserReservations(events){
         var arrReservations = [];
         events.forEach(element => {
             arrReservations.push(
@@ -50,14 +51,14 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             )
         });
 
-        this.setState({ classroomsWithReservations: arrReservations });
+        this.setState({ userReservations: arrReservations });
     }
 
     public render() {
         return <div>
             <BigCalendar 
             views={Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])} 
-            events={this.state.classroomsWithReservations} 
+            events={this.state.userReservations} 
             timeslots={3}
             step={60}
             defaultDate={new Date()}

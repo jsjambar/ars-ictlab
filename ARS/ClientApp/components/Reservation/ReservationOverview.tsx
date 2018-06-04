@@ -5,20 +5,36 @@ import * as api from '../Api'
 import { Reservation } from '../Model'
 import { ReservationComponent } from './Reservation'
 
-export type ReservationsState = { reservations: immutable.List<Reservation> | "Loading..." }
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
+
+export type ReservationsState = { reservations: immutable.List<Reservation> | "Loading...", auth:Auth }
 
 export class Reservations extends React.Component<RouteComponentProps<{}>, ReservationsState> {
     constructor() {
         super();
-        this.state = { reservations: "Loading..." };
+        this.state = { 
+            reservations: "Loading...",
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
+        };
     }
 
     componentWillMount() {
-        this.getReservations()
+        this.check_auth()
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}, () => this.getReservations()))
+        .catch(e => console.log(e))
     }
 
     getReservations() {
-        api.get_reservations()
+        api.getUserReservations(this.state.auth.user.id)
         .then(reservations => this.setState({ reservations: reservations }))
         .catch(e => console.log("getReservations, " + e))
     }
