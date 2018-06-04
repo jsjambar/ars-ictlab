@@ -8,8 +8,10 @@ import * as immutable from 'immutable';
 import { Location } from '../Model' 
 import { Classroom } from '../Model'
 import * as helper from '../Datehelper'; 
-import { Calendar } from '../Calendar';
+import BigCalendar from 'react-big-calendar';
+import { ClassroomWithEvents } from '../Model';
 import 'react-datepicker/dist/react-datepicker.css';
+import "react-big-calendar/lib/css/react-big-calendar.css"
 
 interface ScheduleState { 
     location: 0, 
@@ -23,7 +25,10 @@ interface ScheduleState {
     available_classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
     temp: Number,
     timeslot: Number,
+    classroomsWithReservations: Array<ClassroomWithEvents>
 }
+
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 export class Classrooms extends React.Component<RouteComponentProps<{}>, ScheduleState> {
     constructor() {
@@ -39,7 +44,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             locations: immutable.List<Location>(),
             available_classrooms: immutable.List<Classroom>(),
             temp: 0,
-            timeslot: 0
+            timeslot: 0,
+            classroomsWithReservations: Array<ClassroomWithEvents>()
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -47,6 +53,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     handleChange(event){
+        const oldLoc = this.state.location;
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -54,8 +61,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.setState({
             [name] : value
         }, () => {
-            this.getClassrooms(this.state.location);
+            if(this.state.location != oldLoc){
+                this.getClassrooms(this.state.location);
+            }
             this.setStartAndEnd(this.state.timeslot);
+            if(this.state.classroom != 0){
+                this.getClassroomsWithEvents(this.state.classroom);
+            }
         });
     }
 
@@ -129,8 +141,29 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     getClassrooms(locationId){
         api.getLocationClassrooms(locationId)
-        .then(classrooms => this.setState({ available_classrooms : classrooms}))
+        .then(classrooms => this.setState({ classroom: 0, available_classrooms : classrooms}))
         .catch(e => console.log("getUsers, " + e))
+    }
+
+    getClassroomsWithEvents(id) {
+        api.getClassroomEvents(id)
+            .then(events => this.setClassroomReservations(events))
+            .catch(e => console.log("getClassroomsWithEvents, " + e))
+    }
+
+    setClassroomReservations(events){
+        var arrReservations = [];
+        events.forEach(element => {
+            arrReservations.push(
+                {
+                    title: element.title,
+                    start: new Date(element.start),
+                    end: new Date(element.end)
+                }
+            )
+        });
+
+        this.setState({ classroomsWithReservations: arrReservations });
     }
 
     locationList() {
@@ -217,7 +250,15 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
                 { 
                         this.state.classroom != 0 ?
-                            <Calendar selectedClassroom={this.state.classroom}/>
+                        <BigCalendar 
+                            views={Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])} 
+                            events={this.state.classroomsWithReservations} 
+                            timeslots={3}
+                            step={60}
+                            defaultDate={new Date()}
+                            defaultView="month"
+                            showMultiDayTimes 
+                        />
                         :
                         null
                     }
