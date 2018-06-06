@@ -56,3 +56,13 @@ export type Ticket = {
     description: string,
     solved: boolean
 }
+
+export type ClassroomWithEvents = {
+    start: Date,
+    end: Date
+}
+
+export type Timeslot = {
+    id: number, 
+    time: string
+}

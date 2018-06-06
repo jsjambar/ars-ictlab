@@ -11,8 +11,8 @@ using System;
 namespace ARS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180507080834_newDatabaseStructure0705")]
-    partial class newDatabaseStructure0705
+    [Migration("20180604112741_databaseStructure")]
+    partial class databaseStructure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -29,6 +29,7 @@ namespace ARS.Controllers
                     date_of_reservation = new DateTime(2018, 04, 23),
                     start_time = new DateTime(2018, 03, 19, 9, 0, 0),
                     end_time = new DateTime(2018, 03, 19, 11, 0, 0),
+                    classroom_id = 1
                 });
 
                 this.Context.SaveChanges();
@@ -36,22 +37,33 @@ namespace ARS.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Create([FromBody] Reservation reservation)
+        public JsonResult Create([FromBody] Reservation reservation)
         {
             if (reservation == null)
             {
-                return BadRequest();
+                return new JsonResult(new { error = "1", errormessage = "Not found!" });
             }
 
+            Reservation item = this.Context.Reservations.FirstOrDefault(
+                c => c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
+                c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
+                c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)
+            );
+
+            if(item != null){
+                return new JsonResult(new { error = "1", errormessage = "This timeslot has already been taken!" });
+            }
+
+            reservation.user_id = reservation.user_id;
             reservation.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
             reservation.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            reservation.start_time = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            reservation.end_time = new DateTime(reservation.end_time.Year, reservation.end_time.Month, reservation.end_time.Day, reservation.end_time.Hour + 2, 0, 0);
+            reservation.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
+            reservation.end_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0);
 
             this.Context.Reservations.Add(reservation);
             this.Context.SaveChanges();
 
-            return CreatedAtRoute("GetReservation", new { reservation.id }, reservation);
+            return new JsonResult(new { error = "0", errormessage = "Success!" });
         }
 
         [HttpGet("all")]
@@ -59,6 +71,7 @@ namespace ARS.Controllers
         {
             return this.Context.Reservations.ToList();
         }
+
 
         [HttpGet("{id}", Name = "GetReservation")]
         public IActionResult GetById(long id)
@@ -71,6 +84,46 @@ namespace ARS.Controllers
             }
 
             return new ObjectResult(item);
+        }
+
+        [HttpGet("user/{id}")]
+        public IEnumerable<Reservation> GetUserReservations(long id)
+        {
+            return this.Context.Reservations.Where(r => r.user_id == id);
+        }
+
+        [HttpGet("classroomById/{id}")]
+        public IEnumerable<object> GetReservationsByClassroomId(long id)
+        {
+            List<Reservation> reservations = this.Context.Reservations.Where(r => r.classroom_id == id).ToList();
+            List<object> events = new List<object>();
+
+            reservations.ForEach(r => {
+                events.Add(new {
+                    title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
+                    start = r.date_of_reservation.ToString(),
+                    end = r.date_of_reservation.ToString()
+                });
+            });
+
+            return events;
+        }
+
+        [HttpGet("calendar/{id}")]
+        public IEnumerable<object> GetReservationsByUserId(long id)
+        {
+            List<Reservation> reservations = this.Context.Reservations.Where(r => r.user_id == id).ToList();
+            List<object> events = new List<object>();
+
+            reservations.ForEach(r => {
+                events.Add(new {
+                    title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
+                    start = r.date_of_reservation.ToString(),
+                    end = r.date_of_reservation.ToString()
+                });
+            });
+
+            return events;
         }
 
         [HttpPut("{id}")]
@@ -91,8 +144,8 @@ namespace ARS.Controllers
             item.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
             item.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
             item.classroom_id = reservation.classroom_id;
-            item.start_time = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            item.end_time = new DateTime(reservation.end_time.Year, reservation.end_time.Month, reservation.end_time.Day, reservation.end_time.Hour + 2, 0, 0);
+            item.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
+            item.end_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0);
 
             this.Context.Reservations.Update(item);
             this.Context.SaveChanges();
