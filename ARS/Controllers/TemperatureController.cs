@@ -22,17 +22,14 @@ namespace ARS.Controllers
         }
 
         [HttpPost("update")]
-        public JsonResult Create([FromBody] int classroom_id)
+        public JsonResult Create([FromBody] Temperature temp)
         {
-            Temperature temperature = this.Context.Temperatures.FirstOrDefault(t => t.classroom_id == classroom_id);
+            Temperature temperature = this.Context.Temperatures.FirstOrDefault(t => t.classroom_id == temp.classroom_id);
 
             if(temperature == null){
-                temperature = new Temperature();
-                temperature.classroom_id = classroom_id;
-                temperature.temperature = 40;
                 this.Context.Temperatures.Add(temperature);
             }else{
-                temperature.temperature = temperature.temperature + 5;
+                this.Context.Temperatures.Update(temperature);
             }
 
             this.Context.SaveChanges();
