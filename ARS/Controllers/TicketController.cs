@@ -78,7 +78,7 @@ namespace ARS.Controllers
 
             if (item == null)
             {
-                return NotFound();
+                return new JsonResult(new { error = "1", errormessage = "Ticket not found!" });
             }
 
             return new ObjectResult(item);

@@ -162,13 +162,13 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         })
         this.getClassroom(ticket.classroom_id);
         }))
-        .catch(e => console.log("getTicket, " + e))
+        .catch(e => console.log("getClassroom, " + e))
     }
 
     public render() {
         return <div>
             {
-                this.state.auth.is_loggedin != false ?
+                this.state.auth.is_loggedin != false && this.state.auth.user.id == this.state.user_id || this.state.auth.permission == 2?
                     <div>
                         <div className="page-header">
                             <h4>Ticket Form</h4>
