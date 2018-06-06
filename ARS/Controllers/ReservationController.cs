@@ -127,30 +127,38 @@ namespace ARS.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] Reservation reservation)
+        public JsonResult Update(long id, [FromBody] Reservation reservation)
         {
             if (reservation == null || reservation.id != id)
             {
-                return BadRequest();
+                return new JsonResult(new { error = "1", errormessage = "Not found!" });
             }
 
-            Reservation item = this.Context.Reservations.FirstOrDefault(t => t.id == id);
+            Reservation exists = this.Context.Reservations.FirstOrDefault(c =>
+                c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
+                c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
+                c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)
+            );
 
-            if (item == null)
+            Reservation item = this.Context.Reservations.FirstOrDefault(c => c.id == id);
+
+            if (exists == null)
             {
-                return NotFound();
+                item.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
+                item.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
+                item.classroom_id = reservation.classroom_id;
+                item.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
+                item.end_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0);
+
+                this.Context.Reservations.Update(item);
+                this.Context.SaveChanges();
+
+                return new JsonResult(new { error = "0", errormessage = "Success!" });
+            } else {
+                return new JsonResult(new { error = "1", errormessage = "This timeslot has been taken!" });
             }
 
-            item.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
-            item.created_at = new DateTime(reservation.start_time.Year, reservation.start_time.Month, reservation.start_time.Day, reservation.start_time.Hour + 2, 0, 0);
-            item.classroom_id = reservation.classroom_id;
-            item.start_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0);
-            item.end_time = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0);
-
-            this.Context.Reservations.Update(item);
-            this.Context.SaveChanges();
-
-            return new NoContentResult();
+            
         }
 
         [HttpDelete("{id}")]

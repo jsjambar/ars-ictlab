@@ -7,13 +7,15 @@ import { UserComponent } from './User'
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 
-interface LoginState { username:string, password:string, auth:Auth}
+export type Error = {num:number, msg:string}
+interface LoginState { username:string, password:string, auth:Auth, errors:immutable.List<Error>}
 
 export class Login extends React.Component<RouteComponentProps<{}>, LoginState> {
 
     constructor() {
         super();
         this.state = { 
+            errors:immutable.List<Error>(),
             username:"", 
             password:"", 
             auth:{
@@ -33,11 +35,11 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
        Authentication.check_auth()
        .then(r => this.setState({...this.state, auth:r}))
        .then(() => this.handle_auth())
-       .catch(e => console.log(e))
+       .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:1, msg:"Authentication Failed"})}))
     }
 
     handle_auth(){
-        this.state.auth.permission == 0 ?
+        this.state.auth.permission == 0 ? 
             window.location.reload
         :this.state.auth.permission == 1 ?
             window.location.replace('/home')
@@ -55,22 +57,27 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
 
     loginUser(){
         api.login_user(this.state)
-        .then(r => console.log(r))
         .then(() => this.check_auth())
+        .then(() => this.setState({...this.state, errors:this.state.errors.push({num:4, msg:"Incorrect Login Data."})}))
         .then(() => this.handle_auth())
-        .catch(e => console.log(e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:2, msg:"Login Failed."})}))
     }
 
     logoutUser(){
         api.logout_user()
-        .catch(e => console.log(e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:3, msg:"Logout Failed."})}))
     }
 
     public render() {
         return <div>
             {JSON.stringify(this.state)}
+            <br />
+            {this.state.errors.count()}
             <div className="page-header">
                 <h1>Log in to the ARS</h1>
+            </div>
+            <div>
+                {this.state.errors.map(e => {<div>{e.num} - {e.msg}</div>})}
             </div>
             <div className="row">
                 <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, username:e.currentTarget.value})} /><br />
