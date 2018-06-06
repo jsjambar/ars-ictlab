@@ -22,7 +22,10 @@ namespace ARSTests
             var builder = new DbContextOptionsBuilder<DatabaseContext>().UseInMemoryDatabase();
             DatabaseContext databaseContext = new DatabaseContext(builder.Options);
 
+            // Add sample users with Range method
             var users = Enumerable.Range(1, 4).Select(i => new User { id = i, first_name = $"Piet de {i}", last_name = $"Henk de {i}", password = $"password{i}", role_id = 1, username = $"{i}@hr.nl" });
+
+            // Add sample users to Context.InMemoryDatabase
             databaseContext.Users.AddRange(users);
             int changed = databaseContext.SaveChanges();
             this.DatabaseContext = databaseContext;
