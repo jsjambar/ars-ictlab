@@ -139,6 +139,10 @@ export async function updateReservation(reservationId, reservation) {
         credentials: 'include',
         headers: { 'content-type': 'application/json' }
     });
+
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json;
 }
 
 export async function deleteReservation(reservationId) {

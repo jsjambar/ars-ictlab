@@ -24,7 +24,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         super(props);
         this.state = {
             id: 0,
-            date: 0,
+            date: new Date(),
             chosen_date: moment(),
             start: 0,
             end: 0,
@@ -91,7 +91,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
 
     updateReservation() {
         const values = this.state;
-        api.updateReservation(
+        var res = api.updateReservation(
             values.id,
             new Object({
                 id: values.id,
@@ -102,7 +102,14 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 classroom_id: values.room,
             })
         );
-        window.location.replace("/reservation/overview");
+        
+        res.then(function(response){
+            if(response.error == 1){
+                alert(response.errormessage);   
+            } else {
+                window.location.replace("/reservation/overview");
+            }
+        })
     }
 
     componentWillMount() {
@@ -115,7 +122,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         api.getReservation(reservationId)
             .then(reservation => this.setState({
                 id: reservation.id,
-                chosen_date: moment(reservation.date_of_reservation),
+                chosen_date: moment(reservation.date_of_reservation).hour(10),
                 start: new Date(reservation.start_time).getHours(),
                 end: new Date(reservation.end_time).getHours(),
                 room: reservation.classroom_id,
@@ -138,15 +145,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 <p>Please enter the new data to update this reservation.</p>
                 <form>
                     <div className="row">
-                        <label>Room</label>
-                    </div>
-
-                    <div className="row">
-                        <input type="text" name="room" placeholder="Classroom name" value={`${this.state.room}`} onChange={this.handleChange} />
-                    </div>
-                    <br/>
-
-                    <div className="row">
                         <label>Date:</label>
                         {
                             this.state.date != 0 ?
@@ -156,8 +154,8 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                         }
                     </div>
 
-                        <div className="row">
-                            <label>Timeslot:</label>
+                    <div className="row">
+                        <label>Timeslot:</label>
                     </div>
                     <div className="row">
                         <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
@@ -176,7 +174,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                         <Link className="btn btn-secondary" to={'/reservation/overview'}>Cancel</Link>
                     </div>
                 </form>
-
             </div>
         </div>;
     }
