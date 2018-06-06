@@ -27,13 +27,14 @@ namespace ARS.Controllers
             Temperature temperature = this.Context.Temperatures.FirstOrDefault(t => t.classroom_id == temp.classroom_id);
 
             if(temperature == null){
+                temperature = temp;
                 this.Context.Temperatures.Add(temperature);
             }else{
                 this.Context.Temperatures.Update(temperature);
             }
 
             this.Context.SaveChanges();
-            return Json(new {response = "success"});
+            return Json(new {response = "success", temperature = temperature});
         }
     }
 }
