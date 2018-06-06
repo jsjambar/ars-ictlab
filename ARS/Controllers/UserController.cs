@@ -86,6 +86,9 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("finduser/{username}")]
+        public User GetByUsername(string username) => this.Context.Users.FirstOrDefault(u => u.username == username);
+
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] User user)
         {

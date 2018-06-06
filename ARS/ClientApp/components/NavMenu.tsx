@@ -3,6 +3,12 @@ import { Link, NavLink } from 'react-router-dom';
 import * as Authentication from './Authentication'
 import { Auth } from './Authentication';
 import * as api from './Api'
+import { chai } from 'chai'
+import chaiEnzyme from 'chai-enzyme'
+import { mount, render, shallow } from 'enzyme'
+import { expect } from 'chai'
+
+chai.use(chaiEnzyme())
 
 const adminHeader = {
     color: '#9d9d9d',
@@ -131,3 +137,7 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
         </div>;
     }
 }
+
+//const wrapper = mount(<NavMenu />)
+//expect(wrapper.find('div')).to.have.className('main-nav')
+//expect(wrapper.find('ul')).to.have.className('navbar-nav')
