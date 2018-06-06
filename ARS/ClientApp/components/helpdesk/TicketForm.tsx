@@ -107,7 +107,6 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         );
     }
     verifyTicket(){
-        const values = this.state;
         if(this.fieldCheck){
             this.submitTicket();
         }
