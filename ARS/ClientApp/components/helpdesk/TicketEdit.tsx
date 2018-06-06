@@ -98,7 +98,20 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         ));
     }
 
+    fieldCheck(){
+        const { description, location_id, classroom_id, problem_id } = this.state;
+        return(
+            description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
+        );
+    }
     verifyTicket(){
+        const values = this.state;
+        if(this.fieldCheck){
+            this.submitTicketChanges();
+        }
+    }
+
+    verifyTicke2t(){
         const values = this.state;
         if(values.location_id != 0 && values.classroom_id != 0 && values.problem_id != 0 &&
             values.description != ""){
@@ -180,8 +193,13 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                 <br/>
                 <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved} /> Ticket solved
                 <br/>
-                <div className="formButton"> 
-                    <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                <div className="formButton">
+                    {
+                        !this.fieldCheck() ?
+                        <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
+                        :
+                        <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                    } 
                     <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
                 </div>
             </form>

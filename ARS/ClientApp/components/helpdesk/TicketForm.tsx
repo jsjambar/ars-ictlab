@@ -4,6 +4,8 @@ import * as api from '../Api';
 import { Ticket, Problem, User, Classroom, Location } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication';
 
 interface TicketState { 
     created_at: Date|0,
@@ -17,23 +19,13 @@ interface TicketState {
     problemOptions: immutable.List<Problem>|immutable.List<Problem>,
     locationOptions: immutable.List<Location>|immutable.List<Location>,
     classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
-    solved: Boolean|false
+    solved: Boolean|false,
+    auth:Auth
 }
 
 export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor() {
         super();
-        let sampleUser = [
-            {
-                "userId": 1,
-                "user": {
-                    "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal"
-                }
-            }
-        ];
-        
         this.state = { 
             location_id: 0,
             classroom_id: 0,
@@ -42,11 +34,16 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             description: "",
             created_at: new Date(),
             receiveCopy: false,
-            user_id: sampleUser[0]["userId"],
+            user_id: 0,
             problemOptions: immutable.List<Problem>(),
             locationOptions: immutable.List<Location>(),
             classroomOptions: immutable.List<Classroom>(),
-            solved: false
+            solved: false,
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
             
         };
         this.handleChange = this.handleChange.bind(this);
@@ -54,6 +51,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     }
 
     componentWillMount(){
+        this.check_auth();
         this.getProblems();
         this.getLocations();
     }
@@ -68,6 +66,14 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         if(name == "location_id"){
            this.getLocClassrooms(value);
         }
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => {
+            this.setState({...this.state, auth:r})
+        })
+        .catch(e => console.log("Authenticate, " + e))
     }
 
     getProblems(){
@@ -94,15 +100,16 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         ));
       }
 
+    fieldCheck(){
+        const { description, location_id, classroom_id, problem_id } = this.state;
+        return(
+            description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
+        );
+    }
     verifyTicket(){
         const values = this.state;
-        if(values.location_id != 0 && values.classroom_id != 0 && values.problem_id != 0 &&
-            values.description != ""){
+        if(this.fieldCheck){
             this.submitTicket();
-        } else {
-            // show errors for the missing values
-            console.log(values.problemOptions);
-            console.log(values.problem_id);
         }
     }
 
@@ -114,9 +121,9 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             image: values.image, 
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 
-            user_id: values.user_id, 
+            user_id: values.auth.user.id, 
             solved: values.solved}));
-            window.location.replace('/helpdesk/overview');
+        window.location.replace('/helpdesk/overview');
     }
 
     public render() {
@@ -156,7 +163,12 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 </div>
                 <br/>
                 <div className="formButton"> 
-                    <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                    {
+                        !this.fieldCheck() ?
+                        <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
+                        :
+                        <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                    }
                     <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
                 </div>
             </form>
