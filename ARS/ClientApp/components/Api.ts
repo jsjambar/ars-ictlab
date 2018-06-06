@@ -1,6 +1,6 @@
 import * as Immutable from "immutable"
 
-import { User, Role, Classroom, Location, Reservation, Problem, Ticket, ClassroomWithEvents, Timeslot } from './Model'
+import { User, Role, Classroom, Location, Reservation, Problem, Ticket, ClassroomWithEvents, Timeslot, Temperature } from './Model'
 import { UserComponent } from "./user/User";
 import { Auth } from "./Authentication"
 
@@ -11,7 +11,7 @@ export async function get_users() : Promise<Immutable.List<User>> {
     let json = await res.json()
     return json as Immutable.List<User>
 }
- 
+
 export async function set_user(user) {
   let res = await fetch(`/api/User/add`, 
       { method: 'post',

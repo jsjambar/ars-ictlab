@@ -66,3 +66,11 @@ export type Timeslot = {
     id: number, 
     time: string
 }
+
+export type Temperature = {
+    id: number,
+    classroom_id: number,
+    temperature: number
+}
+
+export type Error = {num:number, msg:string}
