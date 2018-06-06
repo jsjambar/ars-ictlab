@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
-export type TicketState = { UserTickets:immutable.List<Ticket>, SystemTickets: immutable.List<Ticket>, auth:Auth}
+export type Error = {num:number, msg:string}
+export type TicketState = { UserTickets:immutable.List<Ticket>, SystemTickets: immutable.List<Ticket>, auth:Auth, errors:immutable.List<Error>}
 
 export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor() {
         super();
         this.state = {
+            errors:immutable.List<Error>(),
             UserTickets: immutable.List<Ticket>(),
             SystemTickets: immutable.List<Ticket>(),
             auth:{
@@ -34,9 +36,9 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             this.setState({...this.state, auth:r}),
             this.getTickets()
         })
-        .catch(e => console.log("Not authenticated, " + e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:1, msg:"Authentication Failed"})}))
     }
-
+    
     getTickets(){
         if(this.state.auth.is_loggedin && this.state.auth.permission == 1)
         {
@@ -44,7 +46,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             .then(Tickets => {
                 this.setState({UserTickets:Tickets})
             })
-            .catch(e => console.log("getUserTickets, " + e))
+            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
         }
         else if(this.state.auth.is_loggedin && this.state.auth.permission == 2)
         {
@@ -53,7 +55,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 this.setState({UserTickets:Tickets[0],
                     SystemTickets:Tickets[1]})
             })
-            .catch(e => console.log("getAllTickets, " + e))
+            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
         }
     }
 

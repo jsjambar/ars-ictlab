@@ -5,19 +5,22 @@ import { Ticket, User, Classroom, Problem, Location } from '../Model';
 import * as api from '../Api';
 import { Link } from 'react-router-dom'
 
+export type Error = {num:number, msg:string}
 export type TicketComponentProps = {ticket:Ticket, key:number, type:"user"|"system"}
 
 interface TicketState{
     user: User,
     classroom: Classroom,
     problem: Problem,
-    location: Location
+    location: Location,
+    errors:immutable.List<Error>
 } 
 
 export class TicketComponent extends React.Component<TicketComponentProps, TicketState> {
     constructor() {
         super();
         this.state = {
+            errors:immutable.List<Error>(),
             user: {
                 id: 0,
                 first_name: "",
@@ -61,7 +64,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             .then(user => {
                 this.setState({user:user})
             })
-            .catch(e => console.log("getUser, " + e))
+            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:6, msg:"User not found!"})}))
         }
     }
 
@@ -70,7 +73,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .then(problem => {
               this.setState({problem:problem})
         })
-        .catch(e => console.log("getProblem, " + e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
     }
 
     getClassroom(){
@@ -79,7 +82,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
               this.setState({classroom:classroom}),
               this.getLocation(classroom.location_id)
         })
-        .catch(e => console.log("getClassroom, " + e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
     }
 
     getLocation(location_id: Number){
@@ -87,7 +90,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .then(location => {
               this.setState({location:location})
         })
-        .catch(e => console.log("getLocation, " + e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
     }
 
     delete_Ticket(){
@@ -100,7 +103,8 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
                     location.reload();
                 }
             })
-            .then(m => console.log("success, " + m));
+            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
+            window.location.replace('/helpdesk/overview');
         }
     }
 
