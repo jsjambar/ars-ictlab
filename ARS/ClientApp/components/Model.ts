@@ -72,3 +72,5 @@ export type Temperature = {
     classroom_id: number,
     temperature: number
 }
+
+export type Error = {num:number, msg:string}
