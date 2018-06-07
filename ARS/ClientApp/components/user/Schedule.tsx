@@ -2,29 +2,44 @@ import * as React from 'react';
 import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api'
-import { User } from '../Model'
+import { User, Error } from '../Model'
 import { UserComponent } from './User'
+import { Calendar } from '../Calendar'
 
-interface ScheduleState { user : User|0, iframe: String|"" }
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
 
-export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleState> {
+export type NavMenuState = {auth:Auth, errors:immutable.List<Error>}
+
+export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuState> {
 
     constructor() {
         super();
-        this.state = { user : 0, iframe : "" };
+        this.state = {
+            errors:immutable.List<Error>(),
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
+        }
     }
 
     componentWillMount(){
-        this.getUser()
+        this.check_auth()
     }
 
-    getUser(){
-        api.getUser(1)
-        .then(user => this.setState({
-            user: user, 
-            iframe:  "https://calendar.google.com/calendar/embed?src=" + user.username + "@hr.nl&ctz=Europe%2FAmsterdam&language=nl"
-        }))
-        .catch(e => console.log("getUser, " + e))
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}))
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
     }
 
     public render() {
@@ -34,14 +49,21 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
             </div>
             <div>
                 {
-                    this.state.user != 0 && this.state.iframe != "" ?
-                    <div>
-                        <iframe src={`${this.state.iframe}`} width='100%' height='650' scrolling='no' frameBorder='0'></iframe>
-                    </div>
-                    :
-                    ""
+                    this.state.errors.map(e => {
+                       return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                       </div>
+                    })
                 }
             </div>
+            {
+                this.state.auth.user ?
+                <div>
+                    <Calendar userid={this.state.auth.user.id}/>
+                </div>
+                :
+                null
+            }
         </div>
     }
 }

@@ -16,18 +16,6 @@ namespace ARS.Controllers
         public TicketController (DatabaseContext context)
         {
             this.Context = context;
-            if(this.Context.Tickets.Count() == 0)
-            {
-                this.Context.Tickets.Add(new Ticket
-                {
-                    created_at = DateTime.Now,
-                    user_id = 1,
-                    problem_id = 1,
-                    classroom_id = 1,
-                    description = "Dashboard laat geen beeld zien, kan geen reservering plaatsen."
-                });
-                this.Context.SaveChanges();
-            }
         }
 
         [HttpGet("all")]
@@ -48,6 +36,12 @@ namespace ARS.Controllers
             f.Add(systemTicket);
 
             return f;
+        }
+
+        [HttpGet("User/{id}", Name = "getUserTickets")]
+        public List<Ticket> GetByUserId(long id)
+        {
+            return this.Context.Tickets.Where(t => t.user_id == id).ToList();
         }
 
 
@@ -72,7 +66,7 @@ namespace ARS.Controllers
 
             if (item == null)
             {
-                return NotFound();
+                return new JsonResult(new { error = "1", errormessage = "Ticket not found!" });
             }
 
             return new ObjectResult(item);

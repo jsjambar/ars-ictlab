@@ -25,8 +25,17 @@ namespace ARS.Controllers
                 this.Context.Users.Add(new User
                 {
                     first_name = "Global",
+                    last_name = "Admin",
+                    username = "123@hr.nl",
+                    password = "tset:HawaianJase",
+                    role_id = 2
+                });
+
+                this.Context.Users.Add(new User
+                {
+                    first_name = "Global",
                     last_name = "User",
-                    username = "1@hr.nl",
+                    username = "12345@hr.nl",
                     password = "tset:HawaianJase",
                     role_id = 2
                 });

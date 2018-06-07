@@ -21,7 +21,8 @@ export type Classroom = {
     end_time:Date,
     is_public:boolean,
     is_disabled:boolean
-    location_id:number
+    location_id:number,
+    qr_code:string
 }
 
 export type Location = {
@@ -55,3 +56,21 @@ export type Ticket = {
     description: string,
     solved: boolean
 }
+
+export type ClassroomWithEvents = {
+    start: Date,
+    end: Date
+}
+
+export type Timeslot = {
+    id: number, 
+    time: string
+}
+
+export type Temperature = {
+    id: number,
+    classroom_id: number,
+    temperature: number
+}
+
+export type Error = {num:number, msg:string}

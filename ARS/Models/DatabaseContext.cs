@@ -19,5 +19,6 @@ namespace ARS.Models
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Problem> Problems { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Temperature> Temperatures {get; set;}
     }
 }

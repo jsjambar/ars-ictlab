@@ -1,52 +1,47 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
-import { Ticket, Problem, User, Classroom, Location } from '../Model';
+import { Ticket, Problem, User, Classroom, Location, Error } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication';
 
 interface TicketState { 
     created_at: Date|0,
     description: String|"",
-    image: String|"",
     problem_id: Number|0,
     classroom_id: Number|0,
     user_id: Number|0,
     location_id: Number|0,
-    receiveCopy:Boolean|false,
     problemOptions: immutable.List<Problem>|immutable.List<Problem>,
     locationOptions: immutable.List<Location>|immutable.List<Location>,
     classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
-    solved: Boolean|false
+    solved: Boolean|false,
+    auth:Auth,
+    errors:immutable.List<Error>
 }
 
 export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor() {
         super();
-        let sampleUser = [
-            {
-                "userId": 1,
-                "user": {
-                    "username": "0910212",
-                    "firstName": "Mark",
-                    "lastName": "Thal"
-                }
-            }
-        ];
-        
         this.state = { 
+            errors:immutable.List<Error>(),
             location_id: 0,
             classroom_id: 0,
             problem_id: 0,
-            image: "",
             description: "",
             created_at: new Date(),
-            receiveCopy: false,
-            user_id: sampleUser[0]["userId"],
+            user_id: 0,
             problemOptions: immutable.List<Problem>(),
             locationOptions: immutable.List<Location>(),
             classroomOptions: immutable.List<Classroom>(),
-            solved: false
+            solved: false,
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
             
         };
         this.handleChange = this.handleChange.bind(this);
@@ -54,6 +49,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     }
 
     componentWillMount(){
+        this.check_auth();
         this.getProblems();
         this.getLocations();
     }
@@ -70,22 +66,37 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         }
     }
 
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => {
+            this.setState({...this.state, auth:r})
+        })
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
+    }
+
     getProblems(){
         api.getProblems()
         .then(problemOptions => this.setState({problemOptions:problemOptions}))
-        .catch(e => console.log("getProblems, " + e))
+        .catch(e => this.set_error({num:13, msg:"Problems Not Found"}))
     }
 
     getLocations(){
         api.getLocations()
         .then(locationOptions => this.setState({locationOptions:locationOptions}))
-        .catch(e => console.log("getLocations, " + e))
+        .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
     getLocClassrooms(location_id){
         api.getLocationClassrooms(location_id)
         .then(classroomOptions => this.setState({classroomOptions:classroomOptions}))
-        .catch(e => console.log("getLocationClassrooms, " + e))
+        .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
     populateOptions(options) {
@@ -94,15 +105,15 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         ));
       }
 
+    fieldCheck(){
+        const { description, location_id, classroom_id, problem_id } = this.state;
+        return(
+            description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
+        );
+    }
     verifyTicket(){
-        const values = this.state;
-        if(values.location_id != 0 && values.classroom_id != 0 && values.problem_id != 0 &&
-            values.description != ""){
+        if(this.fieldCheck){
             this.submitTicket();
-        } else {
-            // show errors for the missing values
-            console.log(values.problemOptions);
-            console.log(values.problem_id);
         }
     }
 
@@ -114,50 +125,80 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             image: values.image, 
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 
-            user_id: values.user_id, 
+            user_id: values.auth.user.id, 
             solved: values.solved}));
-            window.location.replace('/helpdesk/overview');
+        window.location.replace('/helpdesk/overview');
     }
 
     public render() {
-        return <div>
+        return <div className="ticketForm">
             <div className="page-header">
-                <h4>Ticket Form</h4>
+                <h1>Ticket Form</h1>
+            </div>
+            <div>
+                {
+                    this.state.errors.map(e => {
+                       return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                       </div>
+                    })
+                }
             </div>
             <p>Fill in form before submitting ticket.</p>
             <form>
-                <div className="problem"> 
-                    <label>Problem type:</label>
-                    <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a problem</option>
-                        {this.populateOptions(this.state.problemOptions)}
-                    </select>
+                <div className="problem">
+                    <div className="row">
+                        <label>Problem type:</label>
+                    </div>
+                    <div className="row">
+                        <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
+                            <option value="0">Select a problem</option>
+                            {this.populateOptions(this.state.problemOptions)}
+                        </select>
+                    </div>
                 </div>
-                <br/>
-                <div className="location"> 
-                    <label>Location:</label>
-                    <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a location</option>
-                        {this.populateOptions(this.state.locationOptions)}
-                    </select>
+                <br />
+                <div className="location">
+                    <div className="row">
+                        <label>Location:</label>
+                    </div>
+                    <div className="row">
+                        <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
+                            <option value="0">Select a location</option>
+                            {this.populateOptions(this.state.locationOptions)}
+                        </select>
+                    </div>
                 </div>
                 <br/>
                 <div className="classroom"> 
-                    <label>Classroom:</label>
+                    <div className="row">
+                        <label>Classroom:</label>
+                    </div>
+                    <div className="row">
                     <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
                         <option value="0">Select a classroom</option>
                         {this.populateOptions(this.state.classroomOptions)}
-                    </select>
+                        </select>
+                    </div>
                 </div>
                 <br/>
-                <div className="description"> 
-                    <label>Description:</label>
-                    <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                <div className=""> 
+                    <div className="row">
+                        <label>Description:</label>
+                    </div>
+                    <div className="row">
+                        <textarea className="description" name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                    </div>
                 </div>
                 <br/>
                 <div className="formButton"> 
-                    <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
-                    <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
+                    {
+                        !this.fieldCheck() ?
+                        <Link className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</Link>
+                        :
+                        <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                    }
+                    <Link className="btn btn-danger" to={ '/Helpdesk/overview' }>Cancel</Link>
                 </div>
             </form>
         </div>;

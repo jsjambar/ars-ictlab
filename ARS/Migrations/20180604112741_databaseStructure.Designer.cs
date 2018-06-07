@@ -11,9 +11,10 @@ using System;
 namespace ARS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180604112741_databaseStructure")]
+    partial class databaseStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,20 +139,6 @@ namespace ARS.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("ARS.Models.Temperature", b =>
-                {
-                    b.Property<long>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<long>("classroom_id");
-
-                    b.Property<int>("temperature");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Temperatures");
                 });
 
             modelBuilder.Entity("ARS.Models.Ticket", b =>
