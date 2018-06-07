@@ -85,16 +85,14 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                     </div>
                     <div className="row tbl">
                         <div className="row head">
-                            <strong className="col-xs-1 first"># Ticket</strong>
-                            <strong className="col-xs-1">Student</strong>
-                            <strong className="col-xs-1 col-sm-2">Student number</strong>
-                            <strong className="col-xs-1">Location</strong>
-                            <strong className="col-xs-1">Room</strong>
-                            <strong className="col-xs-1">Date</strong>
-                            <strong className="col-xs-1">Time</strong>
-                            <strong className="col-xs-1">Type problem</strong>
-                            <strong className="col-xs-1">Solved</strong>
-                            <strong className="col-xs-2 col-sm-3 last"></strong>
+                            <strong className="col-xs-2 hideMobile hideTablet">Student number</strong>
+                            <strong className="col-xs-2 hideMobile hideTablet">Location</strong>
+                            <strong className="col-xs-1 hideMobile hideTablet">Room</strong>
+                            <strong className="col-xs-2 col-md-1">Date</strong>
+                            <strong className="col-xs-2 col-md-1">Time</strong>
+                            <strong className="col-xs-3 col-md-1">Type problem</strong>
+                            <strong className="col-xs-2 col-md-1">Solved</strong>
+                            <strong className="col-xs-3 last"></strong>
                         </div>
                         <div className="row body">
                             {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
@@ -116,15 +114,13 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                         </div>
                         <div className="row tbl">
                             <div className="row head">
-                                <strong className="col-xs-1 first"># Ticket</strong>
-                                <strong className="col-xs-1">Student</strong>
-                                <strong className="col-xs-1 col-sm-2">Student number</strong>
-                                <strong className="col-xs-1">Location</strong>
-                                <strong className="col-xs-1">Room</strong>
-                                <strong className="col-xs-1">Date</strong>
-                                <strong className="col-xs-1">Time</strong>
-                                <strong className="col-xs-1">Type problem</strong>
-                                <strong className="col-xs-1">Solved</strong>
+                                <strong className="col-xs-2 hideMobile hideTablet first">Student number</strong>
+                                <strong className="col-xs-2 hideMobile hideTablet">Location</strong>
+                                <strong className="col-xs-1 hideMobile hideTablet">Room</strong>
+                                <strong className="col-xs-2 col-md-1">Date</strong>
+                                <strong className="col-xs-2 col-md-1">Time</strong>
+                                <strong className="col-xs-3 col-md-1">Type problem</strong>
+                                <strong className="col-xs-2 col-md-1">Solved</strong>
                                 <strong className="col-xs-3 last"></strong>
                             </div>
                             <div className="row body">
@@ -142,15 +138,13 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                         </div>
                         <div className="row tbl">
                             <div className="row head">
-                                <strong className="col-xs-1 first"># Ticket</strong>
-                                <strong className="col-xs-1">Student</strong>
-                                <strong className="col-xs-1">Student number</strong>
-                                <strong className="col-xs-1">Location</strong>
-                                <strong className="col-xs-1">Room</strong>
-                                <strong className="col-xs-1">Date</strong>
-                                <strong className="col-xs-1">Time</strong>
-                                <strong className="col-xs-1">Type problem</strong>
-                                <strong className="col-xs-1">Solved</strong>
+                                <strong className="col-xs-2 hideMobile hideTablet first">Student number</strong>
+                                <strong className="col-xs-2 hideMobile hideTablet">Location</strong>
+                                <strong className="col-xs-1 hideMobile hideTablet">Room</strong>
+                                <strong className="col-xs-2 col-md-1">Date</strong>
+                                <strong className="col-xs-2 col-md-1">Time</strong>
+                                <strong className="col-xs-3 col-md-1">Type problem</strong>
+                                <strong className="col-xs-2 col-md-1">Solved</strong>
                                 <strong className="col-xs-3 last"></strong>
                             </div>
                             <div className="row body">
@@ -164,13 +158,13 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                             </div>
                             <div className="row tbl">
                                 <div className="row head">
-                                    <strong className="col-xs-1"># Ticket</strong>
-                                    <strong className="col-xs-2">Location</strong>
-                                    <strong className="col-xs-2">Room</strong>
-                                    <strong className="col-xs-2">Date</strong>
-                                    <strong className="col-xs-1">Time</strong>
-                                    <strong className="col-xs-1">Type problem</strong>
-                                    <strong className="col-xs-1">Solved</strong>
+                                    <strong className="col-xs-2 hideMobile hideTablet"># Ticket</strong>
+                                    <strong className="col-xs-2 hideMobile hideTablet">Location</strong>
+                                    <strong className="col-xs-1 hideMobile hideTablet">Room</strong>
+                                    <strong className="col-xs-2 col-md-1">Date</strong>
+                                    <strong className="col-xs-2 col-md-1">Time</strong>
+                                    <strong className="col-xs-3 col-md-1">Type problem</strong>
+                                    <strong className="col-xs-2 col-md-1">Solved</strong>
                                     <strong className="col-xs-3 last"></strong>
                                 </div>
                                 <div className="row body">

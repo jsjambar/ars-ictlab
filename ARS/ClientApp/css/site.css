@@ -62,6 +62,12 @@ label {
     }
 }
 
+@media (max-width: 991px){
+    .hideTablet {
+        display: none;
+    }
+}
+
 /* HEADER STYLING */
 
 .page-header {
@@ -451,39 +457,6 @@ h4 a:focus .anchor-icon {
 
 /* HELPDESK */
 
-/* TicketForm */
-.problem select {
-    margin-left: 100px;
-    width: 150px;
-}
-
-.location select {
-    margin-left: 130px;
-    width: 150px;
-}
-
-.classroom select {
-    margin-left: 115px;
-    width: 150px;
-}
-
-.description textarea {
-    margin-left: 110px;
-    width: 50px;
-    height: 200px;
-}
-
-.date select {
-    margin-left: 156px;
-}
-
-.time select {
-    margin-left: 155px;
-}
-
-.formButton button {
-    margin-right: 10px;
-}
 
 
 /* TicketForm */
