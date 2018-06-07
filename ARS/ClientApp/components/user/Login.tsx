@@ -27,7 +27,6 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
 
     componentWillMount(){
         this.check_auth()
-        this.handle_auth()
     }
 
     check_auth(){
@@ -41,8 +40,18 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
         this.state.auth.permission == 0 ? 
             window.location.reload
         :this.state.auth.permission == 1 ?
-            window.location.replace('/home')
-        : window.location.replace('/admin/classrooms/overview')
+            this.handle_user()
+        : this.handle_admin()
+    }
+
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        window.location.replace('/home')
+    }
+
+    handle_admin(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        window.location.replace('/admin/classrooms/overview')
     }
 
     set_error(error:Error){
@@ -64,8 +73,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     loginUser(){
         api.login_user(this.state)
         .then(() => this.check_auth())
-        .then(() => this.set_error({num:4, msg:"Incorrect Login Data."}))
-        .then(() => this.handle_auth())
+        .then(() => !this.state.auth.is_loggedin ? this.set_error({num:4, msg:"Incorrect Login Data."}) : null)
         .catch(e => this.set_error({num:2, msg:"Login Failed."}))
     }
 
