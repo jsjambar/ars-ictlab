@@ -2,13 +2,14 @@ import * as React from 'react';
 import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api'
-import { User } from '../Model'
+import { User, Error } from '../Model'
 import { UserComponent } from './User' 
 import { UserForm } from './UserForm'
 
 export type UsersState = {
     page:Page
-    users:immutable.List<User>|"Loading..."
+    users:immutable.List<User>|"Loading...",
+    errors:immutable.List<Error>
 }
 
 export type UsersData = {}
@@ -22,6 +23,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
     constructor() {
         super();
         this.state = { 
+            errors:immutable.List<Error>(),
             page:{
                 name:"show"
             },
@@ -33,36 +35,38 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         this.getUsers()
     }
 
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
+    }
+
     getUsers(){
         api.get_users()
         .then(users => this.setState({users:users}))
-        .catch(e => console.log("getUsers, " + e))
+        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
     }
 
     setUser(user:User){
-        console.log("User: " + JSON.stringify(user))
-
         api.set_user(user)
-        .then(m => console.log("success, " + m))
         .then(_ => this.switchPage({name:"show"}))
         .then(_ => this.getUsers())
-        .catch(e => console.log("error, " + e))
+        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
     }
 
     deleteUser(id:number){
         api.delete_user(id)
-        .then(m => console.log("success, " + m))
         .then(_ => this.switchPage({name:"show"}))
         .then(_ => this.getUsers())
-        .catch(e => console.log("error, " + e))
+        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
     }
 
     updateUser(u:User){
         api.update_user(u)
-        .then(m => console.log("success, " + m))
         .then(_ => this.switchPage({name:"show"}))
         .then(_ => this.getUsers())
-        .catch(e => console.log("error, " + e))
+        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
     }
 
     switchPage(page:Page){
@@ -73,6 +77,15 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         return <div>
             <div className="page-header row">
                 <h1>Users</h1>
+                <div>
+                    {
+                        this.state.errors.map(e => {
+                        return <div className="alert alert-danger" role="alert">
+                                <p>{e.msg}</p>
+                        </div>
+                        })
+                    }
+                </div>
                 <div className="headerBtn">
                     <button className="btn btn-primary" onClick={() => this.switchPage({ name: "add" })}>Add User</button>
                 </div>

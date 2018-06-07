@@ -17,7 +17,7 @@ import { ClassroomOverview } from './components/classroom/ClassroomOverview';
 import { ReservationForClassroom } from './components/Reservation/ReservationForClassroom';
 import { ClassroomQR } from './components/classroom/ClassroomQR';
 import { Register } from './components/user/Register';
-
+import { Calendar } from './components/Calendar'
 
 export const routes = <Layout>
     <Route exact path='/' component={ Login } />
@@ -40,4 +40,3 @@ export const routes = <Layout>
     <Route path='/reserve/:id' component={ ReservationForClassroom } />
     <Route path='/qrcode/classroom/:id' component={ ClassroomQR } />
 </Layout>;
-

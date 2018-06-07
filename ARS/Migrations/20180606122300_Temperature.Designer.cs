@@ -11,8 +11,8 @@ using System;
 namespace ARS.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180507080834_newDatabaseStructure0705")]
-    partial class newDatabaseStructure0705
+    [Migration("20180606122300_Temperature")]
+    partial class Temperature
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,6 +139,20 @@ namespace ARS.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("ARS.Models.Temperature", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("classroom_id");
+
+                    b.Property<int>("temperature");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Temperatures");
                 });
 
             modelBuilder.Entity("ARS.Models.Ticket", b =>
