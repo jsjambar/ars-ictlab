@@ -20,7 +20,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             auth:{
                 is_loggedin:false,
                 user:null,
-                permission:0
+                permission:0 //0 = No Permission, 1 = Student, 2 = Administrator
             }
         };
     }
