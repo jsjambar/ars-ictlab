@@ -121,8 +121,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         const values = this.state;
         api.createTicket(new Object({ 
             created_at: values.created_at, 
-            description: values.description, 
-            image: values.image, 
+            description: values.description,
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 
             user_id: values.auth.user.id, 
