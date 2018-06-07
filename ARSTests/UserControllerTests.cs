@@ -1,97 +1,84 @@
 using ARS.Controllers;
 using ARS.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ARSTests
 {
-    public class UserControllerTest
+    public class UserControllerTests
     {
-        DatabaseContext DatabaseContext;
+        public List<User> Users;
+        public DatabaseContext DatabaseContext;
+        public UserController UserController;
 
-        public UserControllerTest()
+        public UserControllerTests()
         {
-            this.InitializeContext();
+            this.Initialize();
+            this.Users = this.GetTestUsers();
         }
 
-        private void InitializeContext()
+        private void Initialize()
         {
-            var builder = new DbContextOptionsBuilder<DatabaseContext>().UseInMemoryDatabase();
-            DatabaseContext databaseContext = new DatabaseContext(builder.Options);
 
-            // Add sample users with Range method
-            var users = Enumerable.Range(1, 4).Select(i => new User { id = i, first_name = $"Piet de {i}", last_name = $"Henk de {i}", password = $"password{i}", role_id = 1, username = $"{i}@hr.nl" });
-
-            // Add sample users to Context.InMemoryDatabase
-            databaseContext.Users.AddRange(users);
-            int changed = databaseContext.SaveChanges();
-            this.DatabaseContext = databaseContext;
-        }
-
-        private List<User> SampleUsers()
-        {
-            return new List<User>
-            {
-                new User{
-                    id = 1,
-                    first_name = "Jason",
-                    last_name = "Lead",
-                    //notifications = new List<Notification>(),
-                    role_id = 1, 
-                    password = "blackerthanthenight",
-                    username = "1234@hr.nl"
-                },
-                new User{
-                    id = 2,
-                    first_name = "Mark",
-                    last_name = "Romy",
-                    //notifications = new List<Notification>(),
-                    role_id = 1,
-                    password = "romyweetdezeook",
-                    username = "4321@hr.nl"
-                },
-                new User{
-                    id = 3,
-                    first_name = "Jacky",
-                    last_name = "Fong",
-                    //notifications = new List<Notification>(),
-                    role_id = 1,
-                    password = "jackedman",
-                    username = "0000@hr.nl"
-                },
-                new User{
-                    id = 4,
-                    first_name = "Andy",
-                    last_name = "Bhadai",
-                    //notifications = new List<Notification>(),
-                    role_id = 1,
-                    password = "purmerend",
-                    username = "11111@hr.nl"
-                },
-                new User{
-                    id = 5,
-                    first_name = "Jef",
-                    last_name = "Constantinanozaio",
-                    //notifications = new List<Notification>(),
-                    role_id = 1,
-                    password = "jeweettoggg",
-                    username = "98765@hr.nl"
-                }
-            };
+            var builder = new DbContextOptionsBuilder<DatabaseContext>().UseInMemoryDatabase("SampleDB");
+            this.DatabaseContext = new DatabaseContext(builder.Options);
+            this.UserController = new UserController(this.DatabaseContext);
         }
 
         [Fact]
-        public void TestUserGetByUsername()
+        public void Create_ReturnsBadRequest_WhenModelIsNull()
         {
-            string expectedUsername = "1@hr.nl";
-            UserController controller = new UserController(this.DatabaseContext);
+            var result = this.UserController.Create(null);
+            Assert.IsType<BadRequestResult>(result);
+        }
 
-            // Controller returns a object, therefore I use dynamic to get the username property
-            User user = controller.GetByUsername(expectedUsername);
-            Assert.Equal(expectedUsername, user.username);
+        [Fact]
+        public void Create_Returns201Status_WhenModelIsNotNull()
+        {
+            var result = this.UserController.Create(new User { id = 4, first_name = "Jan", last_name = "Jan", password = "Jantje", role_id = 1, username = "4@hr.nl"});
+            Assert.IsType<CreatedAtRouteResult>(result);
+        }
+
+        [Fact]
+        public void Login_ReturnsResponseFailed_WhenUserIsNotFound()
+        {
+            LoginObject credentialsThatFail = new LoginObject{ username = "0@hr.nl", password = "piet" };
+            var response = this.UserController.Login(credentialsThatFail);
+
+            Assert.Equal(new JsonResult(new { response = "failed" }), response);
+        }
+
+        private List<User> GetTestUsers()
+        {
+            return new List<User>
+            {
+                new User
+                {
+                    id = 1,
+                    first_name = "Piet",
+                    last_name = "Piet",
+                    password = "pietje",
+                    role_id = 1,
+                    username = "1@hr.nl"
+                },
+                new User
+                {
+                    id = 2,
+                    first_name = "Henk",
+                    last_name = "Henk",
+                    password = "henkje",
+                    role_id = 1,
+                    username = "2@hr.nl"
+                },
+            };
         }
     }
 }

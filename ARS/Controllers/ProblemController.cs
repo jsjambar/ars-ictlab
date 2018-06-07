@@ -13,9 +13,11 @@ namespace ARS.Controllers
     public class ProblemController : Controller
     {
         private readonly DatabaseContext Context;
+
         public ProblemController (DatabaseContext context)
         {
             this.Context = context;
+
             if(this.Context.Problems.Count() == 0)
             {
                 this.Context.Problems.Add(new Problem
@@ -45,6 +47,23 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("problem/{name}")]
+        public Problem GetByName(string name) => this.Context.Problems.FirstOrDefault(p => p.name == name);
 
+        [HttpPost("add")]
+        public IActionResult Create([FromBody] Problem problem)
+        {
+            if (problem == null)
+            {
+                return BadRequest();
+            }
+
+            problem.name = problem.name;
+
+            this.Context.Problems.Add(problem);
+            this.Context.SaveChanges();
+
+            return CreatedAtRoute("GetProblem", new { id = problem.id }, problem);
+        }
     }
 }
