@@ -87,7 +87,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             <div className="page-header">
                 <h1>Log in to the ARS</h1>
             </div>
-            <div>
+            <div className="col">
                 {
                     this.state.errors.map(e => {
                        return <div className="alert alert-danger" role="alert">
@@ -100,7 +100,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                 <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, username:e.currentTarget.value})} /><br />
                 <input className="form-control" type="password" placeholder="Password" onChange={e => this.setState({...this.state, password:e.currentTarget.value})}  /><br />
                 <br />
-                <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.loginUser()}>Log In</button>
+                <button disabled={this.verifyForm()} className="btn btn-primary btn-full-width-mobile" onClick={() => this.loginUser()}>Log In</button>
             </div>
             
         </div>

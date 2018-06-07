@@ -26,12 +26,16 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
     }
 
     public render() {
+        var date_of_reservation = new Date(this.props.reservation.date_of_reservation);
+        var start_time = new Date(this.props.reservation.start_time);
+        var end_time = new Date(this.props.reservation.end_time);
+
         return <div className="row">
             <strong className="col-xs-1 first">{this.props.reservation.id}</strong>
             <div className="col-xs-2">{this.props.reservation.classroom_id}</div>
-            <div className="col-xs-3 col-sm-2">{this.props.reservation.date_of_reservation}</div>
-            <div className="col-xs-2">{this.props.reservation.start_time}</div>
-            <div className="col-xs-2">{this.props.reservation.end_time}</div>
+            <div className="col-xs-3 col-sm-2">{date_of_reservation.getDay() + "-" + date_of_reservation.getMonth() + "-" + date_of_reservation.getFullYear()}</div>
+            <div className="col-xs-2">{start_time.getHours() + ":" + start_time.getMinutes()}</div>
+            <div className="col-xs-2">{end_time.getHours() + ":" + end_time.getMinutes()}</div>
             <div className="col-xs-2 col-sm-3 last">
                 <Link className="btn btn-primary" to={`/reservation/${this.props.reservation.id}/edit`}>Edit</Link>
                 <button type="button" className="btn btn-primary btn-danger btn-last" name="delete_reservation" onClick={this.confirmDeletion.bind(this.props.reservation.id)}>Delete</button>
