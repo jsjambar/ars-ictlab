@@ -95,7 +95,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         if (values.room != 0 && values.start != 0 && values.end != 0) {
             this.updateReservation();
         } else {
-            this.set_error({num:6, msg:"Please fill in the fields"});
+            this.set_error({num:7, msg:"Please fill in the fields"});
         }
     }
 
@@ -123,7 +123,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         })
 
         if(!pass){
-            this.set_error({num:4, msg:"Timeslot already taken"});
+            this.set_error({num:6, msg:"Timeslot already taken"});
         }
     }
 

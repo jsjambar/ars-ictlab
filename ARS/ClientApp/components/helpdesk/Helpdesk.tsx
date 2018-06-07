@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as immutable from 'immutable';
 import { RouteComponentProps } from 'react-router';
-import { Ticket } from '../Model'
+import { Ticket, Error } from '../Model'
 import * as api from '../Api';
 import { TicketComponent } from './Ticket';
 import { Link } from 'react-router-dom';
@@ -30,13 +30,20 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         this.check_auth()
     }
 
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
+    }
+
     check_auth(){
         Authentication.check_auth()
         .then(r => {
             this.setState({...this.state, auth:r}),
             this.getTickets()
         })
-        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:1, msg:"Authentication Failed"})}))
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
     
     getTickets(){
@@ -46,7 +53,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             .then(Tickets => {
                 this.setState({UserTickets:Tickets})
             })
-            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
+            .catch(e => this.set_error({num:11, msg:"Tickets Not Found"}))
         }
         else if(this.state.auth.is_loggedin && this.state.auth.permission == 2)
         {
@@ -55,7 +62,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 this.setState({UserTickets:Tickets[0],
                     SystemTickets:Tickets[1]})
             })
-            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
+            .catch(e => this.set_error({num:11, msg:"Tickets Not Found"}))
         }
     }
 
@@ -63,6 +70,15 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         return <div> 
                     <div className="page-header row">
                         <h1>Helpdesk overview : Student tickets</h1>
+                        <div>
+                            {
+                                this.state.errors.map(e => {
+                                return <div className="alert alert-danger" role="alert">
+                                        <p>{e.msg}</p>
+                                </div>
+                                })
+                            }
+                        </div>
                         <div className="headerBtn">
                             <Link className="btn btn-primary" to={'/helpdesk/create'}>Add</Link>
                         </div>

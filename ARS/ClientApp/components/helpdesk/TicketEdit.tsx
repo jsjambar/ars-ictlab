@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
-import { Ticket, Problem, User, Classroom, Location } from '../Model';
+import { Ticket, Problem, User, Classroom, Location, Error } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
 import * as Authentication from '../Authentication'
@@ -11,31 +11,29 @@ interface TicketEditState {
     id: Number|0, 
     created_at: Date|0,
     description: String|"",
-    image: String|"",
     problem_id: Number|0,
     classroom_id: Number|0,
     user_id: Number|0,
     location_id: Number|0,
-    receiveCopy:Boolean|false,
     problemOptions: immutable.List<Problem>|immutable.List<Problem>,
     locationOptions: immutable.List<Location>|immutable.List<Location>,
     classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
     solved: boolean|false,
-    auth:Auth
+    auth:Auth,
+    errors:immutable.List<Error>
 }
 
 export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketEditState> {
     constructor(props) {
         super(props);
         this.state = { 
+            errors:immutable.List<Error>(),
             id:0,
             location_id: 0,
             classroom_id: 0,
             problem_id: 0,
-            image: "",
             description: "",
             created_at: new Date(),
-            receiveCopy: false,
             user_id: 0,
             problemOptions: immutable.List<Problem>(),
             locationOptions: immutable.List<Location>(),
@@ -55,6 +53,13 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         this.check_auth();
     }
 
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
+    }
+
     init(){
         if(this.state.auth.is_loggedin != false){
             const { match: { params } } = this.props;
@@ -71,7 +76,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             this.setState({...this.state, auth:r}),
             this.init()
         })
-        .catch(e => console.log("Not authenticated, " + e))
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
     handleChange(event){
@@ -89,19 +94,19 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
     getProblems(){
         api.getProblems()
         .then(problemOptions => this.setState({problemOptions:problemOptions}))
-        .catch(e => console.log("getProblems, " + e))
+        .catch(e => this.set_error({num:13, msg:"Problems Not Found"}))
     }
 
     getLocations(){
         api.getLocations()
         .then(locationOptions => this.setState({locationOptions:locationOptions}))
-        .catch(e => console.log("getLocations, " + e))
+        .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
     getLocClassrooms(location_id){
         api.getLocationClassrooms(location_id)
         .then(classroomOptions => this.setState({classroomOptions:classroomOptions}))
-        .catch(e => console.log("getLocationClassrooms, " + e))
+        .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
     getClassroom(classroomId){
@@ -112,7 +117,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             })
             this.getLocClassrooms(classroom.location_id);
         }))
-        .catch(e => console.log("getClassroom, " + e))
+        .catch(e => this.set_error({num:9, msg:"Classroom Not Found"}))
     }
 
     populateOptions(options) {
@@ -140,7 +145,6 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             id: values.id,
             created_at: values.created_at,
             description: values.description, 
-            image: values.image, 
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id,
             user_id: values.user_id,
@@ -162,7 +166,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         })
         this.getClassroom(ticket.classroom_id);
         }))
-        .catch(e => console.log("getClassroom, " + e))
+        .catch(e => this.set_error({num:14, msg:"Ticket Not Found"}))
     }
 
     public render() {
@@ -172,6 +176,15 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                     <div>
                         <div className="page-header">
                             <h4>Ticket Form</h4>
+                        </div>
+                        <div>
+                            {
+                                this.state.errors.map(e => {
+                                return <div className="alert alert-danger" role="alert">
+                                        <p>{e.msg}</p>
+                                </div>
+                                })
+                            }
                         </div>
                         <p>Fill in form before submitting ticket.</p>
                         <form>

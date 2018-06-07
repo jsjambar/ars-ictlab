@@ -94,7 +94,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             }
             this.setReservation();
         } else {
-            // show errors for the missing values
+            this.set_error({num:7, msg:"Please fill in all the fields!"});
         }
     }
 
@@ -113,7 +113,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     check_auth(){
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}, () => this.getLocations()))
-        .catch(e => console.log(e))
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
     getFormattedDate(hour) {
@@ -155,7 +155,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         })
 
         if(!pass){
-            this.set_error({num:4, msg:"Timeslot already taken"});
+            this.set_error({num:6, msg:"Timeslot already taken"});
         }
     }
 
@@ -169,20 +169,19 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     getLocations() {
         api.getLocations()
             .then(locations => this.setState({ locations: locations }))
-            .catch(e => console.log("getUsers, " + e))
+            .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
     getClassrooms(locationId) {
         api.getLocationClassrooms(locationId)
         .then(classrooms => this.setState({ classroom: 0, available_classrooms : classrooms}))
-        .catch(e => console.log("getUsers, " + e))
+        .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
     getClassroomsWithEvents(id) {
         api.getClassroomEvents(id)
             .then(events => this.setClassroomReservations(events))
-            .catch(e => console.log("getClassroomsWithEvents, " + e))
-
+            .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
     setClassroomReservations(events){
