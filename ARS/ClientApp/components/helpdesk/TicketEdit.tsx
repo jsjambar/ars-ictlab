@@ -4,6 +4,8 @@ import * as api from '../Api';
 import { Ticket, Problem, User, Classroom, Location } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication';
 
 interface TicketEditState {
     id: Number|0, 
@@ -18,7 +20,8 @@ interface TicketEditState {
     problemOptions: immutable.List<Problem>|immutable.List<Problem>,
     locationOptions: immutable.List<Location>|immutable.List<Location>,
     classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
-    solved: boolean|false
+    solved: boolean|false,
+    auth:Auth
 }
 
 export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketEditState> {
@@ -37,18 +40,38 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             problemOptions: immutable.List<Problem>(),
             locationOptions: immutable.List<Location>(),
             classroomOptions: immutable.List<Classroom>(),
-            solved: false  
+            solved: false,
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }  
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyTicket = this.verifyTicket.bind(this);
     }
 
     componentWillMount(){
-        const { match: { params } } = this.props;
-        var ticket_id = Object.keys(params).map(function(key){return params[key]})[0];
-        this.getProblems();
-        this.getLocations();
-        this.getTicket(ticket_id);
+        this.check_auth();
+    }
+
+    init(){
+        if(this.state.auth.is_loggedin != false){
+            const { match: { params } } = this.props;
+            var ticket_id = Object.keys(params).map(function(key){return params[key]})[0];
+            this.getProblems();
+            this.getLocations();
+            this.getTicket(ticket_id);
+        }
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => {
+            this.setState({...this.state, auth:r}),
+            this.init()
+        })
+        .catch(e => console.log("Not authenticated, " + e))
     }
 
     handleChange(event){
@@ -111,18 +134,6 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         }
     }
 
-    verifyTicke2t(){
-        const values = this.state;
-        if(values.location_id != 0 && values.classroom_id != 0 && values.problem_id != 0 &&
-            values.description != ""){
-            this.submitTicketChanges();
-        } else {
-            // show errors for the missing values
-            console.log(values.problemOptions);
-            console.log(values.problem_id);
-        }
-    }
-
     submitTicketChanges() {
         const values = this.state;
         api.updateTicket(values.id, new Object({ 
@@ -134,7 +145,6 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             classroom_id: values.classroom_id,
             user_id: values.user_id,
             solved: values.solved}));
-
             window.location.replace('/helpdesk/overview');
     }
 
@@ -152,57 +162,70 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         })
         this.getClassroom(ticket.classroom_id);
         }))
-        .catch(e => console.log("getTicket, " + e))
+        .catch(e => console.log("getClassroom, " + e))
     }
 
     public render() {
         return <div>
-            <div className="page-header">
-                <h4>Ticket Form</h4>
-            </div>
-            <p>Fill in form before submitting ticket.</p>
-            <form>
-                <div className="problem"> 
-                    <label>Problem type:</label>
-                    <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a problem</option>
-                        {this.populateOptions(this.state.problemOptions)}
-                    </select>
-                </div>
-                <br/>
-                <div className="location"> 
-                    <label>Location:</label>
-                    <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a location</option>
-                        {this.populateOptions(this.state.locationOptions)}
-                    </select>
-                </div>
-                <br/>
-                <div className="classroom"> 
-                    <label>Classroom:</label>
-                    <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
-                        <option value="0">Select a classroom</option>
-                        {this.populateOptions(this.state.classroomOptions)}
-                    </select>
-                </div>
-                <br/>
-                <div className="description"> 
-                    <label>Description:</label>
-                    <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
-                </div>
-                <br/>
-                <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved} /> Ticket solved
-                <br/>
-                <div className="formButton">
-                    {
-                        !this.fieldCheck() ?
-                        <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
-                        :
-                        <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
-                    } 
-                    <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
-                </div>
-            </form>
+            {
+                this.state.auth.is_loggedin != false && this.state.auth.user.id == this.state.user_id || this.state.auth.permission == 2?
+                    <div>
+                        <div className="page-header">
+                            <h4>Ticket Form</h4>
+                        </div>
+                        <p>Fill in form before submitting ticket.</p>
+                        <form>
+                            <div className="problem"> 
+                                <label>Problem type:</label>
+                                <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
+                                    <option value="0">Select a problem</option>
+                                    {this.populateOptions(this.state.problemOptions)}
+                                </select>
+                            </div>
+                            <br/>
+                            <div className="location"> 
+                                <label>Location:</label>
+                                <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
+                                    <option value="0">Select a location</option>
+                                    {this.populateOptions(this.state.locationOptions)}
+                                </select>
+                            </div>
+                            <br/>
+                            <div className="classroom"> 
+                                <label>Classroom:</label>
+                                <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
+                                    <option value="0">Select a classroom</option>
+                                    {this.populateOptions(this.state.classroomOptions)}
+                                </select>
+                            </div>
+                            <br/>
+                            <div className="description"> 
+                                <label>Description:</label>
+                                <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                            </div>
+                            <br/>
+                            {
+                                this.state.auth.user.role_id == 2 ?
+                                <div>
+                                    <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved}/> Ticket solved
+                                </div>
+                                :
+                                <br/>
+                            }
+                            <div className="formButton">
+                                {
+                                    !this.fieldCheck() ?
+                                    <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
+                                    :
+                                    <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                                } 
+                                <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
+                            </div>
+                        </form>
+                    </div>
+                :
+                <h4>no access</h4>
+            }
         </div>;
     }
 }

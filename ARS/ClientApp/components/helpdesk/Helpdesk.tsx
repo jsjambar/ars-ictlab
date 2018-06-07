@@ -8,12 +8,14 @@ import { Link } from 'react-router-dom';
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
-export type TicketState = { UserTickets:immutable.List<Ticket>, SystemTickets: immutable.List<Ticket>, auth:Auth}
+export type Error = {num:number, msg:string}
+export type TicketState = { UserTickets:immutable.List<Ticket>, SystemTickets: immutable.List<Ticket>, auth:Auth, errors:immutable.List<Error>}
 
 export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketState> {
     constructor() {
         super();
         this.state = {
+            errors:immutable.List<Error>(),
             UserTickets: immutable.List<Ticket>(),
             SystemTickets: immutable.List<Ticket>(),
             auth:{
@@ -23,7 +25,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             }
         };
     }
-    
+
     componentWillMount(){
         this.check_auth()
     }
@@ -34,9 +36,9 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             this.setState({...this.state, auth:r}),
             this.getTickets()
         })
-        .catch(e => console.log("getClassroom, " + e))
+        .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:1, msg:"Authentication Failed"})}))
     }
-
+    
     getTickets(){
         if(this.state.auth.is_loggedin && this.state.auth.permission == 1)
         {
@@ -44,7 +46,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             .then(Tickets => {
                 this.setState({UserTickets:Tickets})
             })
-            .catch(e => console.log("getUserTickets, " + e))
+            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
         }
         else if(this.state.auth.is_loggedin && this.state.auth.permission == 2)
         {
@@ -53,8 +55,36 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                 this.setState({UserTickets:Tickets[0],
                     SystemTickets:Tickets[1]})
             })
-            .catch(e => console.log("getAllTickets, " + e))
+            .catch(e => this.setState({...this.state, errors:this.state.errors.push({num:5, msg:"Not Found"})}))
         }
+    }
+
+    StudentTickets(){
+        return <div> 
+                    <div className="page-header row">
+                        <h1>Helpdesk overview : Student tickets</h1>
+                        <div className="headerBtn">
+                            <Link className="btn btn-primary" to={'/helpdesk/create'}>Add</Link>
+                        </div>
+                    </div>
+                    <div className="row tbl">
+                        <div className="row head">
+                            <strong className="col-xs-1 first"># Ticket</strong>
+                            <strong className="col-xs-1">Student</strong>
+                            <strong className="col-xs-1 col-sm-2">Student number</strong>
+                            <strong className="col-xs-1">Location</strong>
+                            <strong className="col-xs-1">Room</strong>
+                            <strong className="col-xs-1">Date</strong>
+                            <strong className="col-xs-1">Time</strong>
+                            <strong className="col-xs-1">Type problem</strong>
+                            <strong className="col-xs-1">Solved</strong>
+                            <strong className="col-xs-2 col-sm-3 last"></strong>
+                        </div>
+                        <div className="row body">
+                            {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
+                        </div>                                
+                    </div>
+                </div>
     }
 
     public render(){
@@ -62,55 +92,15 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             {
                 this.state.auth.permission == 1 ?
                     <div>
-                        <div className="page-header row">
-                            <h1>Helpdesk overview : Your tickets</h1>
-                            <div className="headerBtn">
-                                <Link className="btn btn-primary" to={'/helpdesk/create'}>Add</Link>
-                            </div>
-                        </div>
-                        <div className="row tbl">
-                            <div className="row head">
-                                <strong className="col-xs-1 first"># Ticket</strong>
-                                <strong className="col-xs-1">Student</strong>
-                                <strong className="col-xs-1 col-sm-2">Student number</strong>
-                                <strong className="col-xs-1">Location</strong>
-                                <strong className="col-xs-1">Room</strong>
-                                <strong className="col-xs-1">Date</strong>
-                                <strong className="col-xs-1">Time</strong>
-                                <strong className="col-xs-1">Type problem</strong>
-                                <strong className="col-xs-1">Solved</strong>
-                                <strong className="col-xs-2 col-sm-3 last"></strong>
-                            </div>
-                            <div className="row body">
-                                {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
-                            </div>
-                        </div>
+                        {
+                            this.StudentTickets()
+                        }
                     </div>
                 : this.state.auth.permission == 2 ?
                     <div>
-                        <div className="page-header row">
-                            <h1>Helpdesk overview : Student tickets</h1>
-                            <div className="headerBtn">
-                                <Link className="btn btn-primary" to={'/helpdesk/create'}>Add</Link>
-                            </div>
-                        </div>
-                        <div className="row tbl">
-                            <div className="row head">
-                                <strong className="col-xs-1 first"># Ticket</strong>
-                                <strong className="col-xs-1">Student</strong>
-                                <strong className="col-xs-1 col-sm-2">Student number</strong>
-                                <strong className="col-xs-1">Location</strong>
-                                <strong className="col-xs-1">Room</strong>
-                                <strong className="col-xs-1">Date</strong>
-                                <strong className="col-xs-1">Time</strong>
-                                <strong className="col-xs-1">Type problem</strong>
-                                <strong className="col-xs-1">Solved</strong>
-                                <strong className="col-xs-2 col-sm-3 last"></strong>
-                            </div>
-                            <div className="row body">
-                                {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
-                            </div>                                
-                        </div>
+                        {
+                            this.StudentTickets()
+                        }
 
                         <div className="systemTicketDiv">
                             <div className="page-header">

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
-import { Reservation, Location, Classroom, Timeslot, ClassroomWithEvents } from '../Model';
+import { Reservation, Location, Classroom, Timeslot, ClassroomWithEvents, Error } from '../Model';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 import * as immutable from 'immutable';
@@ -25,7 +25,8 @@ interface ScheduleState {
     temp: Number,
     timeslot: Number,
     classroomsWithReservations: Array<ClassroomWithEvents>,
-    auth:Auth
+    auth:Auth,
+    errors:immutable.List<Error>
 }
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
@@ -34,6 +35,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     constructor() {
         super();
         this.state = {
+            errors:immutable.List<Error>(),
             location: 0,
             classroom: 0,
             date_of_reservation: new Date(),
@@ -141,14 +143,27 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                 end_time: this.getFormattedDate(values.end)
             })
         );
-
+        
+        var pass = true;
+        console.log(pass);
         res.then(function(response){
             if(response.error == 1){
-                alert(response.errormessage);
+                pass = false;
             } else {
                 window.location.replace('/reservation/overview');
             }
         })
+
+        if(!pass){
+            this.set_error({num:4, msg:"Timeslot already taken"});
+        }
+    }
+
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
     }
 
     getLocations() {
@@ -233,6 +248,15 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
             <div className="page-header">
                 <h1>Classrooms overview</h1>
+            </div>
+            <div>
+                {
+                    this.state.errors.map(e => {
+                       return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                       </div>
+                    })
+                }
             </div>
             <div>
                 <p>Please select a location and classroom.</p>

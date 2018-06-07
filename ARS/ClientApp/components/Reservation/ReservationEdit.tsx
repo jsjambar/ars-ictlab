@@ -2,12 +2,14 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import * as immutable from 'immutable'
-import { Location, Classroom } from '../Model'
+import { Location, Classroom, Error } from '../Model'
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 import * as helper from '../Datehelper';
 import 'react-datepicker/dist/react-datepicker.css';
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication';
 
 interface ReservationEditState {
     id: 0 | number, 
@@ -16,20 +18,28 @@ interface ReservationEditState {
     start: 0 | Number,
     end: 0 | Number,
     room: 0 | number,
-    timeslot: Number
+    timeslot: Number,
+    errors:immutable.List<Error>,
+    auth:Auth
 }
 
 export class ReservationEdit extends React.Component<RouteComponentProps<{}>, ReservationEditState> {
     constructor(props) {
         super(props);
         this.state = {
+            errors:immutable.List<Error>(),
             id: 0,
             date: new Date(),
             chosen_date: moment(),
             start: 0,
             end: 0,
             room: 0,
-            timeslot: 0
+            timeslot: 0,
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -85,7 +95,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         if (values.room != 0 && values.start != 0 && values.end != 0) {
             this.updateReservation();
         } else {
-            console.log("Not valid.");
+            this.set_error({num:6, msg:"Please fill in the fields"});
         }
     }
 
@@ -103,16 +113,29 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
             })
         );
         
+        var pass = true;
         res.then(function(response){
             if(response.error == 1){
-                alert(response.errormessage);   
+                pass = false;
             } else {
-                window.location.replace("/reservation/overview");
+                window.location.replace('/reservation/overview');
             }
         })
+
+        if(!pass){
+            this.set_error({num:4, msg:"Timeslot already taken"});
+        }
+    }
+
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
     }
 
     componentWillMount() {
+        this.check_auth();
         const { match: { params } } = this.props;
         var reservationId = Object.keys(params).map(function (key) { return params[key] })[0];
         this.getReservation(reservationId);
@@ -133,48 +156,71 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 this.setState({ timeslot: timeslot });
             }
             ))
-            .catch(e => console.log("getReservation, " + e))
+            .catch(e => this.set_error({num:5, msg:"No Access"}))
     }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}))
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+     }
+
 
     public render() {
         return <div className="reservations">
-            <div className="page-header">
-                <h1>Edit Reservation {this.state.id}</h1>
-            </div>
-            <div>
-                <p>Please enter the new data to update this reservation.</p>
-                <form>
-                    <div className="row">
-                        <label>Date:</label>
+            {
+                this.state.auth.is_loggedin != false ?
+                <div>
+                     <div className="page-header">
+                        <h1>Edit Reservation {this.state.id}</h1>
+                    </div>
+                    <div>
                         {
-                            this.state.date != 0 ?
-                            <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
-                            :
-                            ""
+                            this.state.errors.map(e => {
+                            return <div className="alert alert-danger" role="alert">
+                                    <p>{e.msg}</p>
+                            </div>
+                            })
                         }
                     </div>
+                    <div>
+                        <p>Please enter the new data to update this reservation.</p>
+                        <form>
+                            <div className="row">
+                                <label>Date:</label>
+                                {
+                                    this.state.date != 0 ?
+                                    <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
+                                    :
+                                    ""
+                                }
+                            </div>
 
-                    <div className="row">
-                        <label>Timeslot:</label>
-                    </div>
-                    <div className="row">
-                        <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
-                            <option value="0">Pick a time slot</option>
-                            <option value="1">9:00 - 11:00</option>
-                            <option value="2">11:00 - 13:00</option>
-                            <option value="3">13:00 - 15:00</option>
-                            <option value="4">15:00 - 17:00</option>
-                        </select>
-                    </div>
+                            <div className="row">
+                                <label>Timeslot:</label>
+                            </div>
+                            <div className="row">
+                                <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
+                                    <option value="0">Pick a time slot</option>
+                                    <option value="1">9:00 - 11:00</option>
+                                    <option value="2">11:00 - 13:00</option>
+                                    <option value="3">13:00 - 15:00</option>
+                                    <option value="4">15:00 - 17:00</option>
+                                </select>
+                            </div>
 
-                    <br />
+                            <br />
 
-                    <div className="row">
-                        <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
-                        <Link className="btn btn-secondary" to={'/reservation/overview'}>Cancel</Link>
+                            <div className="row">
+                                <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
+                                <Link className="btn btn-secondary" to={'/reservation/overview'}>Cancel</Link>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
+                </div>
+                :
+                <h4>No Access</h4>
+            }
         </div>;
     }
 
