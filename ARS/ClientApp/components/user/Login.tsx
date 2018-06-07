@@ -73,7 +73,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     loginUser(){
         api.login_user(this.state)
         .then(() => this.check_auth())
-        .then(() => !this.state.auth.is_loggedin ? this.set_error({num:4, msg:"Incorrect Login Data."}) : null)
+        .then(() => this.state.auth.permission == 0 ? this.set_error({num:4, msg:"Incorrect Login Data."}) : null)
         .catch(e => this.set_error({num:2, msg:"Login Failed."}))
     }
 
