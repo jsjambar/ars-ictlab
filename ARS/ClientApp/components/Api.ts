@@ -332,3 +332,11 @@ export async function getClassroomEvents(classroomId: Number): Promise<Array<Cla
     let json = await res.json()
     return json as Array<ClassroomWithEvents>;
 }
+
+export async function getClassroomTemperature(classroomId: Number): Promise<Number> {
+    let res = await fetch(`api/temperature/classroom/${classroomId}`,
+        { method: 'get', credentials: 'include', headers: { 'content-type': 'application/json' } })
+    if (!res.ok) throw Error(res.statusText)
+    let json = await res.json()
+    return json as Number;
+}

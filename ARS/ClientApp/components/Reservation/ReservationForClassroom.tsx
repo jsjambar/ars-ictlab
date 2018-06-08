@@ -50,7 +50,8 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     
         this.setState({
             [name] : value
-        }, () => this.setStartAndEnd(this.state.timeslot)
+        }, 
+        () => this.setStartAndEnd(this.state.timeslot)
         );
     }
 
