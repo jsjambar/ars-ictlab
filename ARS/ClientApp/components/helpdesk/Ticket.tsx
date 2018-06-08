@@ -75,6 +75,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         }
     }
 
+    //get problem for the overview
     getProblem(){
         api.getProblem(this.props.ticket.problem_id)
         .then(problem => {
@@ -83,6 +84,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .catch(e => this.set_error({num:13, msg:"Problem Not Found"}))
     }
 
+    //get classroom for the overview
     getClassroom(){
         api.getClassroom(this.props.ticket.classroom_id)
         .then(classroom => {
@@ -92,6 +94,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .catch(e => this.set_error({num:9, msg:"Classroom Not Found"}))
     }
 
+    //get location for the overview
     getLocation(location_id: Number){
         api.getLocation(location_id)
         .then(location => {
@@ -114,7 +117,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             window.location.replace('/helpdesk/overview');
         }
     }
-
+    //User view for user tickets
     usershow(g, solved){
         return <div className="row">
             <div className="col-xs-2 hideMobile hideTablet first">{this.state.user.username}</div>
@@ -131,6 +134,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         </div>
     }
 
+    //Admin view for system tickets
     systemshow(g, solved){
         return <div className="row">
             <strong className="col-xs-2 hideMobile hideTablet first">{this.props.ticket.id}</strong>

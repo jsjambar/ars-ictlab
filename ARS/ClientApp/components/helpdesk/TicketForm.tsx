@@ -8,16 +8,16 @@ import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
 interface TicketState { 
-    created_at: Date|0,
-    description: String|"",
-    problem_id: Number|0,
-    classroom_id: Number|0,
-    user_id: Number|0,
-    location_id: Number|0,
-    problemOptions: immutable.List<Problem>|immutable.List<Problem>,
-    locationOptions: immutable.List<Location>|immutable.List<Location>,
-    classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
-    solved: Boolean|false,
+    created_at: Date,
+    description: String,
+    problem_id: Number,
+    classroom_id: Number,
+    user_id: Number,
+    location_id: Number,
+    problemOptions: immutable.List<Problem>,
+    locationOptions: immutable.List<Location>,
+    classroomOptions: immutable.List<Classroom>,
+    solved: Boolean,
     auth:Auth,
     errors:immutable.List<Error>
 }
@@ -120,6 +120,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
         );
     }
+
     verifyTicket(){
         if(this.fieldCheck){
             this.submitTicket();
