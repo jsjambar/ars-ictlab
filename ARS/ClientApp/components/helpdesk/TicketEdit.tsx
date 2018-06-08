@@ -239,7 +239,9 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                             {
                                 this.state.auth.user.role_id == 2 ?
                                 <div>
-                                    <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved}/> Ticket solved
+                                    <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved} /> Ticket solved
+                                    <br/>
+                                    <br/>
                                 </div>
                                 :
                                 <br/>

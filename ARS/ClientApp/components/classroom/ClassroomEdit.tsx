@@ -147,6 +147,8 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
         return <div>
             <div className="page-header">
                 <h1>Edit classroom</h1>
+            </div>
+            <div>
                 <div>
                     {
                         this.state.errors.map(e => {
@@ -158,24 +160,36 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                 </div>
                 <p>Please enter the new data to update this classroom.</p>
                 <form>
-                    <label>Location</label>
+                    <div className="row">
+                        <label>Location</label>
+                    </div>
+                    <div className="row">
                     { 
                         this.state.locations ?
                             this.locationList()
                         :
                         null
-                    }
+                        }
+                    </div>
                     <br/>
-
-                    <label>Room</label>
-                    <input type="text" name="room" placeholder="Classroom name" value={`${this.state.room}`} onChange={this.handleChange} />
+                    <div className="row">
+                        <label>Room</label>
+                    </div>
+                    <div className="row">
+                        <input type="text" name="room" placeholder="Classroom name" value={`${this.state.room}`} onChange={this.handleChange} />
+                    </div>
                     <br/>
-
-                    <input type="checkbox" name="public" onChange={this.handleChange} checked={this.state.public} /> Make the room public (this includes students)
+                    <div className="row">
+                        <input type="checkbox" name="public" onChange={this.handleChange} checked={this.state.public} /> Make the room public (this includes students)
+                    </div>    
                     <br/>
-                    <input type="checkbox" name="available" onChange={this.handleChange} checked={this.state.available} /> Disable the room
-                    <br/>
-                    <button type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
+                    <div className="row">
+                        <input type="checkbox" name="available" onChange={this.handleChange} checked={this.state.available} /> Disable the room
+                    </div>    
+                    <br />
+                    <div className="row">
+                        <button className="btn btn-primary" type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
+                    </div>
                 </form>
 
             </div>
