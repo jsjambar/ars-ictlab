@@ -8,17 +8,17 @@ import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
 interface TicketEditState {
-    id: Number|0, 
-    created_at: Date|0,
-    description: String|"",
-    problem_id: Number|0,
-    classroom_id: Number|0,
-    user_id: Number|0,
-    location_id: Number|0,
-    problemOptions: immutable.List<Problem>|immutable.List<Problem>,
-    locationOptions: immutable.List<Location>|immutable.List<Location>,
-    classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
-    solved: boolean|false,
+    id: Number, 
+    created_at: Date,
+    description: String,
+    problem_id: Number,
+    classroom_id: Number,
+    user_id: Number,
+    location_id: Number,
+    problemOptions: immutable.List<Problem>,
+    locationOptions: immutable.List<Location>,
+    classroomOptions: immutable.List<Classroom>,
+    solved: boolean,
     auth:Auth,
     errors:immutable.List<Error>
 }
@@ -50,7 +50,19 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
     }
 
     componentWillMount(){
-        this.check_auth();
+        this.check_auth()
+        const { match: { params } } = this.props
+        var ticket_id = Object.keys(params).map(function(key){return params[key]})[0]
+        api.getTicket(ticket_id)
+        .then(r => {r.hasOwnProperty('error') ? window.location.replace('helpdesk/overview') : null; return r})
+        .then(ticket => this.check_ticket(ticket))
+        .catch(e => this.set_error({num:20, msg:"Something went wrong with the ticket."}))
+    }
+
+    check_ticket(ticket){
+        if(ticket.user_id != this.state.auth.user.id){
+            this.state.auth.permission != 2 ? window.location.replace('helpdesk/overview'):null
+        }
     }
 
     set_error(error:Error){
@@ -239,7 +251,9 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                             {
                                 this.state.auth.user.role_id == 2 ?
                                 <div>
-                                    <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved}/> Ticket solved
+                                    <input type="checkbox" name="solved" onChange={this.handleChange} checked={this.state.solved} /> Ticket solved
+                                    <br/>
+                                    <br/>
                                 </div>
                                 :
                                 <br/>

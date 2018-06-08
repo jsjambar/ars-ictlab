@@ -145,33 +145,45 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
             <div className="page-header">
                 <h1>Make a reservation</h1>
                 <p>Please select a date and time.</p>
+            </div>
+            <div>
                 <form>
-                    <label>
-                        It's currently { this.state.temp ? this.state.temp : "invalid temperature" } degrees in the classroom.
-                    </label> {/*todo: this should be updated after classroom+Location has been selected*/}
-                    
-                    <br/>
-
-                    <label>Description:</label>
-                    <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                    <div className="row">
+                        <label>
+                            It's currently {this.state.temp ? this.state.temp : "invalid temperature"} degrees in the classroom.
+                        </label> {/*todo: this should be updated after classroom+Location has been selected*/}
+                    </div>
 
                     <br/>
 
-                    <label>Date:</label>
-                    <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
-
-                    <label>Timeslot:</label>
-                    <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
-                        <option value="0">Pick a time slot</option>
-                        <option value="1">9:00 - 11:00</option>
-                        <option value="2">11:00 - 13:00</option>
-                        <option value="3">13:00 - 15:00</option>
-                        <option value="4">15:00 - 17:00</option>
-                    </select>
+                    <div className="row">
+                        <label>Date:</label>
+                    </div>
+                    <div className="row datePicker">
+                        <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange} />
+                    </div>
 
                     <br/>
 
-                    <button type="button" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
+                    <div className="row">
+                        <label>Timeslot:</label>
+                    </div>
+                    <div className="row">
+                        <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
+                            <option value="0">Pick a time slot</option>
+                            <option value="1">9:00 - 11:00</option>
+                            <option value="2">11:00 - 13:00</option>
+                            <option value="3">13:00 - 15:00</option>
+                            <option value="4">15:00 - 17:00</option>
+                        </select>
+                    </div>
+
+
+                    <br/>
+
+                    <div className="row">
+                        <button className="btn btn-primary" type="button" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
+                    </div>
                 </form>
 
             </div>

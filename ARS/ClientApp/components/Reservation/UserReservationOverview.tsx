@@ -28,20 +28,23 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         this.check_auth()
     }
 
+    //Error handling 
     set_error(error:Error){
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
-    
+
+    //Check if the user that is visiting the page is authenticated
     check_auth(){
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
         .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
- 
+
+    //Handle Authentication level
     handle_auth(){
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
@@ -50,17 +53,20 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         : this.handle_user()
     }
 
+    //Handle the logged in user
     handle_user(){
         this.setState({...this.state, errors:immutable.List<Error>()})
         this.getReservations();
     }
 
+    //Get reservations from user
     getReservations() {
         api.getUserReservations(this.state.auth.user.id)
         .then(reservations => this.setState({ reservations: reservations }))
         .catch(e => this.set_error({num:10, msg:"Reservations Not Found"}))
     }
-    
+
+    //Render HTML page
     public render() {
         return <div className="column reservations">
             <div>
