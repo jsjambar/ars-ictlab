@@ -14,6 +14,11 @@ interface ClassroomQRState {
     auth:Auth,
 }
 
+const qrCode = {
+    width: '100%',
+    height: 'auto'
+};
+
 export class ClassroomQR extends React.Component<RouteComponentProps<{}>, ClassroomQRState> {
     constructor() {
         super();
@@ -79,15 +84,11 @@ export class ClassroomQR extends React.Component<RouteComponentProps<{}>, Classr
                         })
                     }
                 </div>
-                <h4></h4>
-                <div className="ticketsBtn">
-                    <Link className="btn btn-primary" to={`/admin/classrooms/create`}>Add</Link>
-                </div>
             </div>
             {
                 this.state.qrcode != "Loading..." ?
                 <div>
-                    <img src={`${this.state.qrcode}`} />
+                    <img src={`${this.state.qrcode}`} style={qrCode} />
                 </div>
                 : "Loading..."
             }

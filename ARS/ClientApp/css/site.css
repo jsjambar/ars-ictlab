@@ -113,7 +113,7 @@ label {
             width: 100%;
         }
 
-        .schedules select, .schedules input[type="text"], input[type="password"]
+        .schedules select, .schedules input[type="text"], input[type="password"],
         .datePicker .react-datepicker-wrapper,
         .datePicker .react-datepicker-wrapper .react-datepicker__input-container {
             width: 100%;
