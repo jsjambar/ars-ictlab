@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Mail;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,6 +55,38 @@ namespace ARS.Controllers
             if(item != null){
                 return new JsonResult(new { error = "1", errormessage = "This timeslot has already been taken!" });
             }
+
+            Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == reservation.classroom_id);
+            User user  = this.Context.Users.FirstOrDefault(c => c.id == reservation.user_id);
+
+            /* does not function in terms of authentication for some reason.
+            MailMessage mail = new MailMessage();
+            var from = new MailAddress("hrrreservationsystem@gmail.com", "HRO Info");
+            var to = new MailAddress("0907663@hr.nl", user.first_name); // even vervangen met huidige gebruiker
+            var fromPassword = "geheim123!";
+            string subject = "Reservatie gemaakt op HRO!";
+            string body = "U heeft lokaal " + classroom.name + " gereserveerd op ";
+            body += reservation.date_of_reservation.Day + "-" + reservation.date_of_reservation.Month + "-" + reservation.date_of_reservation.Year;
+            body += "om " + reservation.start_time.Hour + " tot " + reservation.end_time.Hour;
+
+            var smtp = new SmtpClient 
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(from.Address, fromPassword)
+            };
+
+            using (var message = new MailMessage(from.Address, to.Address)
+            {
+                Subject = subject,
+                Body = body
+            }){
+                smtp.Send(message);
+            }
+            */
 
             reservation.user_id = reservation.user_id;
             reservation.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);

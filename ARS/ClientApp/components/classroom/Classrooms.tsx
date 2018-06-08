@@ -1,27 +1,36 @@
+// Imports 
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Location, Classroom, ClassroomWithEvents, Error } from '../Model';
 import * as api from '../Api';
-import { Reservation, Location, Classroom, Timeslot, ClassroomWithEvents, Error } from '../Model';
-import DatePicker from 'react-datepicker';
+
+// Helpers
 import * as moment from 'moment';
 import * as immutable from 'immutable';
 import * as helper from '../Datehelper'; 
+
+// Calendar
 import BigCalendar from 'react-big-calendar';
+
+// Datepicker
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
+// Authentication
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 
+// State that gets used
 interface ScheduleState { 
     location: 0, 
-    classroom: String | 0,
-    date_of_reservation: Date|0,
+    classroom: 0,
+    date_of_reservation: Date | 0,
     chosen_date: Object,
-    start: Number|0,
-    end: Number|0,
-    locations: immutable.List<Location> | immutable.List<Location>,
-    available_classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
+    start: Number,
+    end: Number,
+    locations: immutable.List<Location>,
+    available_classrooms: immutable.List<Classroom>,
     temp: Number,
     timeslot: Number,
     classroomsWithReservations: Array<ClassroomWithEvents>,
@@ -29,28 +38,32 @@ interface ScheduleState {
     errors:immutable.List<Error>
 }
 
+// Localizer to show our date
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 export class Classrooms extends React.Component<RouteComponentProps<{}>, ScheduleState> {
     constructor() {
         super();
+        // Default values
         this.state = {
-            errors:immutable.List<Error>(),
             location: 0,
             classroom: 0,
-            date_of_reservation: new Date(),
-            chosen_date: moment(),
             start:0,
             end:0,
+            timeslot: 0,
+            date_of_reservation: new Date(),
+            chosen_date: moment(),
             locations: immutable.List<Location>(),
             available_classrooms: immutable.List<Classroom>(),
-            temp: -1,
-            timeslot: 0,
+            temp: -1, // -1 because we currently return 0 as we don't have the database live and it checks whether its bigger than -1
             classroomsWithReservations: Array<ClassroomWithEvents>(),
-            auth: {
-                is_loggedin:false,
-                user:null,
-                permission:0
+            errors:immutable.List<Error>(),
+
+            // Authentication
+            auth: { 
+                is_loggedin: false,
+                user: null,
+                permission: 0
             }
         };
         this.handleChange = this.handleChange.bind(this);
@@ -58,6 +71,34 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.verifyReservation = this.verifyReservation.bind(this);
     }
 
+    // Begin authentication and getting the startup data
+    componentWillMount(){
+        this.check_auth()
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => { this.setState({...this.state, auth:r}) })
+        .then(() => this.handle_auth())
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        : 
+        this.state.auth.permission == 1 ?
+            this.handle_user()
+        : window.location.replace('/admin/classrooms/overview')
+    }
+
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getLocations();
+    }
+    // End authentication and getting the startup data
+
+    // Handle change of values
     handleChange(event){
         const oldLoc = this.state.location;
         const target = event.target;
@@ -68,10 +109,14 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             [name]: value
         }, 
         () => {
+            // If it isn't the same classroom, don't refresh it (fixes calendar bug)
             if(this.state.location != oldLoc){
                 this.getClassrooms(this.state.location);
             }
+
             this.setStartAndEnd(this.state.timeslot);
+            
+            // Get events and temperature of the selected classroom
             if(this.state.classroom != 0){
                 this.getClassroomsWithEvents(this.state.classroom);
                 this.getClassroomTemperature(this.state.classroom);
@@ -79,26 +124,32 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         });
     }
 
+    // Unique date onchange method to format the date from the datepicker object
     handleDateChange(date) {
         this.setState({
             chosen_date: date
         })
+
         this.setDateFromObject(date);
     }
 
+    // Checks if values are valid and then save the reservation
     verifyReservation() {
         const values = this.state;
         if(values.location != 0 && values.classroom != 0 && 
             values.start != 0 && values.end != 0){
-            if(values.date_of_reservation == 0){ 
+            
+                if(values.date_of_reservation == 0){ 
                 this.setState({ date_of_reservation: this.getFormattedDate(0) });
             }
+
             this.setReservation();
         } else {
             this.set_error({num:7, msg:"Please fill in all the fields!"});
         }
     }
 
+    // Set the start and end time because we process it in terms of timeslots and save it as start and end time
     setStartAndEnd(chosenTimeslot) {
         let processedDate = helper.getDateByTimeslot(chosenTimeslot);
         this.setState({
@@ -107,35 +158,14 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         });
     }
 
-    componentWillMount(){
-        this.check_auth()
-    }
 
-    check_auth(){
-        Authentication.check_auth()
-        .then(r => { this.setState({...this.state, auth:r})})
-        .then(() => this.handle_auth())
-        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
-    }
-
-    handle_auth(){
-        this.state.auth.permission == 0 ? 
-            window.location.replace('/')
-        :this.state.auth.permission == 1 ?
-            this.handle_user()
-        : window.location.replace('/admin/classrooms/overview')
-    }
-
-    handle_user(){
-        this.setState({...this.state, errors:immutable.List<Error>()})
-        this.getLocations();
-    }
-
+    // Formats the date and adds the unique hour we need
     getFormattedDate(hour) {
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
+    // Gets the date from the datepicker object
     setDateFromObject(obj) {
         const self = this;
         Object.keys(obj).map(function (keyName, keyIndex) {
@@ -147,6 +177,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         });
     }
 
+    // Saves the reservation
     setReservation() {
         const values = this.state;
         var res = api.set_reservation(
@@ -159,20 +190,17 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             })
         );
         
-        var pass = true;
+        // After the reservation gets saved, we see what response it returns.
         res.then(function(response){
             if(response.error == 1){
-                pass = false;
+                this.set_error({num:6, msg:"Timeslot already taken"});
             } else {
                 window.location.replace('/reservation/overview');
             }
         })
-
-        if(!pass){
-            this.set_error({num:6, msg:"Timeslot already taken"});
-        }
     }
 
+    // Sets the error to be shown
     set_error(error:Error){
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
@@ -180,6 +208,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         : null
     }
 
+    // Start getting the locations/classrooms/events/temperature that needs to be shown
     getLocations() {
         api.getLocations()
             .then(locations => this.setState({ locations: locations }))
@@ -188,7 +217,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     getClassrooms(locationId) {
         api.getLocationClassrooms(locationId)
-        .then(classrooms => this.setState({ classroom: 0, available_classrooms : classrooms}))
+        .then(classrooms => this.setState({ classroom: 0, available_classrooms: classrooms}))
         .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
@@ -197,7 +226,15 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             .then(events => this.setClassroomReservations(events))
             .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
+    
+    getClassroomTemperature(id){
+        api.getClassroomTemperature(id)
+        .then(temp => this.setState({ temp: temp }))
+        .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
+    }
+    // End getting the location of locations/classrooms/events/temperature that needs to be shown
 
+    // Format the reservations to be able to be used in the calendar package
     setClassroomReservations(events){
         var arrReservations = [];
         events.forEach(element => {
@@ -215,12 +252,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         })
     }
 
-    getClassroomTemperature(id){
-        api.getClassroomTemperature(id)
-        .then(temp => this.setState({ temp: temp }, () => console.log(this.state)))
-        .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
-    }
-
+    // Start the rendering methods
     locationList() {
         const listItems = this.state.locations.map((location) =>
             <option value={location.id}>
@@ -261,6 +293,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         </select>
         );
       }
+
+      // End the rendering methods
 
     public render() {
         return <div className="column schedules">
