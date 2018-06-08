@@ -5,11 +5,14 @@ import * as api from '../Api'
 import { User, Error } from '../Model'
 import { UserComponent } from './User' 
 import { UserForm } from './UserForm'
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
 
 export type UsersState = {
     page:Page
     users:immutable.List<User>|"Loading...",
-    errors:immutable.List<Error>
+    errors:immutable.List<Error>,
+    auth:Auth,
 }
 
 export type UsersData = {}
@@ -27,12 +30,37 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
             page:{
                 name:"show"
             },
-            users:"Loading..." 
+            users:"Loading...",
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
         };
     }
 
     componentWillMount(){
-        this.getUsers()
+        this.check_auth();
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}))
+        .then(() => this.handle_auth())
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+ 
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 1 ?
+            window.location.replace('/home')
+        : this.handle_admin()
+    }
+
+    handle_admin(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getUsers();
     }
 
     set_error(error:Error){

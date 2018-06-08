@@ -41,7 +41,7 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
             window.location.replace('/')
         :this.state.auth.permission == 2 ?
             this.handle_admin()
-        : 
+        :
         null
     }
 

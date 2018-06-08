@@ -60,23 +60,26 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         : null
     }
 
-    init(){
-        if(this.state.auth.is_loggedin != false){
-            const { match: { params } } = this.props;
-            var ticket_id = Object.keys(params).map(function(key){return params[key]})[0];
-            this.getProblems();
-            this.getLocations();
-            this.getTicket(ticket_id);
-        }
-    }
-
     check_auth(){
         Authentication.check_auth()
-        .then(r => {
-            this.setState({...this.state, auth:r}),
-            this.init()
-        })
+        .then(r => {this.setState({...this.state, auth:r})})
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        : this.handle_authenticated()
+    }
+
+    handle_authenticated(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        const { match: { params } } = this.props;
+        var ticket_id = Object.keys(params).map(function(key){return params[key]})[0];
+        this.getProblems();
+        this.getLocations();
+        this.getTicket(ticket_id);
     }
 
     handleChange(event){

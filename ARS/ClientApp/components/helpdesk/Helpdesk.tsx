@@ -39,11 +39,20 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
 
     check_auth(){
         Authentication.check_auth()
-        .then(r => {
-            this.setState({...this.state, auth:r}),
-            this.getTickets()
-        })
+        .then(r => {this.setState({...this.state, auth:r})})
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        : this.handle_authenticated()
+    }
+
+    handle_authenticated(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getTickets()
     }
     
     getTickets(){
@@ -140,7 +149,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                         </div>
                     </div>
                 :
-                    <h4>No access</h4>
+                null
                 }
             </div>
     }

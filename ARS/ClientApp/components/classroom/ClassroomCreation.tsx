@@ -3,6 +3,8 @@ import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import * as immutable from 'immutable'
 import { Location, Error } from '../Model' 
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
 
 interface ClassroomCreationState { 
     location: 0 | string,
@@ -10,7 +12,8 @@ interface ClassroomCreationState {
     public: false | boolean,
     available: false | boolean,
     locations: immutable.List<Location> | immutable.List<Location>,
-    errors:immutable.List<Error>
+    errors:immutable.List<Error>,
+    auth:Auth,
 }
 
 export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, ClassroomCreationState> {
@@ -22,7 +25,12 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
             room: "",
             public: false,
             available: false,
-            locations: immutable.List<Location>()
+            locations: immutable.List<Location>(),
+            auth: {
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyClassroom = this.verifyClassroom.bind(this);
@@ -70,6 +78,27 @@ export class ClassroomCreation extends React.Component<RouteComponentProps<{}>, 
     }
 
     componentWillMount(){
+        this.check_auth();
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => { this.setState({...this.state, auth:r})})
+        .then(() => this.handle_auth())
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        : this.state.auth.permission == 1 ?
+            window.location.replace('/home')
+        :
+            this.handle_admin()
+    }
+
+    handle_admin(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
         this.getLocations();
     }
 

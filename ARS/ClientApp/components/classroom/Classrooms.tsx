@@ -112,8 +112,22 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     check_auth(){
         Authentication.check_auth()
-        .then(r => this.setState({...this.state, auth:r}, () => this.getLocations()))
+        .then(r => { this.setState({...this.state, auth:r})})
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 1 ?
+            this.handle_user()
+        : window.location.replace('/admin/classrooms/overview')
+    }
+
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getLocations();
     }
 
     getFormattedDate(hour) {
