@@ -185,7 +185,7 @@ export async function getTicket(id: number) : Promise<Ticket>{
     { method: 'get', credentials: 'include', headers:{'content-type': 'application/json'} })
     if (!res.ok) throw Error(res.statusText)
     let json = await res.json()
-    return json as Ticket
+    return json 
 }
 
 export async function createTicket(ticket: Object) {

@@ -1,41 +1,46 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
-import { Reservation } from '../Model';
 import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 import * as immutable from 'immutable';
-import { Location } from '../Model' 
-import { Classroom } from '../Model'
+import { Classroom, Error } from '../Model'
 import * as helper from '../Datehelper'; 
 import 'react-datepicker/dist/react-datepicker.css';
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
 
 interface ReservationForClassroomSchedule {
     classroom: 0,
-    description: String|"",
     date_of_reservation: Date|0,
     chosen_date: Object,
     start: Number|0,
     end: Number|0,
     available_classrooms: immutable.List<Classroom> | immutable.List<Classroom>,
     temp: Number,
-    timeslot: Number
+    auth:Auth
+    timeslot: Number,
+    errors:immutable.List<Error>
 }
 
 export class ReservationForClassroom extends React.Component<RouteComponentProps<{}>, ReservationForClassroomSchedule> {
     constructor() {
         super();
-
         this.state = {
             classroom: 0,
-            description: "",
             date_of_reservation: 0,
             chosen_date: moment(),
             start:0,
             end:0,
             available_classrooms: immutable.List<Classroom>(),
             temp: 0,
-            timeslot: 0
+            timeslot: 0,
+            auth: { 
+                is_loggedin: false,
+                user: null,
+                permission: 0
+            },
+            errors:immutable.List<Error>()
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -62,10 +67,37 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         this.setDateFromObject(date);
     }
 
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => { this.setState({...this.state, auth:r}) })
+        .then(() => this.handle_auth())
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        : 
+        this.state.auth.permission == 1 ?
+            this.handle_user()
+        : window.location.replace('/admin/classrooms/overview')
+    }
+
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+    }
+
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
+    }
+
     verifyReservation(){
         const values = this.state;
         // refactor this to a re-usable function
-        if(values.classroom != 0 && values.description != "" && values.start != 0 && values.end != 0){
+        if(values.classroom != 0 && values.start != 0 && values.end != 0){
             if(values.date_of_reservation == 0){ 
                 this.setState({ date_of_reservation: this.getFormattedDate(0) });
             }
@@ -82,12 +114,20 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     componentWillMount(){
+        this.check_auth();
+
         const { match: { params } } = this.props;
         var classroomId = Object.keys(params).map(function(key){return params[key]})[0];
 
         this.setState({
             classroom: classroomId
-        });
+        }, () => this.getClassroomTemperature(this.state.classroom));
+    }
+
+    getClassroomTemperature(id){
+        api.getClassroomTemperature(id)
+        .then(temp => this.setState({ temp: temp }))
+        .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
     }
    
     getFormattedDate(hour) {
@@ -106,38 +146,29 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         });
     }
 
+    
     setReservation() {
         const values = this.state;
-        api.set_reservation(
+        const self = this;
+
+        var res = api.set_reservation(
             new Object({
-                id: 0,
                 classroom_id: values.classroom,
+                user_id: this.state.auth.user.id,
                 date_of_reservation: values.date_of_reservation,
                 start_time: this.getFormattedDate(values.start),
                 end_time: this.getFormattedDate(values.end)
             })
         );
-        window.location.replace('/reservation/overview');
+
+        res.then(function(response){
+            if(response.error == 1){
+                self.set_error({num:6, msg:"Timeslot already taken"});
+            } else {
+                window.location.replace('/reservation/overview');
+            }
+        })
     }
-
-    getClassrooms(classroomId){
-
-    }
-
-      classroomList() {
-        const listItems = this.state.available_classrooms.map((classroom) =>
-        <option value={classroom.id}>
-          {classroom.name}
-        </option>
-        );
-
-        return (
-        <select name='classroom' value={`${this.state.classroom}`} onChange={this.handleChange}>
-            <option value="0">Select a classroom</option>
-            {listItems}
-        </select>
-        );
-      }
 
     public render() {
         return <div>
@@ -147,11 +178,20 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
                 <p>Please select a date and time.</p>
             </div>
             <div>
+                {
+                    this.state.errors.map(e => {
+                       return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                       </div>
+                    })
+                }
+            </div>
+            <div>
                 <form>
                     <div className="row">
                         <label>
-                            It's currently {this.state.temp ? this.state.temp : "invalid temperature"} degrees in the classroom.
-                        </label> {/*todo: this should be updated after classroom+Location has been selected*/}
+                            { this.state.temp > -1 ? "It's currently " + this.state.temp + " degrees in the classroom." : "" }
+                        </label>
                     </div>
 
                     <br/>
@@ -160,7 +200,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
                         <label>Date:</label>
                     </div>
                     <div className="row datePicker">
-                        <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange} />
+                        <DatePicker minDate={moment()} defaultDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange} />
                     </div>
 
                     <br/>

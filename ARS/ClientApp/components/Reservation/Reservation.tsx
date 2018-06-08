@@ -32,7 +32,11 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
         return <div className="row">
             <strong className="col-xs-1 first">{this.props.reservation.id}</strong>
             <div className="col-xs-2">{this.props.reservation.classroom_id}</div>
+<<<<<<< HEAD
             <div className="col-xs-3 col-sm-2">{date_of_reservation.date() + "-" + (date_of_reservation.month()+1) + "-" + date_of_reservation.year()}</div>
+=======
+            <div className="col-xs-3 col-sm-2">{date_of_reservation.day() + "-" + date_of_reservation.month() + "-" + date_of_reservation.year()}</div>
+>>>>>>> master
             <div className="col-xs-2">{start_time.getHours() + ":" + (start_time.getMinutes()<10? '0' : '') + start_time.getMinutes()}</div>
             <div className="col-xs-2">{end_time.getHours() + ":" + (end_time.getMinutes()<10? '0' : '') + end_time.getMinutes()}</div>
             <div className="col-xs-2 col-sm-3 last">
