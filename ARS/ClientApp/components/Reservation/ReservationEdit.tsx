@@ -197,11 +197,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 </div>
             
                 <div>
-                     <div className="page-header">
-                        <h1>Edit Reservation {this.state.id}</h1>
-                    </div>
-
-                    <br/>
 
                     <div className="row datePicker">
                         <label>Date:</label>

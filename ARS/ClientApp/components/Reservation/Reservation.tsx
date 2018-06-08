@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom'
 import { Reservation } from '../Model'
 import * as api from '../Api'
+import * as moment from 'moment'
 
 export type ReservationComponentProps = { reservation: Reservation, key: number }
 
@@ -24,14 +25,14 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
     }
 
     public render() {
-        var date_of_reservation = new Date(this.props.reservation.date_of_reservation);
+        var date_of_reservation = moment(this.props.reservation.date_of_reservation);
         var start_time = new Date(this.props.reservation.start_time);
         var end_time = new Date(this.props.reservation.end_time);
 
         return <div className="row">
             <strong className="col-xs-1 first">{this.props.reservation.id}</strong>
             <div className="col-xs-2">{this.props.reservation.classroom_id}</div>
-            <div className="col-xs-3 col-sm-2">{date_of_reservation.getDay() + "-" + date_of_reservation.getMonth() + "-" + date_of_reservation.getFullYear()}</div>
+            <div className="col-xs-3 col-sm-2">{date_of_reservation.date() + "-" + (date_of_reservation.month()+1) + "-" + date_of_reservation.year()}</div>
             <div className="col-xs-2">{start_time.getHours() + ":" + (start_time.getMinutes()<10? '0' : '') + start_time.getMinutes()}</div>
             <div className="col-xs-2">{end_time.getHours() + ":" + (end_time.getMinutes()<10? '0' : '') + end_time.getMinutes()}</div>
             <div className="col-xs-2 col-sm-3 last">
