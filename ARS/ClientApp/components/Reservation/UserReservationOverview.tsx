@@ -34,11 +34,25 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
-
+    
     check_auth(){
         Authentication.check_auth()
-        .then(r => this.setState({...this.state, auth:r}, () => this.getReservations()))
+        .then(r => this.setState({...this.state, auth:r}))
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+ 
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 2 ?
+            window.location.replace('/admin/classrooms/overview')
+        : this.handle_user()
+    }
+
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getReservations();
     }
 
     getReservations() {
@@ -49,41 +63,34 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
     
     public render() {
         return <div className="column reservations">
+            <div>
+                {
+                    this.state.errors.map(e => {
+                    return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                    </div>
+                    })
+                }
+            </div>
+            <div className="page-header">
+                <h1>Reservations</h1>
+            </div>
             {
-                this.state.auth.is_loggedin != false ?
-                <div> 
-                    <div>
-                        {
-                            this.state.errors.map(e => {
-                            return <div className="alert alert-danger" role="alert">
-                                    <p>{e.msg}</p>
-                            </div>
-                            })
-                        }
+                this.state.reservations != "Loading..." ?
+                    <div className="row tbl">
+                        <div className="row head">
+                            <strong className="col-xs-1 first">#</strong>
+                            <strong className="col-xs-2">Classroom Id</strong>
+                            <strong className="col-xs-3 col-sm-2">Date of reservation</strong>
+                            <strong className="col-xs-2">Start Time</strong>
+                            <strong className="col-xs-2">End Time</strong>
+                            <strong className="col-xs-2 col-sm-3 last"></strong>
+                        </div>
+                        <div className="row body">
+                            {this.state.reservations.map((u, k) => <ReservationComponent key={k} reservation={u} />)}
+                        </div>
                     </div>
-                    <div className="page-header">
-                        <h1>Reservations</h1>
-                    </div>
-                    {
-                        this.state.reservations != "Loading..." ?
-                            <div className="row tbl">
-                                <div className="row head">
-                                    <strong className="col-xs-1 first">#</strong>
-                                    <strong className="col-xs-2">Classroom Id</strong>
-                                    <strong className="col-xs-3 col-sm-2">Date of reservation</strong>
-                                    <strong className="col-xs-2">Start Time</strong>
-                                    <strong className="col-xs-2">End Time</strong>
-                                    <strong className="col-xs-2 col-sm-3 last"></strong>
-                                </div>
-                                <div className="row body">
-                                    {this.state.reservations.map((u, k) => <ReservationComponent key={k} reservation={u} />)}
-                                </div>
-                            </div>
-                            : "Loading..."
-                    }
-                </div>
-                :
-                <h4>No Access</h4>
+                    : "Loading..."
             }
         </div>
     }

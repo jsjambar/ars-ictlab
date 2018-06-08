@@ -39,11 +39,20 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
 
     check_auth(){
         Authentication.check_auth()
-        .then(r => {
-            this.setState({...this.state, auth:r}),
-            this.getTickets()
-        })
+        .then(r => {this.setState({...this.state, auth:r})})
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        : this.handle_authenticated()
+    }
+
+    handle_authenticated(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getTickets()
     }
     
     getTickets(){
@@ -85,16 +94,14 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                     </div>
                     <div className="row tbl">
                         <div className="row head">
-                            <strong className="col-xs-1 first"># Ticket</strong>
-                            <strong className="col-xs-1">Student</strong>
-                            <strong className="col-xs-1 col-sm-2">Student number</strong>
-                            <strong className="col-xs-1">Location</strong>
-                            <strong className="col-xs-1">Room</strong>
-                            <strong className="col-xs-1">Date</strong>
-                            <strong className="col-xs-1">Time</strong>
-                            <strong className="col-xs-1">Type problem</strong>
-                            <strong className="col-xs-1">Solved</strong>
-                            <strong className="col-xs-2 col-sm-3 last"></strong>
+                            <strong className="col-xs-2 hideMobile hideTablet">Student number</strong>
+                            <strong className="col-xs-2 hideMobile hideTablet">Location</strong>
+                            <strong className="col-xs-1 hideMobile hideTablet">Room</strong>
+                            <strong className="col-xs-2 col-md-1">Date</strong>
+                            <strong className="col-xs-2 col-md-1">Time</strong>
+                            <strong className="col-xs-3 col-md-1">Type problem</strong>
+                            <strong className="col-xs-2 col-md-1">Solved</strong>
+                            <strong className="col-xs-3 last"></strong>
                         </div>
                         <div className="row body">
                             {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
@@ -108,69 +115,28 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             {
                 this.state.auth.permission == 1 ?
                     <div>
-                        <div className="page-header row">
-                            <h1>Helpdesk overview : Your tickets</h1>
-                            <div className="headerBtn">
-                                <Link className="btn btn-primary" to={'/helpdesk/create'}>Add</Link>
-                            </div>
-                        </div>
-                        <div className="row tbl">
-                            <div className="row head">
-                                <strong className="col-xs-1 first"># Ticket</strong>
-                                <strong className="col-xs-1">Student</strong>
-                                <strong className="col-xs-1 col-sm-2">Student number</strong>
-                                <strong className="col-xs-1">Location</strong>
-                                <strong className="col-xs-1">Room</strong>
-                                <strong className="col-xs-1">Date</strong>
-                                <strong className="col-xs-1">Time</strong>
-                                <strong className="col-xs-1">Type problem</strong>
-                                <strong className="col-xs-1">Solved</strong>
-                                <strong className="col-xs-3 last"></strong>
-                            </div>
-                            <div className="row body">
-                                {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
-                            </div>
-                        </div>
+                        {
+                            this.StudentTickets()
+                        }
                     </div>
                 : this.state.auth.permission == 2 ?
                     <div>
-                        <div className="page-header row">
-                            <h1>Helpdesk overview : Student tickets</h1>
-                            <div className="headerBtn">
-                                <Link className="btn btn-primary" to={'/helpdesk/create'}>Add</Link>
-                            </div>
-                        </div>
-                        <div className="row tbl">
-                            <div className="row head">
-                                <strong className="col-xs-1 first"># Ticket</strong>
-                                <strong className="col-xs-1">Student</strong>
-                                <strong className="col-xs-1">Student number</strong>
-                                <strong className="col-xs-1">Location</strong>
-                                <strong className="col-xs-1">Room</strong>
-                                <strong className="col-xs-1">Date</strong>
-                                <strong className="col-xs-1">Time</strong>
-                                <strong className="col-xs-1">Type problem</strong>
-                                <strong className="col-xs-1">Solved</strong>
-                                <strong className="col-xs-3 last"></strong>
-                            </div>
-                            <div className="row body">
-                                {this.state.UserTickets.map((t, k) => <TicketComponent key={k} ticket={t} type={"user"} />)}
-                            </div>                                
-                        </div>
-
+                        {
+                            this.StudentTickets()
+                        }
                         <div className="systemTicketDiv">
                             <div className="page-header">
                                 <h4>Helpdesk overview : System tickets</h4>
                             </div>
                             <div className="row tbl">
                                 <div className="row head">
-                                    <strong className="col-xs-1"># Ticket</strong>
-                                    <strong className="col-xs-2">Location</strong>
-                                    <strong className="col-xs-2">Room</strong>
-                                    <strong className="col-xs-2">Date</strong>
-                                    <strong className="col-xs-1">Time</strong>
-                                    <strong className="col-xs-1">Type problem</strong>
-                                    <strong className="col-xs-1">Solved</strong>
+                                    <strong className="col-xs-2 hideMobile hideTablet"># Ticket</strong>
+                                    <strong className="col-xs-2 hideMobile hideTablet">Location</strong>
+                                    <strong className="col-xs-1 hideMobile hideTablet">Room</strong>
+                                    <strong className="col-xs-2 col-md-1">Date</strong>
+                                    <strong className="col-xs-2 col-md-1">Time</strong>
+                                    <strong className="col-xs-3 col-md-1">Type problem</strong>
+                                    <strong className="col-xs-2 col-md-1">Solved</strong>
                                     <strong className="col-xs-3 last"></strong>
                                 </div>
                                 <div className="row body">
@@ -180,7 +146,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
                         </div>
                     </div>
                 :
-                    <h4>No access</h4>
+                null
                 }
             </div>
     }
