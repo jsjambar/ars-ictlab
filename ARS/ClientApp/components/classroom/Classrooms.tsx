@@ -44,7 +44,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             end:0,
             locations: immutable.List<Location>(),
             available_classrooms: immutable.List<Classroom>(),
-            temp: 0,
+            temp: -1,
             timeslot: 0,
             classroomsWithReservations: Array<ClassroomWithEvents>(),
             auth: {
@@ -66,13 +66,15 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
         this.setState({
             [name]: value
-        }, () => {
+        }, 
+        () => {
             if(this.state.location != oldLoc){
                 this.getClassrooms(this.state.location);
             }
             this.setStartAndEnd(this.state.timeslot);
             if(this.state.classroom != 0){
                 this.getClassroomsWithEvents(this.state.classroom);
+                this.getClassroomTemperature(this.state.classroom);
             }
         });
     }
@@ -86,7 +88,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     verifyReservation() {
         const values = this.state;
-        // refactor this to a re-usable function
         if(values.location != 0 && values.classroom != 0 && 
             values.start != 0 && values.end != 0){
             if(values.date_of_reservation == 0){ 
@@ -159,7 +160,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         );
         
         var pass = true;
-        console.log(pass);
         res.then(function(response){
             if(response.error == 1){
                 pass = false;
@@ -213,6 +213,12 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         this.setState({
             classroomsWithReservations: arrReservations
         })
+    }
+
+    getClassroomTemperature(id){
+        api.getClassroomTemperature(id)
+        .then(temp => this.setState({ temp: temp }, () => console.log(this.state)))
+        .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
     }
 
     locationList() {
@@ -291,8 +297,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <br />
                     <div className="row">
                         <label>
-                            It's currently {this.state.temp ? this.state.temp : "invalid temperature"} degrees in the classroom.
-                        </label> {/*todo: this should be updated after classroom+Location has been selected*/}
+                            { this.state.temp > -1 ? "It's currently " + this.state.temp + " degrees in the classroom." : "" }
+                        </label>
                     </div>
                     <br />
                     <div className="row">
@@ -313,7 +319,6 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
                     <button type="button" className="btn btn-primary" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
                 </form>
-
                 { 
                         this.state.classroom != 0 ?
                         <BigCalendar 
