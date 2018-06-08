@@ -20,7 +20,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             auth:{
                 is_loggedin:false,
                 user:null,
-                permission:0
+                permission:0 //0 = No Permission, 1 = Student, 2 = Administrator
             }
         };
     }
@@ -73,7 +73,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     loginUser(){
         api.login_user(this.state)
         .then(() => this.check_auth())
-        .then(() => !this.state.auth.is_loggedin ? this.set_error({num:4, msg:"Incorrect Login Data."}) : null)
+        .then(() => this.state.auth.permission == 0 ? this.set_error({num:4, msg:"Incorrect Login Data."}) : null)
         .catch(e => this.set_error({num:2, msg:"Login Failed."}))
     }
 
@@ -87,7 +87,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             <div className="page-header">
                 <h1>Log in to the ARS</h1>
             </div>
-            <div>
+            <div className="col">
                 {
                     this.state.errors.map(e => {
                        return <div className="alert alert-danger" role="alert">
@@ -100,7 +100,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
                 <input className="form-control" type="text" placeholder="Username" onChange={e => this.setState({...this.state, username:e.currentTarget.value})} /><br />
                 <input className="form-control" type="password" placeholder="Password" onChange={e => this.setState({...this.state, password:e.currentTarget.value})}  /><br />
                 <br />
-                <button disabled={this.verifyForm()} className="btn btn-primary" onClick={() => this.loginUser()}>Log In</button>
+                <button disabled={this.verifyForm()} className="btn btn-primary btn-full-width-mobile" onClick={() => this.loginUser()}>Log In</button>
             </div>
             
         </div>

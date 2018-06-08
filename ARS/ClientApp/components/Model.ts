@@ -6,7 +6,7 @@ export type User = {
     first_name:string,
     last_name:string,
     password:string,
-    role_id:number, //0 = No Persmission, 1 = Student, 2 = Administrator
+    role_id:number, //0 = No Permission, 1 = Student, 2 = Administrator
 }
 
 export type Role = {

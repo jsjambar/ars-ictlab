@@ -139,67 +139,83 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     }
 
     public render() {
-        return <div>
-            {
-                this.state.auth.is_loggedin != false ?
+        return <div className="ticketForm">
+        {
+            this.state.auth.is_loggedin != false ?
+            <div>
+                <div className="page-header">
+                    <h1>Ticket Form</h1>
+                </div>
                 <div>
-                    <div className="page-header">
-                        <h4>Ticket Form</h4>
-                    </div>
-                    <div>
-                        {
-                            this.state.errors.map(e => {
-                            return <div className="alert alert-danger" role="alert">
-                                    <p>{e.msg}</p>
-                            </div>
-                            })
-                        }
-                    </div>
-                    <p>Fill in form before submitting ticket.</p>
-                    <form>
-                        <div className="problem"> 
+                    {
+                        this.state.errors.map(e => {
+                        return <div className="alert alert-danger" role="alert">
+                                <p>{e.msg}</p>
+                        </div>
+                        })
+                    }
+                </div>
+                <p>Fill in form before submitting ticket.</p>
+                <form>
+                    <div className="problem">
+                        <div className="row">
                             <label>Problem type:</label>
+                        </div>
+                        <div className="row">
                             <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
                                 <option value="0">Select a problem</option>
                                 {this.populateOptions(this.state.problemOptions)}
                             </select>
                         </div>
-                        <br/>
-                        <div className="location"> 
+                    </div>
+                    <br />
+                    <div className="location">
+                        <div className="row">
                             <label>Location:</label>
+                        </div>
+                        <div className="row">
                             <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
                                 <option value="0">Select a location</option>
                                 {this.populateOptions(this.state.locationOptions)}
                             </select>
                         </div>
-                        <br/>
-                        <div className="classroom"> 
+                    </div>
+                    <br/>
+                    <div className="classroom"> 
+                        <div className="row">
                             <label>Classroom:</label>
-                            <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
-                                <option value="0">Select a classroom</option>
-                                {this.populateOptions(this.state.classroomOptions)}
+                        </div>
+                        <div className="row">
+                        <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
+                            <option value="0">Select a classroom</option>
+                            {this.populateOptions(this.state.classroomOptions)}
                             </select>
                         </div>
-                        <br/>
-                        <div className="description"> 
+                    </div>
+                    <br/>
+                    <div className=""> 
+                        <div className="row">
                             <label>Description:</label>
-                            <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
                         </div>
-                        <br/>
-                        <div className="formButton"> 
-                            {
-                                !this.fieldCheck() ?
-                                <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
-                                :
-                                <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
-                            }
-                            <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
+                        <div className="row">
+                            <textarea className="description" name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
                         </div>
-                    </form>
-                </div>
-                :
-                <h4>No access</h4>
-            }
-        </div>
+                    </div>
+                    <br/>
+                    <div className="formButton"> 
+                        {
+                            !this.fieldCheck() ?
+                            <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
+                            :
+                            <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
+                        }
+                        <Link className="btn btn-danger" to={ '/Helpdesk/overview' }>Cancel</Link>
+                    </div>
+                </form>
+            </div>
+            :
+            <h4>No Access</h4>
+        }
+        </div>;
     }
 }

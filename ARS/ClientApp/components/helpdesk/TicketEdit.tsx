@@ -43,7 +43,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                 is_loggedin:false,
                 user:null,
                 permission:0
-            }  
+            } 
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyTicket = this.verifyTicket.bind(this);
@@ -87,32 +87,32 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.setState({
-            [name] : value
+            [name]: value
         })
-        if(name == "location_id"){
-           this.getLocClassrooms(value);
+        if (name == "location_id") {
+            this.getLocClassrooms(value);
         }
     }
 
-    getProblems(){
+    getProblems() {
         api.getProblems()
         .then(problemOptions => this.setState({problemOptions:problemOptions}))
         .catch(e => this.set_error({num:13, msg:"Problems Not Found"}))
     }
 
-    getLocations(){
+    getLocations() {
         api.getLocations()
         .then(locationOptions => this.setState({locationOptions:locationOptions}))
         .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
-    getLocClassrooms(location_id){
+    getLocClassrooms(location_id) {
         api.getLocationClassrooms(location_id)
         .then(classroomOptions => this.setState({classroomOptions:classroomOptions}))
         .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
-    getClassroom(classroomId){
+    getClassroom(classroomId) {
         api.getClassroom(classroomId)
         .then(classroom => this.setState(function(prevState, props){
             this.setState({
@@ -144,7 +144,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
 
     submitTicketChanges() {
         const values = this.state;
-        api.updateTicket(values.id, new Object({ 
+        api.updateTicket(values.id, new Object({
             id: values.id,
             created_at: values.created_at,
             description: values.description, 
@@ -155,7 +155,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             window.location.replace('/helpdesk/overview');
     }
 
-    getTicket(ticket_id){
+    getTicket(ticket_id) {
         api.getTicket(ticket_id)
         .then(ticket => this.setState(function(prevState, props){
             this.setState({
@@ -173,7 +173,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
     }
 
     public render() {
-        return <div>
+        return <div className="ticketForm">
             {
                 this.state.auth.is_loggedin != false && this.state.auth.user.id == this.state.user_id || this.state.auth.permission == 2?
                     <div>
@@ -191,33 +191,49 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                         </div>
                         <p>Fill in form before submitting ticket.</p>
                         <form>
-                            <div className="problem"> 
-                                <label>Problem type:</label>
-                                <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
-                                    <option value="0">Select a problem</option>
-                                    {this.populateOptions(this.state.problemOptions)}
-                                </select>
+                            <div className="problem">
+                                <div className="row">
+                                    <label>Problem type:</label>
+                                </div>
+                                <div className="row">
+                                    <select name='problem_id' value={`${this.state.problem_id}`} onChange={this.handleChange}>
+                                        <option value="0">Select a problem</option>
+                                        {this.populateOptions(this.state.problemOptions)}
+                                    </select>
+                                </div>
                             </div>
                             <br/>
-                            <div className="location"> 
-                                <label>Location:</label>
-                                <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
-                                    <option value="0">Select a location</option>
-                                    {this.populateOptions(this.state.locationOptions)}
-                                </select>
+                            <div className="location">
+                                <div className="row">
+                                    <label>Location:</label>
+                                </div>
+                                <div className="row">
+                                    <select name='location_id' value={`${this.state.location_id}`} onChange={this.handleChange}>
+                                        <option value="0">Select a location</option>
+                                        {this.populateOptions(this.state.locationOptions)}
+                                    </select>
+                                </div>
                             </div>
                             <br/>
-                            <div className="classroom"> 
-                                <label>Classroom:</label>
-                                <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
-                                    <option value="0">Select a classroom</option>
-                                    {this.populateOptions(this.state.classroomOptions)}
-                                </select>
+                            <div className="classroom">
+                                <div className="row">
+                                    <label>Classroom:</label>
+                                </div>
+                                <div className="row">
+                                    <select name="classroom_id" value={`${this.state.classroom_id}`} onChange={this.handleChange}>
+                                        <option value="0">Select a classroom</option>
+                                        {this.populateOptions(this.state.classroomOptions)}
+                                    </select>
+                                </div>
                             </div>
                             <br/>
-                            <div className="description"> 
-                                <label>Description:</label>
-                                <textarea name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                            <div> 
+                                <div className="row">
+                                  <label>Description:</label>
+                                </div>
+                                <div className="row">
+                                  <textarea className="description" name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
+                                </div>
                             </div>
                             <br/>
                             {
@@ -235,7 +251,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                                     :
                                     <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
                                 } 
-                                <Link className="btn btn-primary" to={ '/Helpdesk/overview' }>Cancel</Link>
+                                <Link className="btn btn-danger" to={ '/Helpdesk/overview' }>Cancel</Link>
                             </div>
                         </form>
                     </div>

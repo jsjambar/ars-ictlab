@@ -197,38 +197,58 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 </div>
             
                 <div>
-                    <p>Please enter the new data to update this reservation.</p>
-                    <form>
-                        <div className="row">
-                            <label>Date:</label>
-                            {
-                                this.state.date != 0 ?
-                                <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
-                                :
-                                ""
-                            }
-                        </div>
+                     <div className="page-header">
+                        <h1>Edit Reservation {this.state.id}</h1>
+                    </div>
 
-                        <div className="row">
-                            <label>Timeslot:</label>
-                        </div>
-                        <div className="row">
-                            <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
-                                <option value="0">Pick a time slot</option>
-                                <option value="1">9:00 - 11:00</option>
-                                <option value="2">11:00 - 13:00</option>
-                                <option value="3">13:00 - 15:00</option>
-                                <option value="4">15:00 - 17:00</option>
-                            </select>
-                        </div>
+                    <br/>
 
-                        <br />
+                    <div className="row datePicker">
+                        <label>Date:</label>
 
-                        <div className="row">
-                            <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
-                            <Link className="btn btn-secondary" to={'/reservation/overview'}>Cancel</Link>
-                        </div>
-                    </form>
+                        {
+                            this.state.errors.map(e => {
+                            return <div className="alert alert-danger" role="alert">
+                                    <p>{e.msg}</p>
+                            </div>
+                            })
+                        }
+                    </div>
+
+                    <div>
+                        <p>Please enter the new data to update this reservation.</p>
+                        <form>
+                            <div className="row">
+                                <label>Date:</label>
+                                {
+                                    this.state.date != 0 ?
+                                    <DatePicker minDate={moment()} selected={this.state.chosen_date} onChange={this.handleDateChange}/>
+                                    :
+                                    ""
+                                }
+                            </div>
+
+                            <div className="row">
+                                <label>Timeslot:</label>
+                            </div>
+                            <div className="row">
+                                <select name="timeslot" value={`${this.state.timeslot}`} onChange={this.handleChange}>
+                                    <option value="0">Pick a time slot</option>
+                                    <option value="1">9:00 - 11:00</option>
+                                    <option value="2">11:00 - 13:00</option>
+                                    <option value="3">13:00 - 15:00</option>
+                                    <option value="4">15:00 - 17:00</option>
+                                </select>
+                            </div>
+
+                            <br />
+
+                            <div className="row">
+                                <button type="button" name="create_classroom" className="btn btn-primary" onClick={this.verifyReservation}>Update Reservation</button>
+                                <Link className="btn btn-secondary" to={'/reservation/overview'}>Cancel</Link>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             :
