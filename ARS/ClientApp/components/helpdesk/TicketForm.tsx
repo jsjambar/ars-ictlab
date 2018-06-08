@@ -6,6 +6,7 @@ import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
+import * as moment from 'moment';
 
 interface TicketState { 
     created_at: Date,
@@ -31,7 +32,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             classroom_id: 0,
             problem_id: 0,
             description: "",
-            created_at: new Date(),
+            created_at: moment().toDate(),
             user_id: 0,
             problemOptions: immutable.List<Problem>(),
             locationOptions: immutable.List<Location>(),
@@ -131,7 +132,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     submitTicket() {
         const values = this.state;
         api.createTicket(new Object({ 
-            created_at: values.created_at, 
+            created_at: moment(values.created_at).add(2, 'hours'), 
             description: values.description,
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 

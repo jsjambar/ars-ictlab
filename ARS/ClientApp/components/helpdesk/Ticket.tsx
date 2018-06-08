@@ -124,7 +124,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             <div className="col-xs-2 hideMobile hideTablet first">{this.state.user.username}</div>
             <div className="col-xs-2 hideMobile hideTablet">{this.state.location.name}</div>
             <div className="col-xs-1 hideMobile hideTablet">{this.state.classroom.name}</div>
-            <div className="col-xs-2 col-md-1">{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</div>
+            <div className="col-xs-2 col-md-1">{g.getDate() + "-" + (g.getMonth() + 1) + "-" + g.getFullYear()}</div>
             <div className="col-xs-2 col-md-1">{g.getHours() + ":" + g.getMinutes()}</div>
             <div className="col-xs-3 col-md-1">{this.state.problem.name}</div>
             <div className="col-xs-2 col-md-1">{solved}</div>
@@ -141,7 +141,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
             <strong className="col-xs-2 hideMobile hideTablet first">{this.props.ticket.id}</strong>
             <div className="col-xs-2 hideMobile hideTablet">{this.state.location.name}</div>
             <div className="col-xs-2 hideMobile hideTablet">{this.state.classroom.name}</div>
-            <div className="col-xs-2 col-md-1">{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</div>
+            <div className="col-xs-2 col-md-1">{g.getDate() + "-" + g.getMonth() + 1 + "-" + g.getFullYear()}</div>
             <div className="col-xs-2 col-md-1">{g.getHours() + ":" + g.getMinutes()}</div>
             <div className="col-xs-3 col-md-1">{this.state.problem.name}</div>
             <div className="col-xs-2 col-md-1">{solved}</div>
