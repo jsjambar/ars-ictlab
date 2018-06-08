@@ -42,7 +42,6 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 user:null,
                 permission:0
             }
-            
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyTicket = this.verifyTicket.bind(this);
@@ -64,6 +63,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         }
     }
 
+    //Authentication check
     check_auth(){
         Authentication.check_auth()
         .then(r => { this.setState({...this.state, auth:r})})
@@ -71,6 +71,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
+    //Handle authentication, 0 = not authenticated, 1 = user, 2 = admin
     handle_auth(){
         this.state.auth.permission == 0 ? 
             window.location.replace('/')

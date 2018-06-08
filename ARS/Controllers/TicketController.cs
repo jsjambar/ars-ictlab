@@ -18,6 +18,7 @@ namespace ARS.Controllers
             this.Context = context;
         }
 
+        //Get all tickets, user and system tickets
         [HttpGet("all")]
         public List<IEnumerable<Ticket>> GetAll(){
             List<IEnumerable<Ticket>> f = new List<IEnumerable<Ticket>>();
@@ -38,6 +39,7 @@ namespace ARS.Controllers
             return f;
         }
 
+        //Get tickets of specific user
         [HttpGet("User/{id}", Name = "getUserTickets")]
         public List<Ticket> GetByUserId(long id)
         {
@@ -59,6 +61,7 @@ namespace ARS.Controllers
             return CreatedAtRoute("GetTicket", new { id = ticket.id }, ticket);
         }
 
+        //Get specific ticket
         [HttpGet("{id}", Name = "GetTicket")]
         public IActionResult GetById(long id)
         {

@@ -106,24 +106,28 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         }
     }
 
+    //Get problem for the form
     getProblems() {
         api.getProblems()
         .then(problemOptions => this.setState({problemOptions:problemOptions}))
         .catch(e => this.set_error({num:13, msg:"Problems Not Found"}))
     }
 
+    //Get locations for the form
     getLocations() {
         api.getLocations()
         .then(locationOptions => this.setState({locationOptions:locationOptions}))
         .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
+    //Get classrooms of selected location
     getLocClassrooms(location_id) {
         api.getLocationClassrooms(location_id)
         .then(classroomOptions => this.setState({classroomOptions:classroomOptions}))
         .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
+    //Get classroom
     getClassroom(classroomId) {
         api.getClassroom(classroomId)
         .then(classroom => this.setState(function(prevState, props){
@@ -135,18 +139,21 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         .catch(e => this.set_error({num:9, msg:"Classroom Not Found"}))
     }
 
+    //Fill dropdown (problems, locations, classrooms) with options 
     populateOptions(options) {
         return options.map((options, index) => (
             <option key={index} value={options.id}>{options.name}</option>
         ));
     }
 
+    //Check if all field are filled in
     fieldCheck(){
         const { description, location_id, classroom_id, problem_id } = this.state;
         return(
             description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
         );
     }
+
     verifyTicket(){
         const values = this.state;
         if(this.fieldCheck){
@@ -154,6 +161,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         }
     }
 
+    //Update ticket
     submitTicketChanges() {
         const values = this.state;
         api.updateTicket(values.id, new Object({
@@ -167,6 +175,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
             window.location.replace('/helpdesk/overview');
     }
 
+    //Retrieve ticket to show info in form
     getTicket(ticket_id) {
         api.getTicket(ticket_id)
         .then(ticket => this.setState(function(prevState, props){

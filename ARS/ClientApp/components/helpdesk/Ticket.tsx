@@ -105,6 +105,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
 
     delete_Ticket(){
         var wantsToDelete = window.confirm("Are you sure you want to delete this Ticket?");
+        //Delete ticket if confirmed
         if(wantsToDelete){
             var ticket_id = this;
             api.deleteTicket(ticket_id)
