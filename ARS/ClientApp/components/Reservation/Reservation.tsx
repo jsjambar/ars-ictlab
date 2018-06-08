@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as immutable from 'immutable'
-import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom'
 import { Reservation } from '../Model'
 import * as api from '../Api'

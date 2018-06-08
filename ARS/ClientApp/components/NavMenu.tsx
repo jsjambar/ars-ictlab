@@ -126,7 +126,13 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                 <li style={adminHeader}><span className='glyphicon glyphicon-cog'></span> Admin panel</li>
                                 <li>
                                     <NavLink to={'/admin/classrooms/overview'} activeClassName='active'>
-                                        <span className='glyphicon glyphicon-list'></span> Classrooms
+                                        <span className='glyphicon glyphicon-th-list'></span> Classrooms
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink to={'/admin/reservations/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-th'></span> Reservations
                                     </NavLink>
                                 </li>
 
