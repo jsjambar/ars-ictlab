@@ -25,13 +25,13 @@
     margin-right: 0px;
 }
 
-select, input {
+select, input[type="text"], input[type="password"] {
     height: 25px;
     width: 250px;
     margin-bottom: 5px;
 }
 
-input.checkbox {
+input[type="checkbox"] {
     width: auto;
     height: auto;
     float: left;
@@ -44,12 +44,12 @@ label {
 @media (max-width: 767px) {
     /* On small screens, the form should span full with */
 
-    select, input {
+    select, input[type="text"], input[type="password"] {
         width: 100%;
         height: 30px;
     }
 
-    input.checkbox {
+    input[type="checkbox"] {
         width: auto;
     }
 
@@ -98,6 +98,7 @@ label {
         height: 75px;
     }
 
+
     .schedules .row, .ticketForm row {
         margin: 0px;
     }
@@ -112,7 +113,7 @@ label {
             width: 100%;
         }
 
-        .schedules select, .schedules input,
+        .schedules select, .schedules input[type="text"], input[type="password"],
         .datePicker .react-datepicker-wrapper,
         .datePicker .react-datepicker-wrapper .react-datepicker__input-container {
             width: 100%;
