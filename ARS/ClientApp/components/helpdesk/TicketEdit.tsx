@@ -170,7 +170,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
     }
 
     public render() {
-        return <div className="ticketForm>
+        return <div className="ticketForm">
             {
                 this.state.auth.is_loggedin != false && this.state.auth.user.id == this.state.user_id || this.state.auth.permission == 2?
                     <div>
@@ -225,10 +225,10 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                             </div>
                             <br/>
                             <div> 
-                                <div className="row>
+                                <div className="row">
                                   <label>Description:</label>
                                 </div>
-                                <div className=row">
+                                <div className="row">
                                   <textarea className="description" name="description" onChange={this.handleChange} value={`${this.state.description}`}></textarea>
                                 </div>
                             </div>
@@ -244,7 +244,7 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                             <div className="formButton">
                                 {
                                     !this.fieldCheck() ?
-                                    <Link className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</Link>
+                                    <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
                                     :
                                     <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
                                 } 

@@ -121,8 +121,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         const values = this.state;
         api.createTicket(new Object({ 
             created_at: values.created_at, 
-            description: values.description, 
-            image: values.image, 
+            description: values.description,
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 
             user_id: values.auth.user.id, 
@@ -194,7 +193,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 <div className="formButton"> 
                     {
                         !this.fieldCheck() ?
-                        <Link className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</Link>
+                        <button className="btn btn-primary" disabled={!this.fieldCheck()}>Submit Ticket</button>
                         :
                         <Link className="btn btn-primary" onClick={this.verifyTicket} to={ '/Helpdesk/overview' }>Submit Ticket</Link>
                     }
