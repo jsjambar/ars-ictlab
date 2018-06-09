@@ -137,6 +137,9 @@ namespace ARS.Controllers
 
             return new NoContentResult();
         }
+
+        [HttpGet("/user/{username}")]
+        public User GetByName(string username) => this.Context.Users.FirstOrDefault(u => u.username == username);
     }
 
     public class LoginObject {

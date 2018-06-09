@@ -21,11 +21,11 @@ namespace ARSTests
 
         public UserControllerTests()
         {
-            this.Initialize();
+            this.InitializeContext();
             this.Users = this.GetTestUsers();
         }
 
-        private void Initialize()
+        private void InitializeContext()
         {
 
             var builder = new DbContextOptionsBuilder<DatabaseContext>().UseInMemoryDatabase("SampleDB");
@@ -34,26 +34,17 @@ namespace ARSTests
         }
 
         [Fact]
-        public void Create_ReturnsBadRequest_WhenModelIsNull()
+        public void User_Create_ReturnsBadRequest_WhenModelIsNull()
         {
             var result = this.UserController.Create(null);
             Assert.IsType<BadRequestResult>(result);
         }
 
         [Fact]
-        public void Create_Returns201Status_WhenModelIsNotNull()
+        public void User_Create_Returns201Status_WhenModelIsNotNull()
         {
             var result = this.UserController.Create(new User { id = 4, first_name = "Jan", last_name = "Jan", password = "Jantje", role_id = 1, username = "4@hr.nl"});
             Assert.IsType<CreatedAtRouteResult>(result);
-        }
-
-        [Fact]
-        public void Login_ReturnsResponseFailed_WhenUserIsNotFound()
-        {
-            LoginObject credentialsThatFail = new LoginObject{ username = "0@hr.nl", password = "piet" };
-            var response = this.UserController.Login(credentialsThatFail);
-
-            Assert.Equal(new JsonResult(new { response = "failed" }), response);
         }
 
         private List<User> GetTestUsers()

@@ -183,5 +183,8 @@ namespace ARS.Controllers
 
             return response;
         }
+
+        [HttpGet("classroom/{name}")]
+        public Classroom GetByName(string name) => this.Context.Classrooms.FirstOrDefault(c => c.name == name);
     }
 }

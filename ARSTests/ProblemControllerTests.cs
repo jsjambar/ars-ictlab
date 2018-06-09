@@ -15,31 +15,43 @@ namespace ARSTests
     public class ProblemControllerTests
     {
         DatabaseContext DatabaseContext;
+        ProblemController ProblemController;
 
         private void InitializeContext()
         {
             var builder = new DbContextOptionsBuilder<DatabaseContext>().UseInMemoryDatabase("SampleDB");
             DatabaseContext databaseContext = new DatabaseContext(builder.Options);
 
-            // Add sample users with Range method
-            var problems = Enumerable.Range(1, 4).Select(i => new Problem { id = i, name = $"Iets is kapot {i}"});
-
-            // Add sample users to Context.InMemoryDatabase
-            databaseContext.Problems.AddRange(problems);
-            databaseContext.SaveChanges();
+            this.ProblemController = new ProblemController(databaseContext);
             this.DatabaseContext = databaseContext;
         }
 
         [Fact]
-        public void TestUserGetByUsername()
+        public void Problem_Create_ReturnsBadRequest_WhenModelIsNull()
         {
             this.InitializeContext();
+            var result = this.ProblemController.Create(null);
+            Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public void Problem_Create_Returns201Status_WhenModelIsNotNull()
+        {
+            this.InitializeContext();
+            var result = this.ProblemController.Create(new Problem { id = 5, name = "Projector does not display laptop screen" });
+            Assert.IsType<CreatedAtRouteResult>(result);
+        }
+
+        [Fact]
+        public void TestClassroomGetByName()
+        {
+            this.InitializeContext();
+            this.DatabaseContext.Add(new Problem{ id = 10, name = "Iets is kapot 1" });
+            this.DatabaseContext.SaveChanges();
 
             string expectedProblemName = "Iets is kapot 1";
-            ProblemController controller = new ProblemController(this.DatabaseContext);
 
-            // Controller returns a object, therefore I use dynamic to get the username property
-            Problem problem = controller.GetByName(expectedProblemName);
+            Problem problem = this.ProblemController.GetByName(expectedProblemName);
             Assert.Equal(expectedProblemName, problem.name);
         }
     }
