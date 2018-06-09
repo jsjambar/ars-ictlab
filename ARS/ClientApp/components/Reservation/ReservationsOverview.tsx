@@ -8,9 +8,9 @@ import { ReservationComponent } from './Reservation'
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 
-export type ReservationsState = { reservations: immutable.List<Reservation> | "Loading...", auth:Auth, errors:immutable.List<Error> }
+export type AdminReservationsState = { reservations: immutable.List<Reservation> | "Loading...", auth:Auth, errors:immutable.List<Error> }
 
-export class Reservations extends React.Component<RouteComponentProps<{}>, ReservationsState> {
+export class AdminReservations extends React.Component<RouteComponentProps<{}>, AdminReservationsState> {
     constructor() {
         super();
         this.state = { 
@@ -42,7 +42,7 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
     }
 
     getReservations() {
-        api.getUserReservations(this.state.auth.user.id)
+        api.get_reservations()
         .then(reservations => this.setState({ reservations: reservations }))
         .catch(e => this.set_error({num:10, msg:"Reservations Not Found"}))
     }

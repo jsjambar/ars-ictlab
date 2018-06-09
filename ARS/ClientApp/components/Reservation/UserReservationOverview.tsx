@@ -1,0 +1,103 @@
+import * as React from 'react';
+import * as immutable from 'immutable'
+import { RouteComponentProps } from 'react-router';
+import * as api from '../Api'
+import { Reservation, Error } from '../Model'
+import { ReservationComponent } from './Reservation'
+
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
+
+export type ReservationsState = { reservations: immutable.List<Reservation> | "Loading...", auth:Auth, errors:immutable.List<Error> }
+
+export class Reservations extends React.Component<RouteComponentProps<{}>, ReservationsState> {
+    constructor() {
+        super();
+        this.state = { 
+            errors:immutable.List<Error>(),
+            reservations: "Loading...",
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
+        };
+    }
+
+    componentWillMount() {
+        this.check_auth()
+    }
+
+    //Error handling 
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
+    }
+
+    //Check if the user that is visiting the page is authenticated
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}))
+        .then(() => this.handle_auth())
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    //Handle Authentication level
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 2 ?
+            window.location.replace('/admin/classrooms/overview')
+        : this.handle_user()
+    }
+
+    //Handle the logged in user
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getReservations();
+    }
+
+    //Get reservations from user
+    getReservations() {
+        api.getUserReservations(this.state.auth.user.id)
+        .then(reservations => this.setState({ reservations: reservations }))
+        .catch(e => this.set_error({num:10, msg:"Reservations Not Found"}))
+    }
+
+    //Render HTML page
+    public render() {
+        return <div className="column reservations">
+            <div>
+                {
+                    this.state.errors.map(e => {
+                    return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                    </div>
+                    })
+                }
+            </div>
+            <div className="page-header">
+                <h1>Reservations</h1>
+            </div>
+            {
+                this.state.reservations != "Loading..." ?
+                    <div className="row tbl">
+                        <div className="row head">
+                            <strong className="col-xs-1 first">#</strong>
+                            <strong className="col-xs-2">Classroom Id</strong>
+                            <strong className="col-xs-3 col-sm-2">Date of reservation</strong>
+                            <strong className="col-xs-2">Start Time</strong>
+                            <strong className="col-xs-2">End Time</strong>
+                            <strong className="col-xs-2 col-sm-3 last"></strong>
+                        </div>
+                        <div className="row body">
+                            {this.state.reservations.map((u, k) => <ReservationComponent key={k} reservation={u} />)}
+                        </div>
+                    </div>
+                    : "Loading..."
+            }
+        </div>
+    }
+}

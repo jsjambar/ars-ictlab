@@ -5,11 +5,14 @@ import * as api from '../Api'
 import { User, Error } from '../Model'
 import { UserComponent } from './User' 
 import { UserForm } from './UserForm'
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication'
 
 export type UsersState = {
     page:Page
     users:immutable.List<User>|"Loading...",
-    errors:immutable.List<Error>
+    errors:immutable.List<Error>,
+    auth:Auth,
 }
 
 export type UsersData = {}
@@ -27,12 +30,37 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
             page:{
                 name:"show"
             },
-            users:"Loading..." 
+            users:"Loading...",
+            auth:{
+                is_loggedin:false,
+                user:null,
+                permission:0
+            }
         };
     }
 
     componentWillMount(){
-        this.getUsers()
+        this.check_auth();
+    }
+
+    check_auth(){
+        Authentication.check_auth()
+        .then(r => this.setState({...this.state, auth:r}))
+        .then(() => this.handle_auth())
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+ 
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 1 ?
+            window.location.replace('/home')
+        : this.handle_admin()
+    }
+
+    handle_admin(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        this.getUsers();
     }
 
     set_error(error:Error){
@@ -96,19 +124,19 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                         <div className="row tbl">
                             <div className="row head">
                                 <strong className="col-xs-1 first">#</strong>
-                                <strong className="col-xs-3">Firstname</strong>
+                                <strong className="col-xs-2">Firstname</strong>
                                 <strong className="col-xs-3">Lastname</strong>
-                                <strong className="col-xs-2">Username</strong>
+                                <strong className="col-xs-3">Username</strong>
                                 <strong className="col-xs-3 last"></strong>
                             </div>
                             <div className="row body">
                                 {
                                     this.state.users.map((u, k) => {
-                                        return <div>
+                                        return <div className="row">
                                             <strong className="col-xs-1 first">{u.id}</strong>
-                                            <div className="col-xs-3">{u.first_name}</div>
+                                            <div className="col-xs-2">{u.first_name}</div>
                                             <div className="col-xs-3">{u.last_name}</div>
-                                            <div className="col-xs-2">{u.username}</div>
+                                            <div className="col-xs-3">{u.username}</div>
                                             <div className="col-xs-3 last">
                                                 <button className="btn btn-primary" onClick={() => this.switchPage({ name: "user", user: u })}>Show</button>
                                                 <button className="btn btn-danger btn-last" onClick={() => this.deleteUser(u.id)}>Delete</button>

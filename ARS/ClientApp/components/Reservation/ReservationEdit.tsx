@@ -136,9 +136,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
 
     componentWillMount() {
         this.check_auth();
-        const { match: { params } } = this.props;
-        var reservationId = Object.keys(params).map(function (key) { return params[key] })[0];
-        this.getReservation(reservationId);
     }
 
     getReservation(reservationId) {
@@ -162,14 +159,43 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     check_auth(){
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
-     }
+    }
+ 
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 2 ?
+            window.location.replace('/admin/classrooms/overview')
+        : this.handle_user()
+    }
 
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        const { match: { params } } = this.props;
+        var reservationId = Object.keys(params).map(function (key) { return params[key] })[0];
+        this.getReservation(reservationId);
+    }
 
     public render() {
         return <div className="reservations">
-            {
-                this.state.auth.is_loggedin != false ?
+        {
+            this.state.id != 0 ?
+            <div>
+                <div className="page-header">
+                    <h1>Edit Reservation {this.state.id}</h1>
+                </div>
+                <div>
+                    {
+                        this.state.errors.map(e => {
+                        return <div className="alert alert-danger" role="alert">
+                                <p>{e.msg}</p>
+                        </div>
+                        })
+                    }
+                </div>
+            
                 <div>
                      <div className="page-header">
                         <h1>Edit Reservation {this.state.id}</h1>
@@ -224,10 +250,11 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                         </form>
                     </div>
                 </div>
-                :
-                <h4>No Access</h4>
+            </div>
+            :
+            null
             }
-        </div>;
+        </div>
     }
 
 }

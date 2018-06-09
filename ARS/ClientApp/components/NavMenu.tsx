@@ -3,6 +3,8 @@ import { Link, NavLink } from 'react-router-dom';
 import * as Authentication from './Authentication'
 import { Auth } from './Authentication';
 import * as api from './Api'
+import { Error } from './Model'
+import * as immutable from 'immutable'
 
 const adminHeader = {
     color: '#9d9d9d',
@@ -16,12 +18,13 @@ const marginLeft =  {
     marginLeft: '20px'
 }
 
-export type NavMenuState = {auth:Auth}
+export type NavMenuState = {auth:Auth, errors:immutable.List<Error>}
 
 export class NavMenu extends React.Component<{}, NavMenuState> {
     constructor() {
         super();
         this.state = {
+            errors:immutable.List<Error>(),
             auth:{
                 is_loggedin:false,
                 user:null,
@@ -37,17 +40,33 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
     check_auth(){
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
-        .catch(e => console.log(e))
+        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    set_error(error:Error){
+        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({...this.state, errors:this.state.errors.push(error)})
+        : null
     }
 
     logout_user(){
         api.logout_user()
         .then(() => window.location.replace('/login'))
-        .catch(console.log)
+        .catch(e => this.set_error({num:3, msg:"Logout Failed."}))
     }
 
     public render() {
         return <div className='main-nav'>
+            <div>
+                {
+                    this.state.errors.map(e => {
+                    return <div className="alert alert-danger" role="alert">
+                            <p>{e.msg}</p>
+                    </div>
+                    })
+                }
+            </div>
             <div className='navbar navbar-inverse'>
                 <div className='navbar-header'>
                     <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
@@ -107,7 +126,13 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                 <li style={adminHeader}><span className='glyphicon glyphicon-cog'></span> Admin panel</li>
                                 <li>
                                     <NavLink to={'/admin/classrooms/overview'} activeClassName='active'>
-                                        <span className='glyphicon glyphicon-list'></span> Classrooms
+                                        <span className='glyphicon glyphicon-th-list'></span> Classrooms
+                                    </NavLink>
+                                </li>
+
+                                <li>
+                                    <NavLink to={'/admin/reservations/overview'} activeClassName='active'>
+                                        <span className='glyphicon glyphicon-th'></span> Reservations
                                     </NavLink>
                                 </li>
 

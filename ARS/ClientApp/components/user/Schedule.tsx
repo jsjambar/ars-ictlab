@@ -32,7 +32,26 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
     check_auth(){
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
+        .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+    }
+
+    handle_auth(){
+        this.state.auth.permission == 0 ? 
+            window.location.replace('/')
+        :this.state.auth.permission == 2 ?
+            this.handle_admin()
+        :
+        null
+    }
+
+    handle_user(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+    }
+
+    handle_admin(){
+        this.setState({...this.state, errors:immutable.List<Error>()})
+        window.location.replace('/admin/classrooms/overview')
     }
 
     set_error(error:Error){

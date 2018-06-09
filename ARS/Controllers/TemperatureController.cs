@@ -36,5 +36,17 @@ namespace ARS.Controllers
             this.Context.SaveChanges();
             return Json(new {response = "success", temperature = temperature});
         }
+
+        [HttpGet("classroom/{id}")]
+        public long GetClassroomTemperature(long classroomId){
+            Temperature temperature = this.Context.Temperatures.FirstOrDefault(t => t.classroom_id == classroomId);
+            int temp = 0;
+            
+            if(temperature != null){
+                temp = temperature.temperature;
+            }
+
+            return temp;
+        }
     }
 }
