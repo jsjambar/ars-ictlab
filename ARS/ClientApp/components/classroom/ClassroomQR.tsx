@@ -2,9 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import * as immutable from 'immutable'
-import { Classroom, Error } from '../Model' 
-import { ClassroomComponent } from './Classroom';
-import { Link } from 'react-router-dom'
+import { Error } from '../Model' 
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 

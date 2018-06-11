@@ -43,11 +43,13 @@ namespace ARS.Controllers
         {
             if (reservation == null)
             {
-                return new JsonResult(new { error = "1", errormessage = "Not found!" });
+                return new JsonResult(new { error = "2", errormessage = "Not found!" });
             }
 
             Reservation item = this.Context.Reservations.FirstOrDefault(
-                c => c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
+                c => 
+                c.classroom_id == reservation.classroom_id &&
+                c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
                 c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
                 c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)
             );
@@ -169,6 +171,7 @@ namespace ARS.Controllers
             }
 
             Reservation exists = this.Context.Reservations.FirstOrDefault(c =>
+                c.classroom_id == reservation.classroom_id &&
                 c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
                 c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
                 c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)
