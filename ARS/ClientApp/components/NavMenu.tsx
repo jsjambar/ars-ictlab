@@ -87,11 +87,6 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                         <span className='glyphicon glyphicon-user'></span> Login
                                     </NavLink>
                                 </li>
-                                <li>
-                                    <NavLink to={ '/register' } activeClassName='active'>
-                                        <span className='glyphicon glyphicon-user'></span> Register
-                                    </NavLink>
-                                </li>
                             </ul>
                         : this.state.auth.permission == 1 ?
                             <ul className='nav navbar-nav'>
