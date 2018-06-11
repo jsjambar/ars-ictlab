@@ -1,15 +1,23 @@
+// Imports
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Classroom, Error } from '../Model';
 import * as api from '../Api';
-import DatePicker from 'react-datepicker';
+
+// Helpers
 import * as moment from 'moment';
 import * as immutable from 'immutable';
-import { Classroom, Error } from '../Model'
-import * as helper from '../Datehelper'; 
-import 'react-datepicker/dist/react-datepicker.css';
-import * as Authentication from '../Authentication'
-import { Auth } from '../Authentication'
+import * as helper from '../Datehelper';
 
+// Datepicker
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+// Authentication
+import * as Authentication from '../Authentication';
+import { Auth } from '../Authentication';
+
+// State that gets used
 interface ReservationForClassroomSchedule {
     classroom: 0,
     date_of_reservation: Date|0,
@@ -26,6 +34,7 @@ interface ReservationForClassroomSchedule {
 export class ReservationForClassroom extends React.Component<RouteComponentProps<{}>, ReservationForClassroomSchedule> {
     constructor() {
         super();
+        // Default values
         this.state = {
             classroom: 0,
             date_of_reservation: 0,
@@ -48,7 +57,41 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         this.verifyReservation = this.verifyReservation.bind(this);
     }
 
-    handleChange(event){
+    // Begin authentication and getting the startup data
+    componentWillMount():void{
+        this.check_auth();
+
+        const { match: { params } } = this.props;
+        var classroomId = Object.keys(params).map(function (key) { return params[key] })[0];
+
+        this.setState({
+            classroom: classroomId
+        }, () => this.getClassroomTemperature(this.state.classroom));
+    }
+
+    check_auth():void{
+        Authentication.check_auth()
+            .then(r => { this.setState({ ...this.state, auth: r }) })
+            .then(() => this.handle_auth())
+            .catch(e => this.set_error({ num: 1, msg: "Authentication Failed" }))
+    }
+
+    handle_auth():void{
+        this.state.auth.permission == 0 ?
+            window.location.replace('/')
+            :
+            this.state.auth.permission == 1 ?
+                this.handle_user()
+                : window.location.replace('/admin/classrooms/overview')
+    }
+
+    handle_user():void{
+        this.setState({ ...this.state, errors: immutable.List<Error>() })
+    }
+    // End authentication and getting the startup data
+
+    // Handle change of values
+    handleChange(event):void{
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -60,41 +103,24 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         );
     }
 
-    handleDateChange(date) {
+    // Unique date onchange method to format the date from the datepicker object
+    handleDateChange(date):void{
         this.setState({
           chosen_date: date
         }) 
         this.setDateFromObject(date);
     }
 
-    check_auth(){
-        Authentication.check_auth()
-        .then(r => { this.setState({...this.state, auth:r}) })
-        .then(() => this.handle_auth())
-        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
-    }
-
-    handle_auth(){
-        this.state.auth.permission == 0 ? 
-            window.location.replace('/')
-        : 
-        this.state.auth.permission == 1 ?
-            this.handle_user()
-        : window.location.replace('/admin/classrooms/overview')
-    }
-
-    handle_user(){
-        this.setState({...this.state, errors:immutable.List<Error>()})
-    }
-
-    set_error(error:Error){
+    // Sets the error to be shown
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
 
-    verifyReservation(){
+    // Checks if values are valid and then save the reservation
+    verifyReservation():void{
         const values = this.state;
         // refactor this to a re-usable function
         if(values.classroom != 0 && values.start != 0 && values.end != 0){
@@ -105,7 +131,8 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         }
     }
 
-    setStartAndEnd(chosenTimeslot){
+    // Set the start and end time because we process it in terms of timeslots and save it as start and end time
+    setStartAndEnd(chosenTimeslot):void{
         let processedDate = helper.getDateByTimeslot(chosenTimeslot);
         this.setState({
             start: processedDate.start,
@@ -113,29 +140,21 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         });
     }
 
-    componentWillMount(){
-        this.check_auth();
-
-        const { match: { params } } = this.props;
-        var classroomId = Object.keys(params).map(function(key){return params[key]})[0];
-
-        this.setState({
-            classroom: classroomId
-        }, () => this.getClassroomTemperature(this.state.classroom));
-    }
-
-    getClassroomTemperature(id){
+    // Get Temperature of the selected classroom
+    getClassroomTemperature(id):void{
         api.getClassroomTemperature(id)
         .then(temp => this.setState({ temp: temp }))
         .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
     }
-   
-    getFormattedDate(hour) {
+
+    // Formats the date and adds the unique hour we need
+    getFormattedDate(hour):Date{
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
-    setDateFromObject(obj){
+    // Gets the date from the datepicker object
+    setDateFromObject(obj):void{
         const self = this;
         Object.keys(obj).map(function(keyName, keyIndex) {
             if(keyName == '_d' && obj[keyName] !== null){
@@ -146,8 +165,8 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         });
     }
 
-    
-    setReservation() {
+    // Saves the reservation
+    setReservation():void{
         const values = this.state;
         const self = this;
 
@@ -161,6 +180,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
             })
         );
 
+        // After the reservation gets saved, we see what response it returns.
         res.then(function(response){
             if(response.error == 1){
                 self.set_error({num:6, msg:"Timeslot already taken"});
