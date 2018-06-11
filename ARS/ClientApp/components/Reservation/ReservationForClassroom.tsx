@@ -58,7 +58,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Begin authentication and getting the startup data
-    componentWillMount() {
+    componentWillMount():void{
         this.check_auth();
 
         const { match: { params } } = this.props;
@@ -69,14 +69,14 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
         }, () => this.getClassroomTemperature(this.state.classroom));
     }
 
-    check_auth() {
+    check_auth():void{
         Authentication.check_auth()
             .then(r => { this.setState({ ...this.state, auth: r }) })
             .then(() => this.handle_auth())
             .catch(e => this.set_error({ num: 1, msg: "Authentication Failed" }))
     }
 
-    handle_auth() {
+    handle_auth():void{
         this.state.auth.permission == 0 ?
             window.location.replace('/')
             :
@@ -85,13 +85,13 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
                 : window.location.replace('/admin/classrooms/overview')
     }
 
-    handle_user() {
+    handle_user():void{
         this.setState({ ...this.state, errors: immutable.List<Error>() })
     }
     // End authentication and getting the startup data
 
     // Handle change of values
-    handleChange(event){
+    handleChange(event):void{
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -104,7 +104,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Unique date onchange method to format the date from the datepicker object
-    handleDateChange(date) {
+    handleDateChange(date):void{
         this.setState({
           chosen_date: date
         }) 
@@ -112,7 +112,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Sets the error to be shown
-    set_error(error:Error){
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
@@ -120,7 +120,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Checks if values are valid and then save the reservation
-    verifyReservation(){
+    verifyReservation():void{
         const values = this.state;
         // refactor this to a re-usable function
         if(values.classroom != 0 && values.start != 0 && values.end != 0){
@@ -132,7 +132,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Set the start and end time because we process it in terms of timeslots and save it as start and end time
-    setStartAndEnd(chosenTimeslot){
+    setStartAndEnd(chosenTimeslot):void{
         let processedDate = helper.getDateByTimeslot(chosenTimeslot);
         this.setState({
             start: processedDate.start,
@@ -141,20 +141,20 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Get Temperature of the selected classroom
-    getClassroomTemperature(id){
+    getClassroomTemperature(id):void{
         api.getClassroomTemperature(id)
         .then(temp => this.setState({ temp: temp }))
         .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
     }
 
     // Formats the date and adds the unique hour we need
-    getFormattedDate(hour) {
+    getFormattedDate(hour):Date{
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
     // Gets the date from the datepicker object
-    setDateFromObject(obj){
+    setDateFromObject(obj):void{
         const self = this;
         Object.keys(obj).map(function(keyName, keyIndex) {
             if(keyName == '_d' && obj[keyName] !== null){
@@ -166,7 +166,7 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
     }
 
     // Saves the reservation
-    setReservation() {
+    setReservation():void{
         const values = this.state;
         const self = this;
 

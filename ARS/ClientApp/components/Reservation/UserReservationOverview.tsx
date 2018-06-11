@@ -35,18 +35,18 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
     }
 
     // Begin authentication and getting the startup data
-    componentWillMount() {
+    componentWillMount():void{
         this.check_auth()
     }
 
-    check_auth() {
+    check_auth():void{
         Authentication.check_auth()
             .then(r => this.setState({ ...this.state, auth: r }))
             .then(() => this.handle_auth())
             .catch(e => this.set_error({ num: 1, msg: "Authentication Failed" }))
     }
 
-    handle_auth() {
+    handle_auth():void{
         this.state.auth.permission == 0 ?
             window.location.replace('/')
             : this.state.auth.permission == 2 ?
@@ -54,14 +54,14 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
                 : this.handle_user()
     }
     
-    handle_user() {
+    handle_user():void{
         this.setState({ ...this.state, errors: immutable.List<Error>() })
         this.getReservations();
     }
     // End authentication and getting the startup data
     
     // Sets the error to be shown
-    set_error(error:Error){
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
@@ -69,7 +69,7 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
     }
 
     // Start getting the Reservations that needs to be shown
-    getReservations() {
+    getReservations():void{
         api.getUserReservations(this.state.auth.user.id)
             .then(reservations => this.setState({ reservations: reservations }))
             .catch(e => this.set_error({ num: 10, msg: "Reservations Not Found" }))

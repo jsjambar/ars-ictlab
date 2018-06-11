@@ -57,18 +57,18 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Begin authentication and getting the startup data
-    componentWillMount() {
+    componentWillMount():void{
         this.check_auth();
     }
 
-    check_auth() {
+    check_auth():void{
         Authentication.check_auth()
             .then(r => this.setState({ ...this.state, auth: r }))
             .then(() => this.handle_auth())
             .catch(e => this.set_error({ num: 1, msg: "Authentication Failed" }))
     }
 
-    handle_auth() {
+    handle_auth():void{
         this.state.auth.permission == 0 ?
             window.location.replace('/')
             : this.state.auth.permission == 2 ?
@@ -76,7 +76,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 : this.handle_user()
     }
 
-    handle_user() {
+    handle_user():void{
         this.setState({ ...this.state, errors: immutable.List<Error>() })
         const { match: { params } } = this.props;
         var reservationId = Object.keys(params).map(function (key) { return params[key] })[0];
@@ -85,7 +85,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     // End authentication and getting the startup data
 
     // Handle change of values
-    handleChange(event) {
+    handleChange(event):void{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
@@ -96,18 +96,15 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Unique date onchange method to format the date from the datepicker object
-    handleDateChange(date) {
+    handleDateChange(date):void{
         this.setState({
             chosen_date: date
         })
         this.setDateFromObject(date);
     }
 
-
-    
-
     // Set the start and end time because we process it in terms of timeslots and save it as start and end time
-    setStartAndEnd(chosenTimeslot){
+    setStartAndEnd(chosenTimeslot):void{
         let processedDate = helper.getDateByTimeslot(chosenTimeslot);
 
         this.setState({
@@ -117,7 +114,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Gets the date from the datepicker object
-    setDateFromObject(obj){
+    setDateFromObject(obj):void{
         const self = this;
         Object.keys(obj).map(function(keyName, keyIndex) {
             if(keyName == '_d' && obj[keyName] !== null){
@@ -129,7 +126,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Checks if values are valid and then save the reservation
-    verifyReservation() {
+    verifyReservation():void{
         const values = this.state;
         // refactor this to a re-usable function
         if (values.room != 0 && values.start != 0 && values.end != 0) {
@@ -140,7 +137,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Start updating the Reservation
-    updateReservation() {
+    updateReservation():void{
         const values = this.state;
         var res = api.updateReservation(
             values.id,
@@ -169,13 +166,13 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Convert to UTC date
-    getDate(hour) {
+    getDate(hour):Date{
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
     // Start getting the Reservation that needs to be shown
-    getReservation(reservationId) {
+    getReservation(reservationId):void{
         api.getReservation(reservationId)
             .then(reservation => this.setState({
                 id: reservation.id,
@@ -195,7 +192,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     }
 
     // Sets the error to be shown
-    set_error(error: Error) {
+    set_error(error: Error):void{
         const maybe_error: immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({ ...this.state, errors: this.state.errors.push(error) })

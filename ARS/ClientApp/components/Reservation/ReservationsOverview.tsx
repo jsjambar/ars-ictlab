@@ -35,11 +35,11 @@ export class AdminReservations extends React.Component<RouteComponentProps<{}>, 
     }
 
     // Begin authentication and getting the startup data
-    componentWillMount() {
+    componentWillMount():void{
         this.check_auth()
     }
 
-    check_auth(){
+    check_auth():void{
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}, () => this.getReservations()))
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
@@ -47,7 +47,7 @@ export class AdminReservations extends React.Component<RouteComponentProps<{}>, 
     // End authentication and getting the startup data
 
     // Sets the error to be shown
-    set_error(error: Error) {
+    set_error(error: Error):void{
         const maybe_error: immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({ ...this.state, errors: this.state.errors.push(error) })
@@ -55,7 +55,7 @@ export class AdminReservations extends React.Component<RouteComponentProps<{}>, 
     }
 
     // Start getting the Reservations that needs to be shown
-    getReservations() {
+    getReservations():void{
         api.get_reservations()
             .then(reservations => this.setState({ reservations: reservations }))
             .catch(e => this.set_error({ num: 10, msg: "Reservations Not Found" }))

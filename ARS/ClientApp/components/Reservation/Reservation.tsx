@@ -38,13 +38,13 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
         };
     }
     
-    componentWillMount() {
+    componentWillMount():void {
         this.getClassroom();
     }
 
     // Start getting the Classroom that the Reservation is booked on
     // This is needed for showing the name of the Classroom
-    getClassroom() {
+    getClassroom():void{
         api.getClassroom(this.props.reservation.classroom_id)
             .then(classroom => { this.setState({ classroom: classroom }) })
             .catch(e => {
@@ -55,7 +55,7 @@ export class ReservationComponent extends React.Component<ReservationComponentPr
     }
 
     // When Delete button is pressed you need to confirm deletion
-    confirmDeletion() {
+    confirmDeletion():void{
         var wantsToDelete = window.confirm("Are you sure you want to delete this reservation?");
 
         // When Deletion is confirmed the Reservation will be deleted
