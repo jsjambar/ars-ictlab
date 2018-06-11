@@ -21,22 +21,29 @@ namespace ARS.Controllers
         //Get all tickets, user and system tickets
         [HttpGet("all")]
         public List<IEnumerable<Ticket>> GetAll(){
-            List<IEnumerable<Ticket>> f = new List<IEnumerable<Ticket>>();
+            //List of all tickets
+            List<IEnumerable<Ticket>> allTickets = new List<IEnumerable<Ticket>>();
+            //List of all user tickets
             List<Ticket> userTicket = new List<Ticket>();
+            //List of all system tickets
             List<Ticket> systemTicket = new List<Ticket>();
+
             foreach (Ticket t in this.Context.Tickets)
             {
+                //System tickets
                 if(t.user_id == 0){
                     systemTicket.Add(t);
                 }
+                //User tickets
                 else{
                     userTicket.Add(t);
                 }
             }
-            f.Add(userTicket);
-            f.Add(systemTicket);
+            //Add the lists to allTickets
+            allTickets.Add(userTicket);
+            allTickets.Add(systemTicket);
 
-            return f;
+            return allTickets;
         }
 
         //Get tickets of specific user
@@ -46,7 +53,7 @@ namespace ARS.Controllers
             return this.Context.Tickets.Where(t => t.user_id == id).ToList();
         }
 
-
+        //Add ticket
         [HttpPost("create")]
         public IActionResult Create([FromBody] Ticket ticket)
         {
@@ -61,7 +68,7 @@ namespace ARS.Controllers
             return CreatedAtRoute("GetTicket", new { id = ticket.id }, ticket);
         }
 
-        //Get specific ticket
+        //Get specific ticket by ticket id
         [HttpGet("{id}", Name = "GetTicket")]
         public IActionResult GetById(long id)
         {
@@ -75,6 +82,7 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        //Update specific ticket
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] Ticket ticket)
         {
@@ -101,6 +109,7 @@ namespace ARS.Controllers
             return new NoContentResult();
         }
 
+        //Delete specific ticket
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
