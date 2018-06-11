@@ -1,18 +1,28 @@
+// Imports
 import * as React from 'react';
-import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
-import * as api from '../Api'
-import { Reservation, Error } from '../Model'
-import { ReservationComponent } from './Reservation'
+import { Reservation, Error } from '../Model';
+import { ReservationComponent } from './Reservation';
+import * as api from '../Api';
 
-import * as Authentication from '../Authentication'
-import { Auth } from '../Authentication'
+// Helpers
+import * as immutable from 'immutable';
 
-export type ReservationsState = { reservations: immutable.List<Reservation> | "Loading...", auth:Auth, errors:immutable.List<Error> }
+// Authentication
+import * as Authentication from '../Authentication';
+import { Auth } from '../Authentication';
+
+// State that gets used
+export type ReservationsState = {
+    reservations: immutable.List<Reservation> | "Loading...",
+    auth: Auth,
+    errors: immutable.List<Error>
+}
 
 export class Reservations extends React.Component<RouteComponentProps<{}>, ReservationsState> {
     constructor() {
         super();
+        // Default values
         this.state = { 
             errors:immutable.List<Error>(),
             reservations: "Loading...",
@@ -24,11 +34,33 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         };
     }
 
+    // Begin authentication and getting the startup data
     componentWillMount() {
         this.check_auth()
     }
 
-    //Error handling 
+    check_auth() {
+        Authentication.check_auth()
+            .then(r => this.setState({ ...this.state, auth: r }))
+            .then(() => this.handle_auth())
+            .catch(e => this.set_error({ num: 1, msg: "Authentication Failed" }))
+    }
+
+    handle_auth() {
+        this.state.auth.permission == 0 ?
+            window.location.replace('/')
+            : this.state.auth.permission == 2 ?
+                window.location.replace('/admin/classrooms/overview')
+                : this.handle_user()
+    }
+    
+    handle_user() {
+        this.setState({ ...this.state, errors: immutable.List<Error>() })
+        this.getReservations();
+    }
+    // End authentication and getting the startup data
+    
+    // Sets the error to be shown
     set_error(error:Error){
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
@@ -36,34 +68,11 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
         : null
     }
 
-    //Check if the user that is visiting the page is authenticated
-    check_auth(){
-        Authentication.check_auth()
-        .then(r => this.setState({...this.state, auth:r}))
-        .then(() => this.handle_auth())
-        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
-    }
-
-    //Handle Authentication level
-    handle_auth(){
-        this.state.auth.permission == 0 ? 
-            window.location.replace('/')
-        :this.state.auth.permission == 2 ?
-            window.location.replace('/admin/classrooms/overview')
-        : this.handle_user()
-    }
-
-    //Handle the logged in user
-    handle_user(){
-        this.setState({...this.state, errors:immutable.List<Error>()})
-        this.getReservations();
-    }
-
-    //Get reservations from user
+    // Start getting the Reservations that needs to be shown
     getReservations() {
         api.getUserReservations(this.state.auth.user.id)
-        .then(reservations => this.setState({ reservations: reservations }))
-        .catch(e => this.set_error({num:10, msg:"Reservations Not Found"}))
+            .then(reservations => this.setState({ reservations: reservations }))
+            .catch(e => this.set_error({ num: 10, msg: "Reservations Not Found" }))
     }
 
     //Render HTML page
@@ -86,7 +95,7 @@ export class Reservations extends React.Component<RouteComponentProps<{}>, Reser
                     <div className="row tbl">
                         <div className="row head">
                             <strong className="col-xs-1 first">#</strong>
-                            <strong className="col-xs-2">Classroom Id</strong>
+                            <strong className="col-xs-2">Classroom</strong>
                             <strong className="col-xs-3 col-sm-2">Date of reservation</strong>
                             <strong className="col-xs-2">Start Time</strong>
                             <strong className="col-xs-2">End Time</strong>
