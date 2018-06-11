@@ -3,7 +3,10 @@ import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import { User } from '../Model'
 
+// Props of user component
 export type UserComponentProps = {user:User, deleteUser:(id:number)=>void, updateUser:(u:User)=>void}
+
+// State of user component
 export type UserComponentState = {type:"show"|"edit", user:User}
 
 export class UserComponent extends React.Component<UserComponentProps, UserComponentState> {
@@ -22,7 +25,8 @@ export class UserComponent extends React.Component<UserComponentProps, UserCompo
         }
     }
 
-    componentWillMount(){
+    // Load user in state when mounting
+    componentWillMount():void{
         this.setState({...this.state, user:this.props.user})
     }
 

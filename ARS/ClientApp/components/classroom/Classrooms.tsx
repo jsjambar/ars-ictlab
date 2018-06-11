@@ -137,11 +137,10 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     verifyReservation() {
         const values = this.state;
         if(values.location != 0 && values.classroom != 0 && 
-            values.start != 0 && values.end != 0){
-            
+            values.start != 0 && values.end != 0){            
                 if(values.date_of_reservation == 0){ 
-                this.setState({ date_of_reservation: this.getFormattedDate(0) });
-            }
+                    this.setState({ date_of_reservation: this.getFormattedDate(0) });
+                }
 
             this.setReservation();
         } else {
@@ -179,6 +178,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     // Saves the reservation
     setReservation() {
+        var self = this;
         const values = this.state;
         var res = api.set_reservation(
             new Object({
@@ -193,7 +193,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         // After the reservation gets saved, we see what response it returns.
         res.then(function(response){
             if(response.error == 1){
-                this.set_error({num:6, msg:"Timeslot already taken"});
+                self.set_error({num:6, msg:"Timeslot already taken"});
             } else {
                 window.location.replace('/reservation/overview');
             }

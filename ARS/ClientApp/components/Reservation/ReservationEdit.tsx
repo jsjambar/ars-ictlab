@@ -219,21 +219,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                         })
                     }
                 </div>
-            
-                <div>
-
-                    <div className="row datePicker">
-                        <label>Date:</label>
-
-                        {
-                            this.state.errors.map(e => {
-                            return <div className="alert alert-danger" role="alert">
-                                    <p>{e.msg}</p>
-                            </div>
-                            })
-                        }
-                    </div>
-
                     <div>
                         <p>Please enter the new data to update this reservation.</p>
                         <form>
@@ -270,7 +255,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                         </form>
                     </div>
                 </div>
-            </div>
             :
             null
             }
