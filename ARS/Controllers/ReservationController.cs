@@ -210,5 +210,8 @@ namespace ARS.Controllers
 
             return new NoContentResult();
         }
+
+        [HttpGet("reservation/{name}")]
+        public Reservation GetReservationById(int id) => this.Context.Reservations.FirstOrDefault(r => r.id == id);
     }
 }
