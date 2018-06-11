@@ -7,10 +7,10 @@ import { User, Error } from '../Model'
 import { UserComponent } from './User'
 import { Auth } from '../Authentication'
 
+// State of login component
 interface LoginState { username:string, password:string, auth:Auth, errors:immutable.List<Error>}
 
 export class Login extends React.Component<RouteComponentProps<{}>, LoginState> {
-
     constructor() {
         super();
         this.state = { 
@@ -26,20 +26,20 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     // Check the authentication of the user when mounting and handle accordingly
-    componentWillMount(){
+    componentWillMount():void{
         this.check_auth() 
     }
     
     // Check the authentication of the user and handle accordingly
-    check_auth(){
-       Authentication.check_auth() // Get the Auth object from authentication
-       .then(r => this.setState({...this.state, auth:r})) // Set Auth in the state
-       .then(() => this.handle_auth()) // Handle according to auth
-       .catch(e => this.set_error({num:1, msg:"Something went wrong checking the authentication."}))
+    check_auth():void{
+       Authentication.check_auth() 
+       .then(r => this.setState({...this.state, auth:r})) 
+       .then(() => this.handle_auth()) 
+       .catch(e => this.set_error({num:1, msg:"Something went wrong checking the permission."}))
     }
     
     // Handle authentication of the user
-    handle_auth(){
+    handle_auth():void{
         this.state.auth.permission == 0 ?
             window.location.reload 
         :this.state.auth.permission == 1 ?
@@ -48,19 +48,19 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     // Handle authentication of student
-    handle_user(){
+    handle_user():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         window.location.replace('/home')
     }
     
     // Handle authentication of admin
-    handle_admin(){
+    handle_admin():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         window.location.replace('/admin/classrooms/overview')
     }
     
     // Set errors if they dont exist already
-    set_error(error:Error){
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
@@ -79,7 +79,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     // Login user
-    loginUser(){
+    loginUser():void{
         api.login_user(this.state)
         .then(() => this.check_auth())
         .then(() => this.state.auth.permission == 0 ? this.set_error({num:4, msg:"Incorrect Login Data."}) : null)
@@ -87,7 +87,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     }
 
     // Logout user
-    logoutUser(){
+    logoutUser():void{
         api.logout_user()
         .catch(e => this.set_error({num:3, msg:"Logout Failed."}))
     }
