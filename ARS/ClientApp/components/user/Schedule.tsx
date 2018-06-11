@@ -1,17 +1,17 @@
 import * as React from 'react';
 import * as immutable from 'immutable'
-import { RouteComponentProps } from 'react-router';
 import * as api from '../Api'
+import * as Authentication from '../Authentication'
+import { RouteComponentProps } from 'react-router';
 import { User, Error } from '../Model'
 import { UserComponent } from './User'
 import { Calendar } from '../Calendar'
-
-import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 
-export type NavMenuState = {auth:Auth, errors:immutable.List<Error>}
+// State of schedule component
+export type ScheduleState = {auth:Auth, errors:immutable.List<Error>}
 
-export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuState> {
+export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleState> {
 
     constructor() {
         super();
@@ -20,45 +20,50 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
             auth:{
                 is_loggedin:false,
                 user:null,
-                permission:0
+                permission:0 // 0 = No Permission, 1 = Student, 2 = Administrator
             }
         }
     }
 
-    componentWillMount(){
+    // Check the authentication of the user when mounting and handle accordingly
+    componentWillMount():void{
         this.check_auth()
     }
-
-    check_auth(){
+ 
+    // Check the authentication of the user and handle accordingly
+    check_auth():void{
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
         .then(() => this.handle_auth())
-        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
+        .catch(e => this.set_error({num:1, msg:"Something went wrong checking the permission."}))
     }
 
-    handle_auth(){
+    // Handle authentication of the user
+    handle_auth():void{
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
         :this.state.auth.permission == 2 ?
             this.handle_admin()
-        :
-        null
+        :null
     }
 
-    handle_user(){
+    // Handle authentication of student
+    handle_user():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
     }
 
-    handle_admin(){
+    // Handle authentication of admin
+    handle_admin():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         window.location.replace('/admin/classrooms/overview')
     }
 
-    set_error(error:Error){
+    // Set errors if they dont exist already
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
-        : null
+        :null
     }
 
     public render() {
@@ -68,6 +73,7 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
             </div>
             <div>
                 {
+                    // Show errors
                     this.state.errors.map(e => {
                        return <div className="alert alert-danger" role="alert">
                             <p>{e.msg}</p>
@@ -76,6 +82,7 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
                 }
             </div>
             {
+                // Show calendar if student
                 this.state.auth.user ?
                 <div>
                     <Calendar userid={this.state.auth.user.id}/>
