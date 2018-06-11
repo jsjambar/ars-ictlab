@@ -1,9 +1,12 @@
+//Imports
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import { Ticket, Problem, User, Classroom, Location, Error } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
+
+//Authentication
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
