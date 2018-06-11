@@ -29,6 +29,7 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     componentWillMount(){
         this.check_auth() 
     }
+    
     // Check the authentication of the user and handle accordingly
     check_auth(){
        Authentication.check_auth() // Get the Auth object from authentication
