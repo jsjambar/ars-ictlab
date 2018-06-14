@@ -40,24 +40,6 @@ export class ClassroomQR extends React.Component<RouteComponentProps<{}>, Classr
     }
 
     componentWillMount(){
-        this.check_auth();
-    }
-
-    check_auth(){
-        Authentication.check_auth()
-        .then(r => { this.setState({...this.state, auth:r})})
-        .then(() => this.handle_auth())
-        .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
-    }
-
-    handle_auth(){
-        this.state.auth.permission == 0 ? 
-            window.location.replace('/')
-        :
-            this.handle_authenticated()
-    }
-
-    handle_authenticated(){
         this.setState({...this.state, errors:immutable.List<Error>()})
         this.getClassroom();
     }
@@ -95,6 +77,7 @@ export class ClassroomQR extends React.Component<RouteComponentProps<{}>, Classr
         })
     }
 
+    // Set errors if they dont exist already
     set_error(error:Error){
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?

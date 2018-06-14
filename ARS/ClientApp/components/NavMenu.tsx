@@ -63,7 +63,14 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
                     </button>
-                    <Link className='navbar-brand' to={'/'}>ARS</Link>
+                    {
+                        this.state.auth.permission == 1 ?
+                            <Link className='navbar-brand' to={'/home'}>ARS</Link>
+                        : 
+                        this.state.auth.permission == 2 ?
+                            <Link className='navbar-brand' to={'/admin/classrooms/overview'}>ARS</Link>
+                        : null
+                    }
                 </div>
                 <div className='clearfix'></div>
                 <div className='navbar-collapse collapse'>
