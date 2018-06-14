@@ -199,8 +199,8 @@ export class ReservationForClassroom extends React.Component<RouteComponentProps
             </div>
             <div>
                 {
-                    this.state.errors.map(e => {
-                       return <div className="alert alert-danger" role="alert">
+                    this.state.errors.map((e,k) => {
+                       return <div key={k} className="alert alert-danger" role="alert">
                             <p>{e.msg}</p>
                        </div>
                     })
