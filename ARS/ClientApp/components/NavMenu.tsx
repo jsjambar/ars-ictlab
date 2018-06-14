@@ -6,18 +6,6 @@ import * as api from './Api'
 import { Error } from './Model'
 import * as immutable from 'immutable'
 
-const adminHeader = {
-    color: '#9d9d9d',
-    fontSize: '20px',
-    listStyleType: 'none',
-    paddingLeft: '15px',
-    marginTop: '20px'
-};
-
-const marginLeft =  {
-    marginLeft: '20px'
-}
-
 export type NavMenuState = {auth:Auth, errors:immutable.List<Error>}
 
 export class NavMenu extends React.Component<{}, NavMenuState> {
@@ -90,6 +78,7 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                             </ul>
                         : this.state.auth.permission == 1 ?
                             <ul className='nav navbar-nav'>
+                                <li className='nameHeader'>{this.state.auth.user.first_name + " " + this.state.auth.user.last_name}</li>
                                 <li>
                                     <NavLink to={ '/home' } activeClassName='active'>
                                         <span className='glyphicon glyphicon-home'></span> Home
@@ -113,12 +102,12 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
+                                    <button className="btn btn-danger marginLeftBtn" onClick={() => this.logout_user()}>Logout</button>
                                 </li>
                             </ul>
                         :
                             <ul className='nav navbar-nav'>
-                                <li style={adminHeader}><span className='glyphicon glyphicon-cog'></span> Admin panel</li>
+                                <li className='adminHeader'><span className='glyphicon glyphicon-cog'></span> Admin panel : {this.state.auth.user.first_name + " " + this.state.auth.user.last_name}</li>
                                 <li>
                                     <NavLink to={'/admin/classrooms/overview'} activeClassName='active'>
                                         <span className='glyphicon glyphicon-th-list'></span> Classrooms
@@ -142,7 +131,7 @@ export class NavMenu extends React.Component<{}, NavMenuState> {
                                         <span className='glyphicon glyphicon-info-sign'></span> Helpdesk
                                     </NavLink>
                                 </li>
-                                <button className="btn btn-danger" style={marginLeft} onClick={() => this.logout_user()}>Logout</button>
+                                <button className="btn btn-danger marginLeftBtn" onClick={() => this.logout_user()}>Logout</button>
                             </ul>
                     }
                 </div>
