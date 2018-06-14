@@ -30,6 +30,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         this.check_auth()
     }
 
+    //push error to immutable.List<Error>()
     set_error(error:Error){
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
@@ -37,6 +38,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         : null
     }
 
+    //Authentication check
     check_auth(){
         Authentication.check_auth()
         .then(r => {this.setState({...this.state, auth:r})})
@@ -44,6 +46,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
+    //Handle authentication, 0 = not authenticated, 1 = user, 2 = admin
     handle_auth(){
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
@@ -56,6 +59,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
     }
     
     getTickets(){
+        //if visitor is logged in and role is user, get his tickets.
         if(this.state.auth.is_loggedin && this.state.auth.permission == 1)
         {
             api.getUserTickets(this.state.auth.user.id)
@@ -64,6 +68,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
             })
             .catch(e => this.set_error({num:11, msg:"Tickets Not Found"}))
         }
+        //if visitor is logged in and role is admin, get tickets from everyone
         else if(this.state.auth.is_loggedin && this.state.auth.permission == 2)
         {
             api.getAllTickets()

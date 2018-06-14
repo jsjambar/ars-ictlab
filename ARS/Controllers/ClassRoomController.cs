@@ -178,6 +178,18 @@ namespace ARS.Controllers
                 return NotFound();
             }
 
+            List<Reservation> reservations = this.Context.Reservations.Where(r => r.classroom_id == id).ToList();
+            foreach(Reservation reservation in reservations)
+            {
+                this.Context.Reservations.Remove(reservation);
+            }
+
+            List<Ticket> tickets = this.Context.Tickets.Where(t => t.classroom_id == id).ToList();
+            foreach (Ticket ticket in tickets)
+            {
+                this.Context.Tickets.Remove(ticket);
+            }
+
             this.Context.Classrooms.Remove(classroom);
             this.Context.SaveChanges();
 

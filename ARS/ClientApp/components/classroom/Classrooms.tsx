@@ -72,18 +72,18 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Begin authentication and getting the startup data
-    componentWillMount(){
+    componentWillMount() : void{
         this.check_auth()
     }
 
-    check_auth(){
+    check_auth() : void {
         Authentication.check_auth()
         .then(r => { this.setState({...this.state, auth:r}) })
         .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
-    handle_auth(){
+    handle_auth() : void {
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
         : 
@@ -92,14 +92,14 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         : window.location.replace('/admin/classrooms/overview')
     }
 
-    handle_user(){
+    handle_user() : void {
         this.setState({...this.state, errors:immutable.List<Error>()})
         this.getLocations();
     }
     // End authentication and getting the startup data
 
     // Handle change of values
-    handleChange(event){
+    handleChange(event) : void {
         const oldLoc = this.state.location;
         const target = event.target;
         const value = target.value;
@@ -125,7 +125,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Unique date onchange method to format the date from the datepicker object
-    handleDateChange(date) {
+    handleDateChange(date) : void {
         this.setState({
             chosen_date: date
         })
@@ -134,14 +134,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Checks if values are valid and then save the reservation
-    verifyReservation() {
+    verifyReservation() : void {
         const values = this.state;
         if(values.location != 0 && values.classroom != 0 && 
-            values.start != 0 && values.end != 0){
-            
+            values.start != 0 && values.end != 0){            
                 if(values.date_of_reservation == 0){ 
-                this.setState({ date_of_reservation: this.getFormattedDate(0) });
-            }
+                    this.setState({ date_of_reservation: this.getFormattedDate(0) });
+                }
 
             this.setReservation();
         } else {
@@ -150,7 +149,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Set the start and end time because we process it in terms of timeslots and save it as start and end time
-    setStartAndEnd(chosenTimeslot) {
+    setStartAndEnd(chosenTimeslot) : void {
         let processedDate = helper.getDateByTimeslot(chosenTimeslot);
         this.setState({
             start: processedDate.start,
@@ -160,13 +159,13 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
 
     // Formats the date and adds the unique hour we need
-    getFormattedDate(hour) {
+    getFormattedDate(hour) : Date {
         const date = new Date();
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), hour);
     }
 
     // Gets the date from the datepicker object
-    setDateFromObject(obj) {
+    setDateFromObject(obj) : void {
         const self = this;
         Object.keys(obj).map(function (keyName, keyIndex) {
             if (keyName == '_d' && obj[keyName] !== null) {
@@ -178,7 +177,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Saves the reservation
-    setReservation() {
+    setReservation() : void {
+        var self = this;
         const values = this.state;
         var res = api.set_reservation(
             new Object({
@@ -193,7 +193,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
         // After the reservation gets saved, we see what response it returns.
         res.then(function(response){
             if(response.error == 1){
-                this.set_error({num:6, msg:"Timeslot already taken"});
+                self.set_error({num:6, msg:"Timeslot already taken"});
             } else {
                 window.location.replace('/reservation/overview');
             }
@@ -201,7 +201,7 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Sets the error to be shown
-    set_error(error:Error){
+    set_error(error:Error) : void {
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
@@ -209,25 +209,25 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     // Start getting the locations/classrooms/events/temperature that needs to be shown
-    getLocations() {
+    getLocations() : void {
         api.getLocations()
             .then(locations => this.setState({ locations: locations }))
             .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
-    getClassrooms(locationId) {
+    getClassrooms(locationId) : void {
         api.getLocationClassrooms(locationId)
         .then(classrooms => this.setState({ classroom: 0, available_classrooms: classrooms}))
         .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
-    getClassroomsWithEvents(id) {
+    getClassroomsWithEvents(id) : void {
         api.getClassroomEvents(id)
             .then(events => this.setClassroomReservations(events))
             .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
     
-    getClassroomTemperature(id){
+    getClassroomTemperature(id) : void{
         api.getClassroomTemperature(id)
         .then(temp => this.setState({ temp: temp }))
         .catch(e => this.set_error({num:9, msg:"Temperature could not be found."}))
@@ -352,6 +352,9 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <br />
 
                     <button type="button" className="btn btn-primary" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
+
+                    <br />
+                    <br />
                 </form>
                 { 
                         this.state.classroom != 0 ?

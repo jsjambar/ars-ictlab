@@ -43,11 +43,13 @@ namespace ARS.Controllers
         {
             if (reservation == null)
             {
-                return new JsonResult(new { error = "1", errormessage = "Not found!" });
+                return new JsonResult(new { error = "2", errormessage = "Not found!" });
             }
 
             Reservation item = this.Context.Reservations.FirstOrDefault(
-                c => c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
+                c => 
+                c.classroom_id == reservation.classroom_id &&
+                c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
                 c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
                 c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)
             );
@@ -129,11 +131,13 @@ namespace ARS.Controllers
         [HttpGet("classroomById/{id}")]
         public IEnumerable<object> GetReservationsByClassroomId(long id)
         {
+            Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == id);
             List<Reservation> reservations = this.Context.Reservations.Where(r => r.classroom_id == id).ToList();
             List<object> events = new List<object>();
 
             reservations.ForEach(r => {
                 events.Add(new {
+                    classroom = classroom,
                     title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
                     start = r.date_of_reservation.ToString(),
                     end = r.date_of_reservation.ToString()
@@ -150,11 +154,15 @@ namespace ARS.Controllers
             List<object> events = new List<object>();
 
             reservations.ForEach(r => {
-                events.Add(new {
-                    title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
-                    start = r.date_of_reservation.ToString(),
-                    end = r.date_of_reservation.ToString()
-                });
+                Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == r.classroom_id);
+                if(classroom != null){
+                    events.Add(new {
+                        classroom = classroom.name,
+                        title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
+                        start = r.date_of_reservation.ToString(),
+                        end = r.date_of_reservation.ToString()
+                    });
+                }
             });
 
             return events;
@@ -169,6 +177,7 @@ namespace ARS.Controllers
             }
 
             Reservation exists = this.Context.Reservations.FirstOrDefault(c =>
+                c.classroom_id == reservation.classroom_id &&
                 c.date_of_reservation == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0) &&
                 c.start_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.start_time.Hour + 2, 0, 0) &&
                 c.end_time == new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, reservation.end_time.Hour + 2, 0, 0)

@@ -65,9 +65,9 @@ namespace ARS.Controllers
         {
             User user = this.Context.Users.FirstOrDefault(u => u.username == content.username && u.password == Helper.HashPassword(content.password));
             if(user == null)
-                return Json(new {response = "failed"});
+                return Json(new {response = 0});
             Response.Cookies.Append("login", user.id.ToString());
-            return Json(new {response = "success"});
+            return Json(new {response = 1});
         }
 
         [HttpGet("logout")]

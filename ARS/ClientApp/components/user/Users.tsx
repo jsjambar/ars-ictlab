@@ -1,13 +1,14 @@
 import * as React from 'react';
 import * as immutable from 'immutable'
-import { RouteComponentProps } from 'react-router';
 import * as api from '../Api'
+import * as Authentication from '../Authentication'
+import { RouteComponentProps } from 'react-router';
 import { User, Error } from '../Model'
 import { UserComponent } from './User' 
 import { UserForm } from './UserForm'
-import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 
+// State of user component
 export type UsersState = {
     page:Page
     users:immutable.List<User>|"Loading...",
@@ -15,8 +16,7 @@ export type UsersState = {
     auth:Auth,
 }
 
-export type UsersData = {}
-
+// Type of Pages
 export type Page = UsersPage|AddUserPage|UserPage
 export type UsersPage = {name:"show"}
 export type AddUserPage = {name:"add"}
@@ -27,9 +27,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         super();
         this.state = { 
             errors:immutable.List<Error>(),
-            page:{
-                name:"show"
-            },
+            page:{name:"show"},
             users:"Loading...",
             auth:{
                 is_loggedin:false,
@@ -39,18 +37,21 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         };
     }
 
-    componentWillMount(){
+    // Check the authentication of the user when mounting and handle accordingly
+    componentWillMount():void{
         this.check_auth();
     }
 
-    check_auth(){
+    // Check the authentication of the user and handle accordingly
+    check_auth():void{
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}))
         .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
  
-    handle_auth(){
+    // Handle authentication of the user
+    handle_auth():void{
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
         :this.state.auth.permission == 1 ?
@@ -58,46 +59,51 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
         : this.handle_admin()
     }
 
-    handle_admin(){
+    // Handle authentication of admin
+    handle_admin():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         this.getUsers();
     }
 
-    set_error(error:Error){
+    // Set errors if they dont exist already
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
 
-    getUsers(){
+    // Request users from database
+    getUsers():void{
         api.get_users()
         .then(users => this.setState({users:users}))
-        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
+        .catch(e => this.set_error({num:12, msg:"Users not found."}))
     }
 
-    setUser(user:User){
+    // Add user to database
+    setUser(user:User):void{
         api.set_user(user)
         .then(_ => this.switchPage({name:"show"}))
         .then(_ => this.getUsers())
-        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
+        .catch(e => this.set_error({num:13, msg:"There was a problem adding the user."}))
     }
 
-    deleteUser(id:number){
+    // Remove user from database
+    deleteUser(id:number):void{
         api.delete_user(id)
         .then(_ => this.switchPage({name:"show"}))
         .then(_ => this.getUsers())
-        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
+        .catch(e => this.set_error({num:14, msg:"There was a problem removing the user."}))
     }
 
-    updateUser(u:User){
+    updateUser(u:User):void{
         api.update_user(u)
         .then(_ => this.switchPage({name:"show"}))
         .then(_ => this.getUsers())
-        .catch(e => this.set_error({num:12, msg:"Users Not Found"}))
+        .catch(e => this.set_error({num:12, msg:"There was a problem updating the user."}))
     }
 
-    switchPage(page:Page){
+    switchPage(page:Page):void{
         this.setState({...this.state, page:page})
     }
 
@@ -131,6 +137,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                             </div>
                             <div className="row body">
                                 {
+                                    // Show users
                                     this.state.users.map((u, k) => {
                                         return <div className="row">
                                             <strong className="col-xs-1 first">{u.id}</strong>
@@ -167,5 +174,4 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
             }
         </div>
     }
-
 }

@@ -6,18 +6,19 @@ import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
+import * as moment from 'moment';
 
 interface TicketState { 
-    created_at: Date|0,
-    description: String|"",
-    problem_id: Number|0,
-    classroom_id: Number|0,
-    user_id: Number|0,
-    location_id: Number|0,
-    problemOptions: immutable.List<Problem>|immutable.List<Problem>,
-    locationOptions: immutable.List<Location>|immutable.List<Location>,
-    classroomOptions: immutable.List<Classroom>|immutable.List<Classroom>,
-    solved: Boolean|false,
+    created_at: Date,
+    description: String,
+    problem_id: Number,
+    classroom_id: Number,
+    user_id: Number,
+    location_id: Number,
+    problemOptions: immutable.List<Problem>,
+    locationOptions: immutable.List<Location>,
+    classroomOptions: immutable.List<Classroom>,
+    solved: Boolean,
     auth:Auth,
     errors:immutable.List<Error>
 }
@@ -31,7 +32,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             classroom_id: 0,
             problem_id: 0,
             description: "",
-            created_at: new Date(),
+            created_at: moment().toDate(),
             user_id: 0,
             problemOptions: immutable.List<Problem>(),
             locationOptions: immutable.List<Location>(),
@@ -42,7 +43,6 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 user:null,
                 permission:0
             }
-            
         };
         this.handleChange = this.handleChange.bind(this);
         this.verifyTicket = this.verifyTicket.bind(this);
@@ -64,6 +64,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         }
     }
 
+    //Authentication check
     check_auth(){
         Authentication.check_auth()
         .then(r => { this.setState({...this.state, auth:r})})
@@ -71,6 +72,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
+    //Handle authentication, 0 = not authenticated, 1 = user, 2 = admin
     handle_auth(){
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
@@ -120,6 +122,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
             description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
         );
     }
+
     verifyTicket(){
         if(this.fieldCheck){
             this.submitTicket();
@@ -129,7 +132,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     submitTicket() {
         const values = this.state;
         api.createTicket(new Object({ 
-            created_at: values.created_at, 
+            created_at: moment(values.created_at).add(2, 'hours'), 
             description: values.description,
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 

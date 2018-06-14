@@ -1,18 +1,28 @@
+// Imports
 import * as React from 'react';
-import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
-import * as api from '../Api'
-import { Reservation, Error } from '../Model'
-import { ReservationComponent } from './Reservation'
+import { Reservation, Error } from '../Model';
+import { ReservationComponent } from './Reservation';
+import * as api from '../Api';
 
-import * as Authentication from '../Authentication'
-import { Auth } from '../Authentication'
+// Helpers
+import * as immutable from 'immutable';
 
-export type AdminReservationsState = { reservations: immutable.List<Reservation> | "Loading...", auth:Auth, errors:immutable.List<Error> }
+// Authentication
+import * as Authentication from '../Authentication';
+import { Auth } from '../Authentication';
+
+// State that gets used
+export type AdminReservationsState = {
+    reservations: immutable.List<Reservation> | "Loading...",
+    auth: Auth,
+    errors: immutable.List<Error>
+}
 
 export class AdminReservations extends React.Component<RouteComponentProps<{}>, AdminReservationsState> {
     constructor() {
         super();
+        // Default value
         this.state = { 
             errors:immutable.List<Error>(),
             reservations: "Loading...",
@@ -24,29 +34,33 @@ export class AdminReservations extends React.Component<RouteComponentProps<{}>, 
         };
     }
 
-    componentWillMount() {
+    // Begin authentication and getting the startup data
+    componentWillMount():void{
         this.check_auth()
     }
 
-    set_error(error:Error){
-        const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
-        maybe_error.count() == 0 ?
-            this.setState({...this.state, errors:this.state.errors.push(error)})
-        : null
-    }
-
-    check_auth(){
+    check_auth():void{
         Authentication.check_auth()
         .then(r => this.setState({...this.state, auth:r}, () => this.getReservations()))
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
+    // End authentication and getting the startup data
 
-    getReservations() {
-        api.get_reservations()
-        .then(reservations => this.setState({ reservations: reservations }))
-        .catch(e => this.set_error({num:10, msg:"Reservations Not Found"}))
+    // Sets the error to be shown
+    set_error(error: Error):void{
+        const maybe_error: immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
+        maybe_error.count() == 0 ?
+            this.setState({ ...this.state, errors: this.state.errors.push(error) })
+            : null
     }
-    
+
+    // Start getting the Reservations that needs to be shown
+    getReservations():void{
+        api.get_reservations()
+            .then(reservations => this.setState({ reservations: reservations }))
+            .catch(e => this.set_error({ num: 10, msg: "Reservations Not Found" }))
+    }
+
     public render() {
         return <div className="column reservations">
             {
@@ -69,7 +83,7 @@ export class AdminReservations extends React.Component<RouteComponentProps<{}>, 
                             <div className="row tbl">
                                 <div className="row head">
                                     <strong className="col-xs-1 first">#</strong>
-                                    <strong className="col-xs-2">Classroom Id</strong>
+                                    <strong className="col-xs-2">Classroom</strong>
                                     <strong className="col-xs-3 col-sm-2">Date of reservation</strong>
                                     <strong className="col-xs-2">Start Time</strong>
                                     <strong className="col-xs-2">End Time</strong>
