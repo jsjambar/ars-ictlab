@@ -130,7 +130,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         if (values.room != 0 && values.start != 0 && values.end != 0) {
             this.updateReservation();
         } else {
-            this.set_error({num:7, msg:"Please fill in the fields"});
+            this.set_error({num:7, msg: "Please fill in the fields" });
         }
     }
 
@@ -149,11 +149,10 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
             })
         );
         
-        var pass = true;
         var self = this;
         res.then(function(response){
             if(response.error == 1){
-                pass = false;
+                self.set_error({num:6, msg:"Timeslot already taken"});
             } else {
                 if(self.state.auth.permission == 2){
                     window.location.replace('/admin/reservations/overview')
@@ -162,10 +161,6 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
                 }
             }
         })
-
-        if(!pass){
-            this.set_error({num:6, msg:"Timeslot already taken"});
-        }
     }
 
     // Convert to UTC date
