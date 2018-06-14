@@ -2,20 +2,25 @@ import * as React from 'react';
 import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api'
-import { User, Error } from '../Model'
-import { UserComponent } from './User'
-import { Calendar } from '../Calendar'
+import { Error, ClassroomWithEvents } from '../Model'
+import * as moment from 'moment';
 
+// Schedule
+import BigCalendar from 'react-big-calendar';
+import "react-big-calendar/lib/css/react-big-calendar.css"
+
+// Authentication
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication'
 
-export type NavMenuState = {auth:Auth, errors:immutable.List<Error>}
-
-export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuState> {
+BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+export type ScheduleState = {auth:Auth, errors:immutable.List<Error>, userReservations: Array<ClassroomWithEvents>}
+export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleState> {
 
     constructor() {
         super();
         this.state = {
+            userReservations: Array<ClassroomWithEvents>(),
             errors:immutable.List<Error>(),
             auth:{
                 is_loggedin:false,
@@ -42,7 +47,28 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
         :this.state.auth.permission == 2 ?
             this.handle_admin()
         :
-        null
+        this.getUserEvents(this.state.auth.user.id);
+    }
+
+    getUserEvents(userid) {
+        api.getUserEvents(userid)
+            .then(events => this.setUserReservations(events))
+            .catch(e => this.set_error({num:15, msg: "User Events Not Found."}))
+    }
+
+    setUserReservations(events){
+        var arrReservations = [];
+        events.forEach(element => {
+            arrReservations.push(
+                {
+                    title: element.classroom + " at " + element.title,
+                    start: new Date(element.start),
+                    end: new Date(element.end)
+                }
+            )
+        });
+
+        this.setState({ userReservations: arrReservations });
     }
 
     handle_user(){
@@ -75,14 +101,14 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, NavMenuSt
                     })
                 }
             </div>
-            {
-                this.state.auth.user ?
-                <div>
-                    <Calendar userid={this.state.auth.user.id}/>
-                </div>
-                :
-                null
-            }
+            <BigCalendar 
+                views={Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])} 
+                events={this.state.userReservations} 
+                timeslots={3}
+                step={60}
+                defaultDate={new Date()}
+                defaultView="month"
+                showMultiDayTimes />
         </div>
     }
 }
