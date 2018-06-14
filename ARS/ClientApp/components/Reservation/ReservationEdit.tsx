@@ -71,9 +71,7 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
     handle_auth():void{
         this.state.auth.permission == 0 ?
             window.location.replace('/')
-            : this.state.auth.permission == 2 ?
-                window.location.replace('/admin/classrooms/overview')
-                : this.handle_user()
+        : this.handle_user()
     }
 
     handle_user():void{
@@ -152,11 +150,16 @@ export class ReservationEdit extends React.Component<RouteComponentProps<{}>, Re
         );
         
         var pass = true;
+        var self = this;
         res.then(function(response){
             if(response.error == 1){
                 pass = false;
             } else {
-                window.location.replace('/reservation/overview');
+                if(self.state.auth.permission == 2){
+                    window.location.replace('/admin/reservations/overview')
+                } else {
+                    window.location.replace('/reservation/overview');
+                }
             }
         })
 
