@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ARS.Models;
+using ARS.Helpers;
 
 namespace ARS.Controllers
 {
@@ -61,6 +62,18 @@ namespace ARS.Controllers
             {
                 return BadRequest();
             }
+
+            //retrieve classroom and user for ticket
+            Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == ticket.classroom_id);
+            User user  = this.Context.Users.FirstOrDefault(c => c.id == ticket.user_id);
+
+            //Confirmation mail of reservation
+            string subject = "Ticket confirmation";
+            string body = "You submited a ticket for " + classroom.name + " on ";
+            body += ticket.created_at.Day + "-" + ticket.created_at.Month + "-" + ticket.created_at.Year;
+            body += "\nDescription: " + ticket.description;
+            //Send mail
+            Helper.NotificationMail(user, subject, body);
 
             this.Context.Tickets.Add(ticket);
             this.Context.SaveChanges();
