@@ -113,8 +113,8 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                 <h1>Users</h1>
                 <div>
                     {
-                        this.state.errors.map(e => {
-                        return <div className="alert alert-danger" role="alert">
+                        this.state.errors.map((e,k) => {
+                        return <div key={k} className="alert alert-danger" role="alert">
                                 <p>{e.msg}</p>
                         </div>
                         })

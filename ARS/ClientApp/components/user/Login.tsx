@@ -81,8 +81,8 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
     // Login user
     loginUser():void{
         api.login_user(this.state)
+        .then((r) => r.response == 0 ? this.set_error({num:4, msg:"Incorrect Login Data."}) : this.setState({...this.state, errors:immutable.List<Error>()}))
         .then(() => this.check_auth())
-        .then(() => this.state.auth.permission == 0 ? this.set_error({num:4, msg:"Incorrect Login Data."}) : this.setState({...this.state, errors:immutable.List<Error>()}))
         .catch(e => this.set_error({num:2, msg:e}))
     }
 
@@ -100,8 +100,8 @@ export class Login extends React.Component<RouteComponentProps<{}>, LoginState> 
             <div className="col">
                 {
                     // Show errors
-                    this.state.errors.map(e => {
-                       return <div className="alert alert-danger" role="alert">
+                    this.state.errors.map((e,k) => {
+                       return <div key={k} className="alert alert-danger" role="alert">
                             <p>{e.msg}</p>
                        </div>
                     })

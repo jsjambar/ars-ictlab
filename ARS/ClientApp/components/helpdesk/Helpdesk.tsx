@@ -1,14 +1,19 @@
+//Imports
 import * as React from 'react';
-import * as immutable from 'immutable';
 import { RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Ticket, Error } from '../Model'
 import * as api from '../Api';
 import { TicketComponent } from './Ticket';
-import { Link } from 'react-router-dom';
+
+//Helpers
+import * as immutable from 'immutable';
+
+//Authentication
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
-export type Error = {num:number, msg:string}
+//State of Helpdesk component
 export type TicketState = { UserTickets:immutable.List<Ticket>, SystemTickets: immutable.List<Ticket>, auth:Auth, errors:immutable.List<Error>}
 
 export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketState> {
@@ -26,12 +31,13 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         };
     }
 
-    componentWillMount(){
+    // Check the authentication of the user when mounting and handle accordingly
+    componentWillMount():void{
         this.check_auth()
     }
 
     //push error to immutable.List<Error>()
-    set_error(error:Error){
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
@@ -39,7 +45,7 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
     }
 
     //Authentication check
-    check_auth(){
+    check_auth():void{
         Authentication.check_auth()
         .then(r => {this.setState({...this.state, auth:r})})
         .then(() => this.handle_auth())
@@ -47,18 +53,19 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
     }
 
     //Handle authentication, 0 = not authenticated, 1 = user, 2 = admin
-    handle_auth(){
+    handle_auth():void{
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
         : this.handle_authenticated()
     }
 
-    handle_authenticated(){
+    //Handle authenticated users
+    handle_authenticated():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         this.getTickets()
     }
     
-    getTickets(){
+    getTickets():void{
         //if visitor is logged in and role is user, get his tickets.
         if(this.state.auth.is_loggedin && this.state.auth.permission == 1)
         {
@@ -80,14 +87,14 @@ export class Helpdesk extends React.Component<RouteComponentProps<{}>, TicketSta
         }
     }
 
-    StudentTickets(){
+    StudentTickets():JSX.Element{
         return <div> 
                     <div className="page-header row">
                         <h1>Helpdesk overview : Student tickets</h1>
                         <div>
                             {
-                                this.state.errors.map(e => {
-                                return <div className="alert alert-danger" role="alert">
+                                this.state.errors.map((e,k) => {
+                                return <div key={k} className="alert alert-danger" role="alert">
                                         <p>{e.msg}</p>
                                 </div>
                                 })
