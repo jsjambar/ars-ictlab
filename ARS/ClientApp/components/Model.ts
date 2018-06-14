@@ -58,6 +58,7 @@ export type Ticket = {
 }
 
 export type ClassroomWithEvents = {
+    title: String,
     start: Date,
     end: Date
 }

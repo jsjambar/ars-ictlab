@@ -1,8 +1,7 @@
 # Base setup
 - npm install
-- npm install immutable
 
-<b>Note: if you have an old version of the application, do the following:</b>
+<b>Note: if you have an old version of the application, do the following as well:</b>
 
 - dotnet restore
 - dotnet build
