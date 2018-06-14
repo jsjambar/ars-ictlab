@@ -188,7 +188,7 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                     </div>    
                     <br />
                     <div className="row">
-                        <button className="btn btn-primary" type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
+                        <button className="btn btn-primary" type="button" name="create_classroom" onClick={this.verifyClassroom}>Edit classroom</button>
                     </div>
                 </form>
 
