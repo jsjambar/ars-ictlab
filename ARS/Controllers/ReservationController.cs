@@ -61,10 +61,10 @@ namespace ARS.Controllers
             Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == reservation.classroom_id);
             User user  = this.Context.Users.FirstOrDefault(c => c.id == reservation.user_id);
 
-            /* does not function in terms of authentication for some reason.
+            //does not function in terms of authentication for some reason.
             MailMessage mail = new MailMessage();
-            var from = new MailAddress("hrrreservationsystem@gmail.com", "HRO Info");
-            var to = new MailAddress("0907663@hr.nl", user.first_name); // even vervangen met huidige gebruiker
+            var from = new MailAddress("hrreservationsystem@gmail.com", "HRO Info");
+            var to = new MailAddress(user.username, user.first_name); // even vervangen met huidige gebruiker
             var fromPassword = "geheim123!";
             string subject = "Reservatie gemaakt op HRO!";
             string body = "U heeft lokaal " + classroom.name + " gereserveerd op ";
@@ -88,7 +88,7 @@ namespace ARS.Controllers
             }){
                 smtp.Send(message);
             }
-            */
+            
 
             reservation.user_id = reservation.user_id;
             reservation.date_of_reservation = new DateTime(reservation.date_of_reservation.Year, reservation.date_of_reservation.Month, reservation.date_of_reservation.Day, 0, 0, 0);
