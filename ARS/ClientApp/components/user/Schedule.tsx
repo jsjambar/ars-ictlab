@@ -101,8 +101,8 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
             <div>
                 {
                     // Show errors
-                    this.state.errors.map(e => {
-                       return <div className="alert alert-danger" role="alert">
+                    this.state.errors.map((e,k) => {
+                       return <div key={k} className="alert alert-danger" role="alert">
                             <p>{e.msg}</p>
                        </div>
                     })

@@ -75,8 +75,8 @@ export class ClassroomQR extends React.Component<RouteComponentProps<{}>, Classr
             <div className="page-header">
                 <div>
                     {
-                        this.state.errors.map(e => {
-                        return <div className="alert alert-danger" role="alert">
+                        this.state.errors.map((e,k) => {
+                        return <div key={k} className="alert alert-danger" role="alert">
                                 <p>{e.msg}</p>
                         </div>
                         })
