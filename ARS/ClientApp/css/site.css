@@ -548,3 +548,12 @@ h4 a:focus .anchor-icon {
 .marginLeftBtn {
     margin-left: 20px
 }
+
+/*AddUser*/
+
+.addUser select {
+    height: 25px !important;
+    width: 250px !important;
+    margin-bottom: 5px;
+    padding: 0 10px;
+}
