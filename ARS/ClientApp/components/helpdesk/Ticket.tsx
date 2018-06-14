@@ -51,7 +51,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
     }
 
     componentWillMount(){
-        if(this.props.ticket.user_id != null){
+        if(this.props.ticket.user_id != null ){
             this.getUser();
         }
         this.getProblem();
@@ -75,6 +75,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         }
     }
 
+    //get problem for the overview
     getProblem(){
         api.getProblem(this.props.ticket.problem_id)
         .then(problem => {
@@ -83,15 +84,23 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .catch(e => this.set_error({num:13, msg:"Problem Not Found"}))
     }
 
+    //get classroom for the overview
     getClassroom(){
         api.getClassroom(this.props.ticket.classroom_id)
         .then(classroom => {
               this.setState({classroom:classroom}),
               this.getLocation(classroom.location_id)
-        })
-        .catch(e => this.set_error({num:9, msg:"Classroom Not Found"}))
+        }).catch(e => {
+            var tempClassroom = this.state.classroom;
+            tempClassroom.name = "Not Found";
+            var tempLocation = this.state.location;
+            tempLocation.name = "Not Found";
+            this.setState({ classroom: tempClassroom, location:tempLocation })
+            this.set_error({num:9, msg:"Classroom Not Found"}
+        )})
     }
 
+    //get location for the overview
     getLocation(location_id: Number){
         api.getLocation(location_id)
         .then(location => {
@@ -102,6 +111,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
 
     delete_Ticket(){
         var wantsToDelete = window.confirm("Are you sure you want to delete this Ticket?");
+        //Delete ticket if confirmed
         if(wantsToDelete){
             var ticket_id = this;
             api.deleteTicket(ticket_id)
@@ -115,38 +125,6 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         }
     }
 
-    usershow(g, solved){
-        return <div className="row">
-            <div className="col-xs-2 hideMobile hideTablet first">{this.state.user.username}</div>
-            <div className="col-xs-2 hideMobile hideTablet">{this.state.location.name}</div>
-            <div className="col-xs-1 hideMobile hideTablet">{this.state.classroom.name}</div>
-            <div className="col-xs-2 col-md-1">{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</div>
-            <div className="col-xs-2 col-md-1">{g.getHours() + ":" + (g.getMinutes()<10? '0' : '') + g.getMinutes()}</div>
-            <div className="col-xs-3 col-md-1">{this.state.problem.name}</div>
-            <div className="col-xs-2 col-md-1">{solved}</div>
-            <div className="col-xs-3 last">
-                <Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link>
-                <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-danger btn-last">Delete</button>
-            </div>
-        </div>
-    }
-
-    systemshow(g, solved){
-        return <div className="row">
-            <strong className="col-xs-2 hideMobile hideTablet first">{this.props.ticket.id}</strong>
-            <div className="col-xs-2 hideMobile hideTablet">{this.state.location.name}</div>
-            <div className="col-xs-2 hideMobile hideTablet">{this.state.classroom.name}</div>
-            <div className="col-xs-2 col-md-1">{g.getDay() + "-" + g.getMonth() + "-" + g.getFullYear()}</div>
-            <div className="col-xs-2 col-md-1">{g.getHours() + ":" + (g.getMinutes()<10? '0' : '') + g.getMinutes()}</div>
-            <div className="col-xs-3 col-md-1">{this.state.problem.name}</div>
-            <div className="col-xs-2 col-md-1">{solved}</div>
-            <div className="col-xs-3 last">
-                <Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link>
-                <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-primary btn-last">Delete</button>
-            </div>
-        </div>
-    }
-
     public render() {
         var g = new Date(this.props.ticket.created_at);
 
@@ -156,13 +134,24 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         }else{
             solved = "Not solved"
         }
-
-        if(this.props.type == "user"){
-            return this.usershow(g, solved)
+        
+        return <div className="row">
+        {
+            this.props.type == "user" ?
+            <div className="col-xs-2 hideMobile hideTablet first">{this.state.user.username}</div>
+            :
+            <strong className="col-xs-2 hideMobile hideTablet first">{this.props.ticket.id}</strong>
         }
-        else{
-            return this.systemshow(g, solved)
-        }
-
+            <div className="col-xs-2 hideMobile hideTablet">{this.state.location.name}</div>
+            <div className="col-xs-1 hideMobile hideTablet">{this.state.classroom.name}</div>
+            <div className="col-xs-2 col-md-1">{g.getDate() + "-" + (g.getMonth() + 1) + "-" + g.getFullYear()}</div>
+            <div className="col-xs-2 col-md-1">{g.getHours() + ":" + (g.getMinutes()<10? '0' : '') + g.getMinutes()}</div>
+            <div className="col-xs-3 col-md-1">{this.state.problem.name}</div>
+            <div className="col-xs-2 col-md-1">{solved}</div>
+            <div className="col-xs-3 last">
+                <Link className="btn btn-primary" to={`/Helpdesk/Tickets/${this.props.ticket.id}/edit`}>Edit</Link>
+                <button onClick={this.delete_Ticket.bind(this.props.ticket.id)} className="btn btn-danger btn-last">Delete</button>
+            </div>
+        </div>
     }
 }

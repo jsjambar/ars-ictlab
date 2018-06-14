@@ -3,7 +3,10 @@ import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
 import { User } from '../Model'
 
+// Props of userform component
 export type UserFormProps = {setUser:(u:User) => void}
+
+// State of userform component
 export type UserFormState = {user:User}
 
 export class UserForm extends React.Component<UserFormProps, UserFormState> {
@@ -21,6 +24,7 @@ export class UserForm extends React.Component<UserFormProps, UserFormState> {
         }
     }
 
+    // Verify form
     verifyForm():boolean{
         const u = this.state.user
         return u.username == "" ||

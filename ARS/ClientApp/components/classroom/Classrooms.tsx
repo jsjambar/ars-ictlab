@@ -352,6 +352,9 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
                     <br />
 
                     <button type="button" className="btn btn-primary" name="make_reservation" onClick={this.verifyReservation}>Make a reservation</button>
+
+                    <br />
+                    <br />
                 </form>
                 { 
                         this.state.classroom != 0 ?

@@ -15,13 +15,11 @@ import { ClassroomEdit } from './components/classroom/ClassroomEdit';
 import { ClassroomOverview } from './components/classroom/ClassroomOverview';
 import { ReservationForClassroom } from './components/Reservation/ReservationForClassroom';
 import { ClassroomQR } from './components/classroom/ClassroomQR';
-import { Register } from './components/user/Register';
 import { AdminReservations } from './components/Reservation/ReservationsOverview';
 
 export const routes = <Layout>
     <Route exact path='/' component={ Login } />
     <Route path='/login' component={ Login } />
-    <Route path='/Register' component={ Register } />
     <Route path='/home' component={ Schedule } />
     <Route path='/classrooms' component={ Classrooms } />
     <Route path='/admin/users' component={ Users } />
