@@ -71,7 +71,8 @@ export class Schedule extends React.Component<RouteComponentProps<{}>, ScheduleS
             )
         });
 
-        this.setState({ userReservations: arrReservations });
+        this.setState({ userReservations: arrReservations })
+
     }
 
     // Handle authentication of student

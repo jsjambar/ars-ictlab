@@ -111,13 +111,14 @@ namespace ARS.Controllers
             Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == id);
             List<Reservation> reservations = this.Context.Reservations.Where(r => r.classroom_id == id).ToList();
             List<object> events = new List<object>();
+            
 
             reservations.ForEach(r => {
                 events.Add(new {
                     classroom = classroom,
                     title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
-                    start = r.date_of_reservation.ToString(),
-                    end = r.date_of_reservation.ToString()
+                    start = r.date_of_reservation.ToString("MM/dd/yyyy HH:mm:ss"),
+                    end = r.date_of_reservation.ToString("MM/dd/yyyy HH:mm:ss")
                 });
             });
 
@@ -136,8 +137,8 @@ namespace ARS.Controllers
                     events.Add(new {
                         classroom = classroom.name,
                         title = $"{r.start_time.Hour}:00 - {r.end_time.Hour}:00",
-                        start = r.date_of_reservation.ToString(),
-                        end = r.date_of_reservation.ToString()
+                        start = r.date_of_reservation.ToString("MM/dd/yyyy HH:mm:ss"),
+                        end = r.date_of_reservation.ToString("MM/dd/yyyy HH:mm:ss")
                     });
                 }
             });
