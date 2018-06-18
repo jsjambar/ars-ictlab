@@ -1,12 +1,16 @@
+//Imports
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import { Ticket, Problem, User, Classroom, Location, Error } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
+
+//Authentication
 import * as Authentication from '../Authentication'
 import { Auth } from '../Authentication';
 
+//State of Ticket edit component
 interface TicketEditState {
     id: Number, 
     created_at: Date,
@@ -49,7 +53,9 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         this.verifyTicket = this.verifyTicket.bind(this);
     }
 
-    componentWillMount(){
+    // Check the authentication of the user when mounting and check if 
+    //the ticket exist and user is permitted to see it.
+    componentWillMount():void{
         this.check_auth()
         const { match: { params } } = this.props
         var ticket_id = Object.keys(params).map(function(key){return params[key]})[0]
@@ -59,33 +65,38 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         .catch(e => this.set_error({num:20, msg:"Something went wrong with the ticket."}))
     }
 
-    check_ticket(ticket){
+    //Check if user is authenticated for ticket
+    check_ticket(ticket):void{
         if(ticket.user_id != this.state.auth.user.id){
             this.state.auth.permission != 2 ? window.location.replace('helpdesk/overview'):null
         }
     }
 
-    set_error(error:Error){
+    //push error to immutable.List<Error>()
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
 
-    check_auth(){
+    // Check the authentication of the user and handle accordingly
+    check_auth():void{
         Authentication.check_auth()
         .then(r => {this.setState({...this.state, auth:r})})
         .then(() => this.handle_auth())
         .catch(e => this.set_error({num:1, msg:"Authentication Failed"}))
     }
 
-    handle_auth(){
+    //Handle authentication of user
+    handle_auth():void{
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
         : this.handle_authenticated()
     }
 
-    handle_authenticated(){
+    // Handle authentication of the user
+    handle_authenticated():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         const { match: { params } } = this.props;
         var ticket_id = Object.keys(params).map(function(key){return params[key]})[0];
@@ -94,7 +105,8 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
         this.getTicket(ticket_id);
     }
 
-    handleChange(event){
+    //Handle change event of dropdown/checkbox boxes in the form
+    handleChange(event):void{
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
@@ -107,28 +119,28 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
     }
 
     //Get problem for the form
-    getProblems() {
+    getProblems():void{
         api.getProblems()
         .then(problemOptions => this.setState({problemOptions:problemOptions}))
         .catch(e => this.set_error({num:13, msg:"Problems Not Found"}))
     }
 
     //Get locations for the form
-    getLocations() {
+    getLocations():void{
         api.getLocations()
         .then(locationOptions => this.setState({locationOptions:locationOptions}))
         .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
     //Get classrooms of selected location
-    getLocClassrooms(location_id) {
+    getLocClassrooms(location_id):void{
         api.getLocationClassrooms(location_id)
         .then(classroomOptions => this.setState({classroomOptions:classroomOptions}))
         .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
     //Get classroom
-    getClassroom(classroomId) {
+    getClassroom(classroomId):void{
         api.getClassroom(classroomId)
         .then(classroom => this.setState(function(prevState, props){
             this.setState({
@@ -140,21 +152,21 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
     }
 
     //Fill dropdown (problems, locations, classrooms) with options 
-    populateOptions(options) {
+    populateOptions(options):HTMLOptionElement{
         return options.map((options, index) => (
             <option key={index} value={options.id}>{options.name}</option>
         ));
     }
 
     //Check if all field are filled in
-    fieldCheck(){
+    fieldCheck():boolean{
         const { description, location_id, classroom_id, problem_id } = this.state;
         return(
             description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
         );
     }
 
-    verifyTicket(){
+    verifyTicket():void{
         const values = this.state;
         if(this.fieldCheck){
             this.submitTicketChanges();
@@ -203,8 +215,8 @@ export class TicketEdit extends React.Component<RouteComponentProps<{}>, TicketE
                         </div>
                         <div>
                             {
-                                this.state.errors.map(e => {
-                                return <div className="alert alert-danger" role="alert">
+                                this.state.errors.map((e,k) => {
+                                return <div key={k} className="alert alert-danger" role="alert">
                                         <p>{e.msg}</p>
                                 </div>
                                 })

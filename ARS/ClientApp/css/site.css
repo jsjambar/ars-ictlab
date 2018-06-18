@@ -527,3 +527,33 @@ h4 a:focus .anchor-icon {
         width: 100%;
     }
 }
+
+/* Nav menu */
+.adminHeader {
+    color: #9d9d9d;
+    font-size: 20px;
+    list-style-type: none;
+    padding-left: 15px;
+    margin-top: 20px;
+}
+
+.nameHeader{
+    color: #9d9d9d;
+    font-size: 20px!important;
+    list-style-type: none;
+    padding-left: 15px;
+    margin-top: 20px;
+}
+
+.marginLeftBtn {
+    margin-left: 20px
+}
+
+/*AddUser*/
+
+.addUser select {
+    height: 25px !important;
+    width: 250px !important;
+    margin-bottom: 5px;
+    padding: 0 10px;
+}

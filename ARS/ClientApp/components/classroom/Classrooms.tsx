@@ -11,11 +11,11 @@ import * as helper from '../Datehelper';
 
 // Calendar
 import BigCalendar from 'react-big-calendar';
+import "react-big-calendar/lib/css/react-big-calendar.css"
 
 // Datepicker
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import "react-big-calendar/lib/css/react-big-calendar.css"
 
 // Authentication
 import * as Authentication from '../Authentication'
@@ -304,8 +304,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
             </div>
             <div>
                 {
-                    this.state.errors.map(e => {
-                       return <div className="alert alert-danger" role="alert">
+                    this.state.errors.map((e,k) => {
+                       return <div key={k} className="alert alert-danger" role="alert">
                             <p>{e.msg}</p>
                        </div>
                     })

@@ -1,3 +1,4 @@
+//Imports
 import * as React from 'react';
 import * as immutable from 'immutable'
 import { RouteComponentProps } from 'react-router';
@@ -5,9 +6,10 @@ import { Ticket, User, Classroom, Problem, Location, Error } from '../Model';
 import * as api from '../Api';
 import { Link } from 'react-router-dom'
 
-export type Error = {num:number, msg:string}
+//Props of Ticket component
 export type TicketComponentProps = {ticket:Ticket, key:number, type:"user"|"system"}
 
+//State of Ticket component
 interface TicketState{
     user: User,
     classroom: Classroom,
@@ -50,7 +52,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         };
     }
 
-    componentWillMount(){
+    componentWillMount():void{
         if(this.props.ticket.user_id != null ){
             this.getUser();
         }
@@ -58,14 +60,15 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         this.getClassroom();
     }
 
-    set_error(error:Error){
+    //push error to immutable.List<Error>()
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
 
-    getUser(){
+    getUser():void{
         if(this.props.ticket.user_id != 0){
             api.getUser(this.props.ticket.user_id)
             .then(user => {
@@ -76,7 +79,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
     }
 
     //get problem for the overview
-    getProblem(){
+    getProblem():void{
         api.getProblem(this.props.ticket.problem_id)
         .then(problem => {
               this.setState({problem:problem})
@@ -85,7 +88,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
     }
 
     //get classroom for the overview
-    getClassroom(){
+    getClassroom():void{
         api.getClassroom(this.props.ticket.classroom_id)
         .then(classroom => {
               this.setState({classroom:classroom}),
@@ -101,7 +104,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
     }
 
     //get location for the overview
-    getLocation(location_id: Number){
+    getLocation(location_id: Number):void{
         api.getLocation(location_id)
         .then(location => {
               this.setState({location:location})
@@ -109,7 +112,7 @@ export class TicketComponent extends React.Component<TicketComponentProps, Ticke
         .catch(e => this.set_error({num:8, msg:"Location Not Found"}))
     }
 
-    delete_Ticket(){
+    delete_Ticket():void{
         var wantsToDelete = window.confirm("Are you sure you want to delete this Ticket?");
         //Delete ticket if confirmed
         if(wantsToDelete){

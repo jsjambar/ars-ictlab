@@ -151,8 +151,8 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
             <div>
                 <div>
                     {
-                        this.state.errors.map(e => {
-                        return <div className="alert alert-danger" role="alert">
+                        this.state.errors.map((e,k) => {
+                        return <div key={k} className="alert alert-danger" role="alert">
                                 <p>{e.msg}</p>
                         </div>
                         })
@@ -188,7 +188,7 @@ export class ClassroomEdit extends React.Component<RouteComponentProps<{}>, Clas
                     </div>    
                     <br />
                     <div className="row">
-                        <button className="btn btn-primary" type="button" name="create_classroom" onClick={this.verifyClassroom}>Create classroom</button>
+                        <button className="btn btn-primary" type="button" name="create_classroom" onClick={this.verifyClassroom}>Edit classroom</button>
                     </div>
                 </form>
 

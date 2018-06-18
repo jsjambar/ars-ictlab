@@ -1,13 +1,18 @@
+//Imports
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import * as api from '../Api';
 import { Ticket, Problem, User, Classroom, Location, Error } from '../Model';
 import * as immutable from 'immutable';
 import { Link } from 'react-router-dom';
-import * as Authentication from '../Authentication'
-import { Auth } from '../Authentication';
 import * as moment from 'moment';
 
+//Authentication
+import * as Authentication from '../Authentication'
+import { Auth } from '../Authentication';
+
+
+//State of Ticket form component
 interface TicketState { 
     created_at: Date,
     description: String,
@@ -48,11 +53,13 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
         this.verifyTicket = this.verifyTicket.bind(this);
     }
 
-    componentWillMount(){
+     // Check the authentication of the user when mounting and handle accordingly
+    componentWillMount():void{
         this.check_auth();
     }
 
-    handleChange(event){
+    //Handle change event of dropdown boxes in the form
+    handleChange(event):void{
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -65,7 +72,7 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     }
 
     //Authentication check
-    check_auth(){
+    check_auth():void{
         Authentication.check_auth()
         .then(r => { this.setState({...this.state, auth:r})})
         .then(() => this.handle_auth())
@@ -73,63 +80,72 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     }
 
     //Handle authentication, 0 = not authenticated, 1 = user, 2 = admin
-    handle_auth(){
+    handle_auth():void{
         this.state.auth.permission == 0 ? 
             window.location.replace('/')
         : this.handle_authenticated()
     }
 
-    handle_authenticated(){
+    //Handle authenticated users
+    handle_authenticated():void{
         this.setState({...this.state, errors:immutable.List<Error>()})
         this.getProblems();
         this.getLocations();
     }
 
-    set_error(error:Error){
+    // Set errors if they dont exist already
+    set_error(error:Error):void{
         const maybe_error:immutable.List<Error> = this.state.errors.filter(e => e.num == error.num).toList()
         maybe_error.count() == 0 ?
             this.setState({...this.state, errors:this.state.errors.push(error)})
         : null
     }
 
-    getProblems(){
+    //Get problems for the form  
+    getProblems():void{
         api.getProblems()
         .then(problemOptions => this.setState({problemOptions:problemOptions}))
         .catch(e => this.set_error({num:13, msg:"Problems Not Found"}))
     }
 
-    getLocations(){
+    //Get locations for the form
+    getLocations():void{
         api.getLocations()
         .then(locationOptions => this.setState({locationOptions:locationOptions}))
         .catch(e => this.set_error({num:8, msg:"Locations Not Found"}))
     }
 
-    getLocClassrooms(location_id){
+    //Get classrooms of selected location for the form
+    getLocClassrooms(location_id):void{
         api.getLocationClassrooms(location_id)
         .then(classroomOptions => this.setState({classroomOptions:classroomOptions}))
         .catch(e => this.set_error({num:9, msg:"Classrooms Not Found"}))
     }
 
-    populateOptions(options) {
+    //Populate the dropdown boxes of the form
+    populateOptions(options):HTMLOptionElement{
         return options.map((options, index) => (
           <option key={index} value={options.id}>{options.name}</option>
         ));
       }
 
-    fieldCheck(){
+    //Check if all fields in form is filled in
+    fieldCheck():boolean{
         const { description, location_id, classroom_id, problem_id } = this.state;
         return(
             description.length > 0 && location_id != 0 && classroom_id != 0 && problem_id != 0
         );
     }
 
-    verifyTicket(){
+    //Submit ticket if fieldcheck condition is met
+    verifyTicket():void{
         if(this.fieldCheck){
             this.submitTicket();
         }
     }
 
-    submitTicket() {
+    //Submit ticket
+    submitTicket():void{
         const values = this.state;
         api.createTicket(new Object({ 
             created_at: moment(values.created_at).add(2, 'hours'), 
@@ -151,8 +167,8 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
                 </div>
                 <div>
                     {
-                        this.state.errors.map(e => {
-                        return <div className="alert alert-danger" role="alert">
+                        this.state.errors.map((e,k) => {
+                        return <div key={k} className="alert alert-danger" role="alert">
                                 <p>{e.msg}</p>
                         </div>
                         })
