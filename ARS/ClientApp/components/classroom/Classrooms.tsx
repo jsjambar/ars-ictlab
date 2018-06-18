@@ -254,8 +254,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
 
     // Start the rendering methods
     locationList() {
-        const listItems = this.state.locations.map((location) =>
-            <option value={location.id}>
+        const listItems = this.state.locations.map((location, index) =>
+            <option key={index} value={location.id}>
                 {location.name}
             </option>
         );
@@ -268,8 +268,8 @@ export class Classrooms extends React.Component<RouteComponentProps<{}>, Schedul
     }
 
     classroomList() {
-        const listItems = this.state.available_classrooms.map((classroom) =>
-            <option value={classroom.id}>
+        const listItems = this.state.available_classrooms.map((classroom, index) =>
+            <option key={index} value={classroom.id}>
                 {classroom.name}
             </option>
         );

@@ -25,7 +25,7 @@ namespace ARS.Controllers
                 this.Context.Users.Add(new User
                 {
                     first_name = "Global",
-                    last_name = "Admin",
+                    last_name = "User",
                     username = "123@hr.nl",
                     password = "tset:HawaianJase",
                     role_id = 1
@@ -34,7 +34,7 @@ namespace ARS.Controllers
                 this.Context.Users.Add(new User
                 {
                     first_name = "Global",
-                    last_name = "User",
+                    last_name = "Admin",
                     username = "12345@hr.nl",
                     password = "tset:HawaianJase",
                     role_id = 2
@@ -95,6 +95,9 @@ namespace ARS.Controllers
             return new ObjectResult(item);
         }
 
+        [HttpGet("finduser/{username}")]
+        public User GetByUsername(string username) => this.Context.Users.FirstOrDefault(u => u.username == username);
+
         [HttpPut("{id}")]
         public IActionResult Update(long id, [FromBody] User user)
         {
@@ -134,6 +137,9 @@ namespace ARS.Controllers
 
             return new NoContentResult();
         }
+
+        [HttpGet("/user/{username}")]
+        public User GetByName(string username) => this.Context.Users.FirstOrDefault(u => u.username == username);
     }
 
     public class LoginObject {

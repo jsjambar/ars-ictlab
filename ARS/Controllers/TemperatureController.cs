@@ -21,21 +21,21 @@ namespace ARS.Controllers
             this.Context = context;
         }
 
-        [HttpPost("update")]
-        public JsonResult Create([FromBody] Temperature temp)
-        {
-            Temperature temperature = this.Context.Temperatures.FirstOrDefault(t => t.classroom_id == temp.classroom_id);
+        //[HttpPost("update")]
+        //public JsonResult Create([FromBody] Temperature temp)
+        //{
+        //    Temperature temperature = this.Context.Temperatures.FirstOrDefault(t => t.classroom_id == temp.classroom_id);
 
-            if(temperature == null){
-                temperature = temp;
-                this.Context.Temperatures.Add(temperature);
-            }else{
-                this.Context.Temperatures.Update(temperature);
-            }
+        //    if(temperature == null){
+        //        temperature = temp;
+        //        this.Context.Temperatures.Add(temperature);
+        //    }else{
+        //        this.Context.Temperatures.Update(temperature);
+        //    }
 
-            this.Context.SaveChanges();
-            return Json(new {response = "success", temperature = temperature});
-        }
+        //    this.Context.SaveChanges();
+        //    return Json(new {response = "success", temperature = temperature});
+        //}
 
         [HttpGet("classroom/{id}")]
         public long GetClassroomTemperature(long classroomId){
@@ -47,6 +47,20 @@ namespace ARS.Controllers
             }
 
             return temp;
+        }
+
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] Temperature temperature)
+        {
+            if (temperature == null)
+            {
+                return BadRequest();
+            }
+
+            this.Context.Temperatures.Add(temperature);
+            this.Context.SaveChanges();
+
+            return CreatedAtRoute("GetTemperature", new { id = temperature.id }, temperature);
         }
     }
 }

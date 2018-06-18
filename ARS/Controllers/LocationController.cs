@@ -119,5 +119,8 @@ namespace ARS.Controllers
 
             return new NoContentResult();
         }
+
+        [HttpGet("location/{name}")]
+        public Location GetByName(string name) => this.Context.Locations.FirstOrDefault(l => l.name == name);
     }
 }

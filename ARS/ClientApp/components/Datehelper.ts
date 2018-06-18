@@ -40,7 +40,7 @@ export function getTimeslotByTimes(start, end) : Number{
     var timeSlot = 0;
 
     switch(true){
-        case (s == 9 && e == 1): {
+        case (s == 9 && e == 11): {
             timeSlot = 1;
             break;
         }
