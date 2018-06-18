@@ -67,16 +67,14 @@ namespace ARSTests
         private void CreateClassroomAndReservationAndTicket()
         {
             this.InitializeContext();
-            Random random = new Random();
-            int randomInt = random.Next(40, 100);
 
             Classroom classroom = new Classroom
             {
-                id = randomInt
+                id = Guid.NewGuid().GetHashCode()  // Create random id for classroom
             };
 
-            Reservation reservation = new Reservation { id = random.Next(100, 200), classroom_id = (int)classroom.id };
-            Ticket ticket = new Ticket { id = random.Next(300, 400), classroom_id = (int)classroom.id };
+            Reservation reservation = new Reservation { id = 1, classroom_id = (int)classroom.id };
+            Ticket ticket = new Ticket { id = 1, classroom_id = (int)classroom.id };
 
             this.DatabaseContext.Classrooms.Add(classroom);
             this.DatabaseContext.Reservations.Add(reservation);
