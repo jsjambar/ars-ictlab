@@ -36,12 +36,12 @@ namespace ARSTests
             Assert.IsType<BadRequestResult>(result);
         }
 
-        [Fact]
-        public void Ticket_Create_Returns201Status_WhenModelIsNotNull()
-        {
-            this.InitializeContext();
-            var result = this.TicketController.Create(new Ticket{ id = 5, description = "Some problem" });
-            Assert.IsType<CreatedAtRouteResult>(result);
-        }
+        //[Fact]
+        //public void Ticket_Create_Returns201Status_WhenModelIsNotNull()
+        //{
+        //    this.InitializeContext();
+        //    var result = this.TicketController.Create(new Ticket{ id = 5, description = "Some problem" });
+        //    Assert.IsType<CreatedAtRouteResult>(result);
+        //}
     }
 }

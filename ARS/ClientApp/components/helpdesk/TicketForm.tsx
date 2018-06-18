@@ -147,14 +147,21 @@ export class TicketForm extends React.Component<RouteComponentProps<{}>, TicketS
     //Submit ticket
     submitTicket():void{
         const values = this.state;
-        api.createTicket(new Object({ 
+        var res = api.createTicket(new Object({ 
             created_at: moment(values.created_at).add(2, 'hours'), 
             description: values.description,
             problem_id: values.problem_id, 
             classroom_id: values.classroom_id, 
             user_id: values.auth.user.id, 
-            solved: values.solved}));
-        window.location.replace('/helpdesk/overview');
+            solved: values.solved
+        }));
+
+        res.then(function (response) {
+            if (response == "Ticket submitted") {
+                window.location.replace('/helpdesk/overview');
+            }
+        })
+
     }
 
     public render() {
