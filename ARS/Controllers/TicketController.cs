@@ -67,11 +67,12 @@ namespace ARS.Controllers
             Classroom classroom = this.Context.Classrooms.FirstOrDefault(c => c.id == ticket.classroom_id);
             User user  = this.Context.Users.FirstOrDefault(c => c.id == ticket.user_id);
 
-            //Confirmation mail of reservation
+            //Confirmation mail of ticket
             string subject = "Ticket confirmation";
             string body = "You submited a ticket for " + classroom.name + " on ";
             body += ticket.created_at.Day + "-" + ticket.created_at.Month + "-" + ticket.created_at.Year;
             body += "\nDescription: " + ticket.description;
+            
             //Send mail
             Helper.NotificationMail(user, subject, body);
 

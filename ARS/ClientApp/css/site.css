@@ -557,3 +557,17 @@ h4 a:focus .anchor-icon {
     margin-bottom: 5px;
     padding: 0 10px;
 }
+
+/*BigCalander mobile stying*/
+
+@media (max-width: 767px) {
+
+    .rbc-calendar .rbc-toolbar {
+        display: block;
+    }
+
+    .rbc-calendar .rbc-toolbar .rbc-btn-group:last-child {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
