@@ -139,7 +139,7 @@ export class Users extends React.Component<RouteComponentProps<{}>, UsersState> 
                                 {
                                     // Show users
                                     this.state.users.map((u, k) => {
-                                        return <div className="row">
+                                        return <div key={k} className="row">
                                             <strong className="col-xs-1 first">{u.id}</strong>
                                             <div className="col-xs-2">{u.first_name}</div>
                                             <div className="col-xs-3">{u.last_name}</div>
